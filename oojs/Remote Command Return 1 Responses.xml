@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="7628166b-af66-4b63-8d69-ccadb3a93c78">
+  <descriptionCdata><![CDATA[7628166b-af66-4b63-8d69-ccadb3a93c78.1b8c1706-d399-4866-a75b-6caa9584ecf1.prompt=Enter HPOM node on which to execute the command\:
+7628166b-af66-4b63-8d69-ccadb3a93c78.2eacb04a-2bf3-48fe-9f9d-e0aabea4fcbd.prompt=Enter NAS device (for NASConnectTelnet)\:
+7628166b-af66-4b63-8d69-ccadb3a93c78.4430ce67-f425-4c78-ad56-9c7e1ad38718.prompt=Enter NAS device console mode (for NASConnectTelnet)\:
+7628166b-af66-4b63-8d69-ccadb3a93c78.93d2aceb-b73e-4cc0-bee9-62a4f716d0da.prompt=Enter the web protocol for communicating with HPOM (http or https)\:
+7628166b-af66-4b63-8d69-ccadb3a93c78.9927e169-604c-4479-8db1-f870434599dc.prompt=Enter outputPath (for WMI)\:
+7628166b-af66-4b63-8d69-ccadb3a93c78.9dddbd2a-d4f0-4905-b471-c065d18960a2.prompt=Enter usernamePrompt (for telnet)\:
+7628166b-af66-4b63-8d69-ccadb3a93c78.d3424522-0b7f-4d7d-8e7f-bc2a2b586bcf.prompt=Enter passwordPrompt (for telnet)\:
+7628166b-af66-4b63-8d69-ccadb3a93c78.description=<pre>\nThis operation runs a command, allowing you to specify whether it runs locally (no port to be specified), via SSH, Global Shell, ROSH, Telnet, or RSH.\n\nInputs\:\n    host - The host name or IP address.\n    port - The port number used to connect to the host.\n    username - The user name used to connect.\n    password - The password associated with the "username" input. If using a private key file, this is the passphrase for the file.\n    protocol - The protocol used to run the command. \nValid values\: SSH, ROSH, GlobalShell, Telnet, RSH, REXEC, local, WMI, NASConnectTelnet, HPOM\n    timeout - The time to wait for the command to complete (in milliseconds). Increase this value if you are getting incomplete output results or a timeout.\nDefault value\: 90000 (90 seconds), 600000 (if protocol->WMI)\n    command - The command to run.\n    Scriptlet - used javascript to control this operation.\n    arguments - The arguments to pass to the command.\n    environment - Specifies the environment variables and values that need to be defined when running the command.\n    startDir - The path to the starting directory.\n    pty - Specifies whether to use pty (used by SSH, GlobalShell)\nValid values\: true, false\nDefault value\: false\n    privateKeyFile - The absolute path to the private key file on the RAS host (used by SSH, GlobalShell).\n    sasHost - The host on which to run the ROSH command.\n    sasHostUsername - The user name used to run the ROSH command on "sasHost".\n    usernamePrompt - The prompt message for the user name. Used by the Telnet protocol. \nDefault value\: When used by the NASConnectTelnet protocol, the default value is "NAS Login\:".\n    passwordPrompt - The prompt message for the password associated with the "usernamePrompt"  input. Used by the Telnet protocol.  \nDefault value\: When used by the 'NASConnectTelnet' protocol, the default value is "Password\:"\n    outputPath - The network accessible path where to store the temporary files. If you do not specify this input, it points to '\\\\host\\admin$\\temp\\'. If this path is not accessible, change it to use another share to which the host local system account has write access. By default, the path needs to be changed on Windows 2000 systems.\n    nasDevice - The NAS device on which to run the command when using the 'NASConnect' protocol.\n    nasDeviceConsoleMode - The NAS device console mode used to run the command scripts running the command on the specified NAS device. If you leave this input empty, command scripts are not used, and the connections to the NAS device and the command are issued directly in the console. This is not recommended. Due to error handling capabilities limitation, the result might be a success even if the command failed to run. You can find the values for this input in the NAS web interface, as a drop-down list when creating a new command script (for example, Cisco IOS enable).\n    hpomNode - The node on which to run the command.\n    hpomProtocol - The protocol used to communicate with HPOM \nValid values\: HTTP or HTTPS.\n    characterSet - The name of the character set used for stream encoding and decoding between the RAS and target machine.\nValid values\: SJIS,EUC-JP, UTF-8\nDefault value\: UTF-8 (used by SSH, GlobalShell, Telnet, RSH, REXEC)\n\nHidden Inputs\:\n    useDelegation - This input only applies to the WMI protocol. If set to "true" the operation will use the 'Delegate' impersonation level and the 'Kerberos' authentication protocol. If 'false', empty or missing the operation will use 'Impersonate' for the impersonation level and the default authentication protocol (which is NTLM).\nValid values\: true, false\nDefault value\: false\n\nResults\:\n    returnResult - This is the primary output. Used to determine the operation response, specifying whether the operation is successful or not.\n    stdOut - The standard output (STDOUT) of the command.\n    stdErr - The standard error (STDERR) of the command.\n    exitStatus - Every command returns an exit status (sometimes referred to as a return status or exit code). A successful command returns a 0, while an unsuccessful one returns a non-zero value that usually can be interpreted as an error code. The supported protocols are\: SSH, ROSH, GlobalShell, local, WMI. \nExamples\: 0 for a successful command, 126 if the command cannot execute.\n\nResponses\:\n    success - The operation completed as stated in the description.\n    it need some flow to do check returnCode and returnResult ( or existStatus)\n\nNotes\:\n1. Telnet protocol - Since telnet is a shell protocol, not a remote execution protocol, the response is always  successful if the command is ran in the remote shell.  The return code of the specified command cannot be determined in this protocol.  If you must use the telnet protocol with this operation, make sure to check the command results. Consider using the SSH or REXEC protocol instead.\n2. The "exitStatus" result for Telnet, RSH, REXEC, NasConnectTelnet, HPOM will be "" (empty). For Windows host, it will be run the following final command\: "cmd /V\:on /c <command>  ^& echo \!ERRORLEVEL\!". For Linux host, the "; echo $?" will be appended to "command" input or "arguments" input (if the last one is not empty). \n</pre>
+]]></descriptionCdata>
+  <annotation>7628166b-af66-4b63-8d69-ccadb3a93c78.description</annotation>
+  <name>Remote Command Return 1 Responses</name>
+  <categories/>
+  <inputs>
+    <staticBinding id="d6362aac-fc10-4ba6-88ff-7ff7bd8d5299">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>command</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>${dpCMD}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="46b7cc79-c18d-49ad-95fb-ca1a3b5d4d1e">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>Scriptlet</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="9c8c13ba-b12c-48d3-aa7c-976c3ac68d2f">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey>backupServerIP</fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>host</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>${backupServerIP}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="da98d980-1854-46e8-bb4b-9e54a3a0355f">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey>nucl.dp.port</fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>port</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>22</value>
+      <record>false</record>
+    </staticBinding>
+    <identityBinding id="1a6cf3b4-5a6b-4d56-bdf4-38159fcac24a">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>username</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <link>
+        <refId>adf9cd83-6312-42c1-9f3d-3b75b061e7f4</refId>
+        <refName>nucl.dp</refName>
+      </link>
+      <identityAttribute>USERNAME</identityAttribute>
+    </identityBinding>
+    <identityBinding id="9da07e28-c379-4cdc-93bb-0ec30fa23cc2">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey>nucl.dp</fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>ENCRYPTED</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>password</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <link>
+        <refId>adf9cd83-6312-42c1-9f3d-3b75b061e7f4</refId>
+        <refName>nucl.dp</refName>
+      </link>
+      <identityAttribute>PASSWORD</identityAttribute>
+    </identityBinding>
+    <staticBinding id="7beaba6b-28ef-40d0-9f50-0d8b11a2d736">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>protocol</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>SSH</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="d4ab8ee9-6255-46ef-a907-a135edd61cfd">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>timeout</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>60000</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="18eabfb0-4fd8-4937-a34b-77514f784229">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>arguments</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="9db75ee3-3748-4ad1-a778-848be6baf442">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>environment</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="fce66c67-153e-470a-9092-7aad701862ac">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>startDir</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="8b5a3b8a-f93a-4c5d-aee9-928a92052e85">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>pty</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="05f56557-9bbd-4147-b512-b0b2500bc909">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey>nucl.automation.privatekey</fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>privateKeyFile</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="00c71db9-f933-444d-9058-1d505414f751">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>characterSet</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="986b6cce-81ef-471d-a74a-12a645a4f023">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>sasHost</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="de9192f7-03c9-4f84-816f-059ce4a34d71">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>sasHostUsername</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <userInputBinding id="9dddbd2a-d4f0-4905-b471-c065d18960a2">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>usernamePrompt</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>7628166b-af66-4b63-8d69-ccadb3a93c78.9dddbd2a-d4f0-4905-b471-c065d18960a2.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="d3424522-0b7f-4d7d-8e7f-bc2a2b586bcf">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>passwordPrompt</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>7628166b-af66-4b63-8d69-ccadb3a93c78.d3424522-0b7f-4d7d-8e7f-bc2a2b586bcf.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="9927e169-604c-4479-8db1-f870434599dc">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outputPath</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>7628166b-af66-4b63-8d69-ccadb3a93c78.9927e169-604c-4479-8db1-f870434599dc.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="2eacb04a-2bf3-48fe-9f9d-e0aabea4fcbd">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>nasDevice</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>7628166b-af66-4b63-8d69-ccadb3a93c78.2eacb04a-2bf3-48fe-9f9d-e0aabea4fcbd.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="4430ce67-f425-4c78-ad56-9c7e1ad38718">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>nasDeviceConsoleMode</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>7628166b-af66-4b63-8d69-ccadb3a93c78.4430ce67-f425-4c78-ad56-9c7e1ad38718.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="1b8c1706-d399-4866-a75b-6caa9584ecf1">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>hpomNode</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>7628166b-af66-4b63-8d69-ccadb3a93c78.1b8c1706-d399-4866-a75b-6caa9584ecf1.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="93d2aceb-b73e-4cc0-bee9-62a4f716d0da">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>hpomProtocol</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>7628166b-af66-4b63-8d69-ccadb3a93c78.93d2aceb-b73e-4cc0-bee9-62a4f716d0da.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+  </inputs>
+  <scriptlet id="e9fad495-61e7-428a-9c87-2c8ff5c7fa8a">
+    <annotation></annotation>
+    <name>Operation Remote Command Return 1 Responses (7628166b-af66-4b63-8d69-ccadb3a93c78)</name>
+    <script>// One-liner to define JSON parser and stringifier.  Minified version of http://www.json.org/json2.js
+if(!this.JSON){this.JSON={};}(function(){function f(n){return n&lt;10?&apos;0&apos;+n:n;} if(typeof Date.prototype.toJSON!==&apos;function&apos;){Date.prototype.toJSON=function(key){return isFinite(this.valueOf())?this.getUTCFullYear()+&apos;-&apos;+ f(this.getUTCMonth()+1)+&apos;-&apos;+f(this.getUTCDate())+&apos;T&apos;+f(this.getUTCHours())+&apos;:&apos;+f(this.getUTCMinutes())+&apos;:&apos;+f(this.getUTCSeconds())+&apos;Z&apos;:null;};String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(key){return this.valueOf();};} var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,escapable=/[\\\&quot;\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,gap,indent,meta={&apos;\b&apos;:&apos;\\b&apos;,&apos;\t&apos;:&apos;\\t&apos;,&apos;\n&apos;:&apos;\\n&apos;,&apos;\f&apos;:&apos;\\f&apos;,&apos;\r&apos;:&apos;\\r&apos;,&apos;&quot;&apos;:&apos;\\&quot;&apos;,&apos;\\&apos;:&apos;\\\\&apos;},rep;function quote(string){escapable.lastIndex=0;return escapable.test(string)?&apos;&quot;&apos;+string.replace(escapable,function(a){var c=meta[a];return typeof c===&apos;string&apos;?c:&apos;\\u&apos;+(&apos;0000&apos;+a.charCodeAt(0).toString(16)).slice(-4);})+&apos;&quot;&apos;:&apos;&quot;&apos;+string+&apos;&quot;&apos;;} function str(key,holder){var i,k,v,length,mind=gap,partial,value=holder[key];if(value&amp;&amp;typeof value===&apos;object&apos;&amp;&amp;typeof value.toJSON===&apos;function&apos;){value=value.toJSON(key);}if(typeof rep===&apos;function&apos;){value=rep.call(holder,key,value);} switch(typeof value){case&apos;string&apos;:return quote(value);case&apos;number&apos;:return isFinite(value)?String(value):&apos;null&apos;;case&apos;boolean&apos;:case&apos;null&apos;:return String(value);case&apos;object&apos;:if(!value){return&apos;null&apos;;}gap+=indent;partial=[];if(Object.prototype.toString.apply(value)===&apos;[object Array]&apos;){length=value.length;for(i=0;i&lt;length;i+=1){partial[i]=str(i,value)||&apos;null&apos;;} v=partial.length===0?&apos;[]&apos;:gap?&apos;[\n&apos;+gap+partial.join(&apos;,\n&apos;+gap)+&apos;\n&apos;+mind+&apos;]&apos;:&apos;[&apos;+partial.join(&apos;,&apos;)+&apos;]&apos;;gap=mind;return v;}if(rep&amp;&amp;typeof rep===&apos;object&apos;){length=rep.length;for(i=0;i&lt;length;i+=1){k=rep[i];if(typeof k===&apos;string&apos;){v=str(k,value);if(v){partial.push(quote(k)+(gap?&apos;: &apos;:&apos;:&apos;)+v);}}}}else{for(k in value){if(Object.hasOwnProperty.call(value,k)){v=str(k,value);if(v){partial.push(quote(k)+(gap?&apos;: &apos;:&apos;:&apos;)+v);}}}} v=partial.length===0?&apos;{}&apos;:gap?&apos;{\n&apos;+gap+partial.join(&apos;,\n&apos;+gap)+&apos;\n&apos;+ mind+&apos;}&apos;:&apos;{&apos;+partial.join(&apos;,&apos;)+&apos;}&apos;;gap=mind;return v;}} if(typeof JSON.stringify!==&apos;function&apos;){JSON.stringify=function(value,replacer,space){var i;gap=&apos;&apos;;indent=&apos;&apos;;if(typeof space===&apos;number&apos;){for(i=0;i&lt;space;i+=1){indent+=&apos; &apos;;}}else if(typeof space===&apos;string&apos;){indent=space;} rep=replacer;if(replacer&amp;&amp;typeof replacer!==&apos;function&apos;&amp;&amp;(typeof replacer!==&apos;object&apos;||typeof replacer.length!==&apos;number&apos;)){throw new Error(&apos;JSON.stringify&apos;);} return str(&apos;&apos;,{&apos;&apos;:value});};} if(typeof JSON.parse!==&apos;function&apos;){JSON.parse=function(text,reviver){var j;function walk(holder,key){var k,v,value=holder[key];if(value&amp;&amp;typeof value===&apos;object&apos;){for(k in value){if(Object.hasOwnProperty.call(value,k)){v=walk(value,k);if(v!==undefined){value[k]=v;}else{delete value[k];}}}} return reviver.call(holder,key,value);} text=String(text);cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(a){return&apos;\\u&apos;+ (&apos;0000&apos;+a.charCodeAt(0).toString(16)).slice(-4);});} if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:[&quot;\\\/bfnrt]|u[0-9a-fA-F]{4})/g,&apos;@&apos;).replace(/&quot;[^&quot;\\\n\r]*&quot;|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,&apos;]&apos;).replace(/(?:^|:|,)(?:\s*\[)+/g,&apos;&apos;))){j=eval(&apos;(&apos;+text+&apos;)&apos;);return typeof reviver===&apos;function&apos;?walk({&apos;&apos;:j},&apos;&apos;):j;} throw new SyntaxError(&apos;JSON.parse&apos;);};}}());
+
+// define simplify mode call HP OO javascriptlet @Daway   
+scriptletResult = &quot;&quot;;
+function checknull(me){return (typeof(me) == &quot;undefined&quot; || me == null || me == &quot;&quot; || (/^\$\{.*\}$/g).test(me))?false:true;} // check null variable
+function print(me){scriptletResult += &quot;&quot;+checknull(me)?me:&quot;&quot;;}  // print information on Primary Result
+function println(){(1 == arguments.length)?printlines(arguments[0]):printlines(&quot;&quot;);} // println() or  println(&quot;me&quot;);
+function printlines(me){scriptletResult +=&quot;&quot;+checknull(me)?me+&quot;\n&quot;:&quot;\n&quot;;}    // print lines
+function printline(me,you){for(var i=0;i&lt;you;i++){print(me);};println(&quot;&quot;);}  // print foromat line
+function get(me){return scriptletContext.get(me);}   // get variable from context
+function getlocal(me){return scriptletContext.getLocal(me);}    // get variable from local context
+function getraw(me){return scriptletRawResult[&quot;&apos;&quot;+me+&quot;&apos;&quot;];}       //TBD
+function getoutput(){return scriptletRawResult[&apos;Output String&apos;];} //TBD 
+function getcode(){return parseInt(scriptletRawResult[&apos;Code&apos;]);}  //TBD
+function geterror(){return  scriptletRawResult[&apos;Error String&apos;];}  //TBD
+function putglobal(me,you){scriptletContext.putGlobal(me,you);}  // set variable on enviroment
+function put(me,you){scriptletContext.put(me,you);}  // set variable on context 
+function did(me){scriptletResponse=(&quot;boolean&quot; === (typeof me))?(me?&quot;success&quot;:&quot;failure&quot;):me;} // choice response to go a way
+function error(me){throw(me);}  // go throw a error message
+function bool(me){return (&quot;string&quot; == typeof me)?&quot;true&quot;==me.toLowerCase():me;} //convert boolean
+function int(me){return 1*me;} // convert number
+function str(me){return &quot;&quot;+me;} // convert string
+function json(me){return JSON.parse(me);}  // jso = json(string);
+function json2str(me){return JSON.stringify(me);} //convert JSON object to stirng
+function regex(me){return new RegExp(me);}
+function who(){return new java.lang.Object();} // java object;
+function whose(me){for(you in me){println(you);}} // whose(oo) 
+function runnable(me){return new java.lang.Runnable(me);} //
+function thread(me){return new java.lang.Thread(me);} //
+function system(){return java.lang.System;} //system().getenv(); system().getProperty(&quot;java.runtime.version&quot;);
+function date(){return new java.util.Date();} // get JAVA Date object  
+function dateformat(me){return new java.text.SimpleDateFormat(me);} // getdate = dateformat(&quot;yyyy/MM/dd hh:mm:ss&quot;).format(date());}
+function net(){return java.net;} //
+function xml(){return org.xml.sax;} //
+function file(){return java.io.File;} //
+function sleep(me){thread().sleep(1000*me);} //sleep(5);
+String.prototype.trim = function() {return this.replace(/^\s+|\s+$/g, &apos;&apos;);} // trim string  var atrim=&quot;  abc &quot;.trim();
+
+// exectue javascript content @Daway
+try {
+      //create a new java object
+      var oo = who();
+      //init operation state
+      var how = bool(true);
+      //println(&quot;&lt;pre&gt;&quot;);
+      println();
+      //include scriptlet content from input form
+      if(checknull(Scriptlet)){
+         eval(Scriptlet);
+      }else{
+         showEmptyInfo();
+      }
+      // finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+      showSyntaxError();
+      did(false);
+} catch (e){
+      var errorMsg = str(e);
+      showErrorInfo(errorMsg);
+      did(false);
+}finally { 
+      //print(&quot;&lt;/pre&gt;&quot;);
+      oo = null;
+      println();
+}   
+
+//Define function 
+//in Main catch
+function showSyntaxError(){
+  printline(&quot;*&quot;,80);
+  println(&quot;It have error in your operation!!!&quot;);
+  println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+  printline(&quot;-&quot;,80);
+  println(str(Scriptlet));
+  printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+  printline(&quot;*&quot;,80);
+  println(&quot;It have error in your operation!!!&quot;);
+  println(&quot;1) The error message was below:&quot;);
+  printline(&quot;-&quot;,80);
+  println(me);
+  printline(&quot;=&quot;,80);
+  // put context variable errorCode
+  put(&quot;errorCode&quot;,&quot;911&quot;);
+  put(&quot;errorComponent&quot;,me);
+  if(checknull(Scriptlet)){
+     println(&quot;2) It used relation scriptlet source content was below:&quot;);
+     printline(&quot;-&quot;,80);
+     println(str(Scriptlet));
+     printline(&quot;=&quot;,80);
+  }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+  printline(&quot;*&quot;,80);
+  println(&quot;It was not used Scriptlet on input inspector&quot;);
+  println(&quot;javascriptlet content is empty!&quot;);
+  printline(&quot;=&quot;,80);
+}
+</script>
+    <type>RHINO</type>
+    <scriptRef>
+      <refId>7dddd6a1-4bb2-4c29-aaba-f2ba8e9df6ed</refId>
+      <refName>Run Scriptlets from Inputs</refName>
+    </scriptRef>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="512e92c0-50af-4a4a-ae15-c9a91a9e8559">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>true</isDefault>
+      <onFailure>true</onFailure>
+      <type>RESOLVED</type>
+      <matchRules>
+        <expression id="ca1af9d9-2293-4bb7-835e-dba6cbbb85f0">
+          <annotation></annotation>
+          <name>returnCode</name>
+          <fieldName>returnCode</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="369f5e46-7814-411b-90e6-ced1c295c339">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>0</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>EXACT_MATCH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions>
+    <expression id="a4cec407-85ba-4eac-a331-3b405462885d">
+      <annotation></annotation>
+      <name>outException</name>
+      <fieldName>exception</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters/>
+    </expression>
+    <expression id="2072436c-f4a4-4b75-bc18-2a9da48c97ce">
+      <annotation></annotation>
+      <name>outExitStatus</name>
+      <fieldName>exitStatus</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters/>
+    </expression>
+    <expression id="0568b7b8-f7c7-446c-aaaa-9ff7e781a66d">
+      <annotation></annotation>
+      <name>outFailureMessge</name>
+      <fieldName>FailureMessage</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters/>
+    </expression>
+    <expression id="39ce8217-3c7f-4409-abd8-f899b286fe7e">
+      <annotation></annotation>
+      <name>outReturnCode</name>
+      <fieldName>returnCode</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters/>
+    </expression>
+    <expression id="22702116-04f9-4957-a6bf-d09af9eecadb">
+      <annotation></annotation>
+      <name>outReturnResult</name>
+      <fieldName>returnResult</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters/>
+    </expression>
+    <expression id="38051a63-4f0e-4f59-ad9e-f89c41f51046">
+      <annotation></annotation>
+      <name>outSessionId</name>
+      <fieldName>sessionId</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters/>
+    </expression>
+    <expression id="5c56d0ca-ee4a-4752-807f-e9cab52f37ff">
+      <annotation></annotation>
+      <name>outStdErr</name>
+      <fieldName>stdErr</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters/>
+    </expression>
+    <expression id="6a3a6ba2-8cf3-4ccc-86be-e7194e00150c">
+      <annotation></annotation>
+      <name>outStdOut</name>
+      <fieldName>stdOut</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters/>
+    </expression>
+    <expression id="ee6fb639-d5ff-4f3c-8dfd-bae34310a431">
+      <annotation></annotation>
+      <name>outTimedOut</name>
+      <fieldName>TimedOut</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters/>
+    </expression>
+  </availableResultExpressions>
+  <resultExpression id="e52f6d80-2c9f-4eae-b4dd-6575bba658ff">
+    <annotation></annotation>
+    <name>returnCode</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="13fe3193-a35f-4b29-9d9c-ba8d07dabcc0">
+    <baseIcon>workstation_network.png</baseIcon>
+    <basePath>/Others/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="e67e37f5-c3a3-4a00-9885-fea5641bae00">
+        <baseIcon>start.png</baseIcon>
+        <basePath>/Annotations/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <opRef>
+    <refId>3c0f1258-b910-4665-b809-753ed5586c08</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="331fb1d1-c20f-43b1-8d3e-3441394e5b43">
+  <descriptionCdata><![CDATA[331fb1d1-c20f-43b1-8d3e-3441394e5b43.description=<pre>This is an operation that does nothing. It can be used for filtering flow variables by feeding them in as inputs and filtering them on the results tab.\n\nResponses\:\n    success\n    failure\n</pre>
+]]></descriptionCdata>
+  <annotation>331fb1d1-c20f-43b1-8d3e-3441394e5b43.description</annotation>
+  <name>Validate VLAN Input</name>
+  <categories/>
+  <inputs>
+    <userInputBinding id="c345a826-772e-4bec-9d6a-87cabd0500fe">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>vlanU2S</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt></prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="bdce7e0a-14a5-41a3-8f36-de4aa994f9a2">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>vlanISC</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt></prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+  </inputs>
+  <scriptlet id="6ae84a13-e0c6-4547-a903-4d1f1279e6da">
+    <annotation></annotation>
+    <name>Operation Validate VLAN Input (331fb1d1-c20f-43b1-8d3e-3441394e5b43)</name>
+    <script>var vlanU2S = scriptletContext.get(&quot;vlanU2S&quot;);
+var vlanISC = scriptletContext.get(&quot;vlanISC&quot;); 
+
+
+if((vlanU2S == &quot;NoVLANSelected&quot; || vlanU2S == &quot;&quot;) &amp;&amp; (vlanISC != &quot;NoVLANSelected&quot;) &amp;&amp; (vlanISC != &quot;&quot;)){
+
+	scriptletResponse = &quot;isc&quot;; 
+
+}else if((vlanISC == &quot;NoVLANSelected&quot; || vlanISC == &quot;&quot;) &amp;&amp; (vlanU2S != &quot;NoVLANSelected&quot;) &amp;&amp; (vlanU2S != &quot;&quot;)){
+	
+		scriptletResponse = &quot;u2s&quot;; 
+	
+	}else{
+	
+	scriptletResponse = &quot;failure&quot;;
+	
+	}</script>
+    <type>RHINO</type>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="d6e8a036-c759-4842-8695-0c2d2f3e4c53">
+      <annotation></annotation>
+      <name>u2s</name>
+      <isDefault>true</isDefault>
+      <onFailure>false</onFailure>
+      <type>NO_ACTION_TAKEN</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="681dddbf-597b-499c-a90c-faf8d2740ec3">
+      <annotation></annotation>
+      <name>isc</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>NO_ACTION_TAKEN</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="6b1c36b1-34c9-4e70-854b-93b0adc80922">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>false</isDefault>
+      <onFailure>true</onFailure>
+      <type>ERROR</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions/>
+  <resultExpression id="729be554-573b-4824-bad8-a2a9f171811c">
+    <annotation></annotation>
+    <name>returnResult</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="fea4123f-3f12-4ed2-a7f7-529959a4ff03">
+    <baseIcon>display_report.png</baseIcon>
+    <basePath>Utilities/</basePath>
+    <readOnly>false</readOnly>
+    <layers/>
+  </iconSpec>
+  <opRef>
+    <refId>ddd79f22-8b1e-4605-88d5-d912bb2da2b9</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scriptlet id="232b0a31-fbe2-4a5a-9feb-d9d2084fd8e6">
+  <descriptionCdata><![CDATA[232b0a31-fbe2-4a5a-9feb-d9d2084fd8e6.description=Get CSA variables to Set Global variables on Get Server Meta\n/Nucleus Base/Library/TP Cloud/Subflows/Nucleus Base/Get Service Meta
+]]></descriptionCdata>
+  <annotation>232b0a31-fbe2-4a5a-9feb-d9d2084fd8e6.description</annotation>
+  <name>Set CSA vars to Global vars</name>
+  <script>///
+eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); /* #include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/
+///
+/*
+((Nucleus_Migration design specification v13 ):3.17.4.5	SERV Modify CMD Disk Size) : Scriptlet-link to (Get Service Meta) 
+*/
+/// Main() Begin: 
+//=========================================================
+/// exectue javascript content @Daway
+try {
+if(!isnull(&quot;Scriptlet&quot;)){eval(Scriptlet);}else{
+//Begin :  your Scriptlet
+//------------------------------------------------------------------------
+
+///from &quot;Get Service Meta&quot; Subflow Return Result to set global variables
+putglobal(&quot;CSA.SVC_ROOT_COMPONENT_ID&quot;,	getdid(&quot;SVC_ROOT_COMPONENT_ID&quot;));
+putglobal(&quot;CSA.SVC_CATALOG_ID&quot;,			getdid(&quot;SVC_CATALOG_ID&quot;));
+putglobal(&quot;CSA.SVC_REQUEST_ID&quot;,			getdid(&quot;SVC_REQUEST_ID&quot;));
+putglobal(&quot;CSA.userIdentifier&quot;,			getdid(&quot;userIdentifier&quot;));
+
+///from CSA get enviroment to set global variables
+putglobal(&quot;CSA.INTERVAL&quot;,				isnull(&quot;&apos;&quot;+get(&quot;INTERVAL&quot;)+&quot;&apos;&quot;)?60:get(&quot;INTERVAL&quot;));
+putglobal(&quot;CSA.RETRY&quot;,					isnull(&quot;&apos;&quot;+get(&quot;RETRY&quot;)+&quot;&apos;&quot;)?5:get(&quot;RETRY&quot;));
+putglobal(&quot;CSA.CSA_CONTEXT_ID&quot;,			get(&quot;CSA_CONTEXT_ID&quot;));
+putglobal(&quot;CSA.CSA_PROCESS_ID&quot;,			get(&quot;CSA_PROCESS_ID&quot;));
+//putglobal(&quot;CSA.RSC_PROVIDER_ID&quot;,		get(&quot;RSC_PROVIDER_ID&quot;));
+putglobal(&quot;CSA.RSC_POOL_ID&quot;,			get(&quot;RSC_POOL_ID&quot;));
+putglobal(&quot;CSA.RSC_SUBSCRIPTION_ID&quot;,	get(&quot;RSC_SUBSCRIPTION_ID&quot;));
+putglobal(&quot;CSA.SVC_INSTANCE_ID&quot;,		get(&quot;SVC_INSTANCE_ID&quot;));
+putglobal(&quot;CSA.SVC_COMPONENT_ID&quot;,		get(&quot;SVC_COMPONENT_ID&quot;));
+putglobal(&quot;CSA.SVC_COMPONENT_TYPE&quot;,		get(&quot;SVC_COMPONENT_TYPE&quot;));
+putglobal(&quot;CSA.SVC_SUBSCRIPTION_ID&quot;,	get(&quot;SVC_SUBSCRIPTION_ID&quot;));
+putglobal(&quot;CSA.SVC_SUBSCRIPTION_EMAIL&quot;,	get(&quot;SVC_SUBSCRIPTION_EMAIL&quot;));
+putglobal(&quot;CSA.PRN_COMPONENT_ID&quot;,		get(&quot;PRN_COMPONENT_ID&quot;));
+putglobal(&quot;CSA.REQ_ORG_ID&quot;,				get(&quot;REQ_ORG_ID&quot;));
+putglobal(&quot;CSA.REQ_USER_ID&quot;,			get(&quot;REQ_USER_ID&quot;));
+putglobal(&quot;CSA.USR_ORG_ID&quot;,				get(&quot;USR_ORG_ID&quot;));
+putglobal(&quot;CSA.RSC_BINDING_ID&quot;,			get(&quot;RSC_BINDING_ID&quot;));
+
+//------------------------------------------------------------------------
+//End   :  Your Scriptlet
+}
+// finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+    showSyntaxError();
+    did(false);
+} catch (e){
+    var errorMsg = str(e);
+    showErrorInfo(errorMsg);
+    did(false);
+}finally { 
+    println();
+}
+/// Main() End:   
+//Define functions 
+//=========================================================
+//in Main catch
+function showSyntaxError(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+    printline(&quot;-&quot;,80);
+    println(getvar(&quot;Scriptlet&quot;));
+    printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;1) The error message was below:&quot;);
+    printline(&quot;-&quot;,80);
+    println(me);
+    printline(&quot;=&quot;,80);
+    // put context variable errorCode
+    put(&quot;errorCode&quot;,&quot;999&quot;);
+    put(&quot;errorComponent&quot;,me);
+    if(!isnull(&quot;Scriptlet&quot;)){
+        println(&quot;2) It used relation scriptlet source content was below:&quot;);
+        printline(&quot;-&quot;,80);
+        println(getvar(&quot;Scriptlet&quot;));
+        printline(&quot;=&quot;,80);
+    }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It was not used Scriptlet on input inspector&quot;);
+    println(&quot;javascriptlet content is empty!&quot;);
+    printline(&quot;=&quot;,80);
+}
+// end of define functions
+//=========================================================
+// Begin  : your Define functions
+
+// End    : your Define functions
+//=========================================================</script>
+  <type>RHINO</type>
+</scriptlet>

@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="291b8bdd-b665-4113-9894-a0c5d595d6ca">
+  <descriptionCdata><![CDATA[291b8bdd-b665-4113-9894-a0c5d595d6ca.description=<pre>\nThis operation check, retry and get result SQL Query&Command operation information. it use have to combine with SQL Query or SQL Command operation in SQL flow.\n \nInputs\:\n-nofound \=\ttrue\n/* to set  nofound \= true, if SQL Query have no found records  then Responses to success.\n    to set  nofound \= false,  if SQL Query have no found records  then Responses to failure.\n*/\nerrorCodeList {\n                       "CONNECT"  \:  "100",\n                        "SELECT"      \:  "105",\n                        "INSERT"      \:  "106",\n                        "UPDATE"     \:   "106",\n                        "CALL"          \:   "107",\n                        "DELETE"      \:   "108"\n}\n\n-interval\t// from CSA\n-retry\t// from CSA\n-inCommand\t// Customer used\n    /*\n    Examples of usage \:  SELECT COL1, COL2 AS NEWCOL2 FROM TABLENAME \n    return COL1, NEWCOL2 fileds result values. \n   */   \n\n-inDelimeter\=|   // default used |\n-inKey\= []  //default used [] array\t\n-inTnsEntry \= //from Prev TNS opeartion\n-inTnsPath \= //from Prev TNS opeartion\t\n-inUsername \= //from Prev TNS opeartion\n-outRowLeft\t \= 0    // from TNS SQL Query Operaton\n-outUpdateCount   \=0\t\n-outQueryCount \= 0\t\n-outColumnNames \= " "  //default use a space , it used on SQL Query\t\n-outReturnCode \=    // from TNS DB Operaton\n-outOutputText \= " "     //\tdefault use a space, it used on SQL Command\n-outReturnResult \=  // from TNS DB Operaton\t\n-outResult\t \=   // from TNS DB Operaton\n-outException \= // from TNS DB Operaton\t\n-outFailureMessage \= // from TNS DB Operaton\n-outSessionId \= // from TNS DB Operaton\n-outTimedOut \= // from TNS DB Operaton\n\nResults\:\n// errorCode, errorComponent,sqlRowResult,sqlRowCount are default hidden set to context variables to give next step flow.\n-errorCode\:\t// errorCode have not to add this operation.  it { "CONNECT"\:"100",  "SELECT"\: "105", "INSERT" \:"106","UPDATE" \: "106", "CALL" \: "107", "DELETE"  \: "108"}\n-errorComponent \:\n-sqlRowCount\:     // if select more records it's to return records row count in SQL Query.\n-sqlRowResult\:   //if have a row record it empty have to used next step got return varialbes. if select query have more records it's to return JSON format Array data  to give next step flow.\n                           //in INSERT, UPDATE, DELETE, CALL SQL command it return the execute result information.\n// if have a row record, the SQL query \nit's return SQL Conlumns name value \n    /*\n    Examples of usage \:  SELECT COL1, COL2 AS NEWCOL2 FROM TABLENAME \n    this operation to return COL1, NEWCOL2 context values.\n    it have to get from next step flow to set variables and to get values.\n    Nest Step\:\n      - inputs\:\n         var1 \= ${COL1}\n        var2 \= ${NEWCOL2}\n   */   \nResponses\:\n    success - The operation completed as stated in the description.\n    failure   -  The operation failure as stated in the description.\n\n</pre>
+]]></descriptionCdata>
+  <annotation>291b8bdd-b665-4113-9894-a0c5d595d6ca.description</annotation>
+  <name>SQL Retry and Get Results</name>
+  <categories/>
+  <inputs>
+    <staticBinding id="d8722b30-72cf-47ad-836c-e0404722a759">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>nofound</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>false</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="15d7d0e5-2fe3-4c0a-ab4a-f551bb60d2f2">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorCodeList</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>{
+  &quot;CONNECT&quot;  :  &quot;100&quot;,
+  &quot;SELECT&quot;      :  &quot;105&quot;,
+  &quot;INSERT&quot;      :  &quot;106&quot;,
+  &quot;UPDATE&quot;     :   &quot;106&quot;,
+  &quot;CALL&quot;          :   &quot;107&quot;,
+  &quot;DELETE&quot;      :   &quot;108&quot;
+}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="10e1fe05-f16f-48b2-9117-1fdc50be05bf">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>interval</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="4cd75ce9-3761-4706-af8a-93d68dcbc514">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>retry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="37a18f7d-2bea-49fc-9ee2-dcc16ddac6ab">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inCommand</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="08d1bd96-2716-4349-b452-35ccba1418ee">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inDelimeter</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="1ba2543b-dbc7-4a00-8631-369afef5a267">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inKey</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="a7817d36-7290-4ad4-9aa3-50abfe6544c8">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inTnsEntry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="ae249ae6-3d7b-49d5-aff1-5f0b424d2993">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inTnsPath</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="9f096ba4-b7f5-4371-806f-157479317352">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inUsername</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="ccec85a7-0c56-449b-bbd0-f26781a44c98">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outRowLeft</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>0</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="feae6abb-22a3-41a5-8df5-a81c8486e441">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outUpdateCount</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>0</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="f7a6478a-b700-4b3a-9c43-6c194efe584d">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outQueryCount</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>0</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="1ff18e96-0e2d-4c0c-a31e-477a4ff98ff4">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outColumnNames</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value> </value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="eaeb412a-f4c2-41ce-b6cc-23729c670827">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outReturnCode</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="6a1e18cc-59d3-49c8-af17-b3f2e8daf364">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outOutputText</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value> </value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="09b88fbb-0a19-4a8e-9f85-5d571e8514fb">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outReturnResult</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value> </value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="9224ceb7-55b9-4b5e-83d0-5ad68c458ecf">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outResult</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value> </value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="a5e4cd93-df16-41b7-a125-41bbf2450726">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outException</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="8a90873f-7c69-40bb-8f33-7c2b8c1cb087">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outFailureMessage</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="9e379089-e9f2-4844-85d3-839d288120e6">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outSessionId</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="cd60b750-1b2b-44b9-af7f-4ca47a889303">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outTimedOut</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="f83e3a16-c3a5-4100-b707-f60e535e7f0f">
+    <annotation></annotation>
+    <name>Operation SQL Retry and Get Results (291b8bdd-b665-4113-9894-a0c5d595d6ca)</name>
+    <script>// One-liner to define JSON parser and stringifier.  Minified version of http://www.json.org/json2.js
+if(!this.JSON){this.JSON={};}(function(){function f(n){return n&lt;10?&apos;0&apos;+n:n;} if(typeof Date.prototype.toJSON!==&apos;function&apos;){Date.prototype.toJSON=function(key){return isFinite(this.valueOf())?this.getUTCFullYear()+&apos;-&apos;+ f(this.getUTCMonth()+1)+&apos;-&apos;+f(this.getUTCDate())+&apos;T&apos;+f(this.getUTCHours())+&apos;:&apos;+f(this.getUTCMinutes())+&apos;:&apos;+f(this.getUTCSeconds())+&apos;Z&apos;:null;};String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(key){return this.valueOf();};} var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,escapable=/[\\\&quot;\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,gap,indent,meta={&apos;\b&apos;:&apos;\\b&apos;,&apos;\t&apos;:&apos;\\t&apos;,&apos;\n&apos;:&apos;\\n&apos;,&apos;\f&apos;:&apos;\\f&apos;,&apos;\r&apos;:&apos;\\r&apos;,&apos;&quot;&apos;:&apos;\\&quot;&apos;,&apos;\\&apos;:&apos;\\\\&apos;},rep;function quote(string){escapable.lastIndex=0;return escapable.test(string)?&apos;&quot;&apos;+string.replace(escapable,function(a){var c=meta[a];return typeof c===&apos;string&apos;?c:&apos;\\u&apos;+(&apos;0000&apos;+a.charCodeAt(0).toString(16)).slice(-4);})+&apos;&quot;&apos;:&apos;&quot;&apos;+string+&apos;&quot;&apos;;} function str(key,holder){var i,k,v,length,mind=gap,partial,value=holder[key];if(value&amp;&amp;typeof value===&apos;object&apos;&amp;&amp;typeof value.toJSON===&apos;function&apos;){value=value.toJSON(key);}if(typeof rep===&apos;function&apos;){value=rep.call(holder,key,value);} switch(typeof value){case&apos;string&apos;:return quote(value);case&apos;number&apos;:return isFinite(value)?String(value):&apos;null&apos;;case&apos;boolean&apos;:case&apos;null&apos;:return String(value);case&apos;object&apos;:if(!value){return&apos;null&apos;;}gap+=indent;partial=[];if(Object.prototype.toString.apply(value)===&apos;[object Array]&apos;){length=value.length;for(i=0;i&lt;length;i+=1){partial[i]=str(i,value)||&apos;null&apos;;} v=partial.length===0?&apos;[]&apos;:gap?&apos;[\n&apos;+gap+partial.join(&apos;,\n&apos;+gap)+&apos;\n&apos;+mind+&apos;]&apos;:&apos;[&apos;+partial.join(&apos;,&apos;)+&apos;]&apos;;gap=mind;return v;}if(rep&amp;&amp;typeof rep===&apos;object&apos;){length=rep.length;for(i=0;i&lt;length;i+=1){k=rep[i];if(typeof k===&apos;string&apos;){v=str(k,value);if(v){partial.push(quote(k)+(gap?&apos;: &apos;:&apos;:&apos;)+v);}}}}else{for(k in value){if(Object.hasOwnProperty.call(value,k)){v=str(k,value);if(v){partial.push(quote(k)+(gap?&apos;: &apos;:&apos;:&apos;)+v);}}}} v=partial.length===0?&apos;{}&apos;:gap?&apos;{\n&apos;+gap+partial.join(&apos;,\n&apos;+gap)+&apos;\n&apos;+ mind+&apos;}&apos;:&apos;{&apos;+partial.join(&apos;,&apos;)+&apos;}&apos;;gap=mind;return v;}} if(typeof JSON.stringify!==&apos;function&apos;){JSON.stringify=function(value,replacer,space){var i;gap=&apos;&apos;;indent=&apos;&apos;;if(typeof space===&apos;number&apos;){for(i=0;i&lt;space;i+=1){indent+=&apos; &apos;;}}else if(typeof space===&apos;string&apos;){indent=space;} rep=replacer;if(replacer&amp;&amp;typeof replacer!==&apos;function&apos;&amp;&amp;(typeof replacer!==&apos;object&apos;||typeof replacer.length!==&apos;number&apos;)){throw new Error(&apos;JSON.stringify&apos;);} return str(&apos;&apos;,{&apos;&apos;:value});};} if(typeof JSON.parse!==&apos;function&apos;){JSON.parse=function(text,reviver){var j;function walk(holder,key){var k,v,value=holder[key];if(value&amp;&amp;typeof value===&apos;object&apos;){for(k in value){if(Object.hasOwnProperty.call(value,k)){v=walk(value,k);if(v!==undefined){value[k]=v;}else{delete value[k];}}}} return reviver.call(holder,key,value);} text=String(text);cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(a){return&apos;\\u&apos;+ (&apos;0000&apos;+a.charCodeAt(0).toString(16)).slice(-4);});} if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:[&quot;\\\/bfnrt]|u[0-9a-fA-F]{4})/g,&apos;@&apos;).replace(/&quot;[^&quot;\\\n\r]*&quot;|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,&apos;]&apos;).replace(/(?:^|:|,)(?:\s*\[)+/g,&apos;&apos;))){j=eval(&apos;(&apos;+text+&apos;)&apos;);return typeof reviver===&apos;function&apos;?walk({&apos;&apos;:j},&apos;&apos;):j;} throw new SyntaxError(&apos;JSON.parse&apos;);};}}());
+
+// define simplify mode call HP OO javascriptlet @Daway   
+scriptletResult = &quot;&quot;;
+function checknull(me){return (typeof(me) == &quot;undefined&quot; || me == null || me == &quot;&quot; || (/^\$\{.*\}$/g).test(me))?false:true;} // check null variable
+function print(me){scriptletResult += &quot;&quot;+checknull(me)?me:&quot;&quot;;}  // print information on Primary Result
+function println(){(1 == arguments.length)?printlines(arguments[0]):printlines(&quot;&quot;);} // println() or  println(&quot;me&quot;);
+function printlines(me){scriptletResult +=&quot;&quot;+checknull(me)?me+&quot;\n&quot;:&quot;\n&quot;;}    // print lines
+function printline(me,you){for(var i=0;i&lt;you;i++){print(me);};println(&quot;&quot;);}  // print foromat line
+function get(me){return scriptletContext.get(me);}   // get variable from context
+function getlocal(me){return scriptletContext.getLocal(me);}    // get variable from local context
+function getraw(me){return scriptletRawResult[&quot;&apos;&quot;+me+&quot;&apos;&quot;];}       //TBD
+function getoutput(){return scriptletRawResult[&apos;Output String&apos;];} //TBD 
+function getcode(){return parseInt(scriptletRawResult[&apos;Code&apos;]);}  //TBD
+function geterror(){return  scriptletRawResult[&apos;Error String&apos;];}  //TBD
+function putglobal(me,you){scriptletContext.putGlobal(me,you);}  // set variable on enviroment
+function put(me,you){scriptletContext.put(me,you);}  // set variable on context 
+function did(me){scriptletResponse=(&quot;boolean&quot; === (typeof me))?(me?&quot;success&quot;:&quot;failure&quot;):me;} // choice response to go a way
+function error(me){throw(me);}  // go throw a error message
+function bool(me){return (&quot;string&quot; == typeof me)?&quot;true&quot;==me.toLowerCase():me;} //convert boolean
+function int(me){return 1*me;} // convert number
+function str(me){return &quot;&quot;+me;} // convert string
+function json(me){return JSON.parse(me);}  // jso = json(string);
+function json2str(me){return JSON.stringify(me);} //convert JSON object to stirng
+function regex(me){return new RegExp(me);}
+function who(){return new java.lang.Object();} // java object;
+function whose(me){for(you in me){println(you);}} // whose(oo) 
+function runnable(me){return new java.lang.Runnable(me);} //
+function thread(me){return new java.lang.Thread(me);} //
+function system(){return java.lang.System;} //system().getenv(); system().getProperty(&quot;java.runtime.version&quot;);
+function date(){return new java.util.Date();} // get JAVA Date object  
+function dateformat(me){return new java.text.SimpleDateFormat(me);} // getdate = dateformat(&quot;yyyy/MM/dd hh:mm:ss&quot;).format(date());}
+function net(){return java.net;} //
+function xml(){return org.xml.sax;} //
+function file(){return java.io.File;} //
+function sleep(me){thread().sleep(1000*me);} //sleep(5);
+String.prototype.trim = function() {return this.replace(/^\s+|\s+$/g, &apos;&apos;);} // trim string  var atrim=&quot;  abc &quot;.trim();
+
+
+// exectue javascript content @Daway
+try {
+      //create a new java object
+      var oo = who();
+      //init operation state
+      var how = bool(true);
+      //println(&quot;&lt;pre&gt;&quot;);
+      println();
+      //include scriptlet content from input form
+      if(checknull(Scriptlet)){
+         eval(Scriptlet);
+      }else{
+         showEmptyInfo();
+      }
+      // finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+      showSyntaxError();
+      did(false);
+} catch (e){
+      var errorMsg = str(e);
+      showErrorInfo(errorMsg);
+      did(false);
+}finally { 
+      //print(&quot;&lt;/pre&gt;&quot;);
+      oo = null;
+      println();
+}   
+
+//Define function 
+//in Main catch
+function showSyntaxError(){
+  printline(&quot;*&quot;,80);
+  println(&quot;It have error in your operation!!!&quot;);
+  println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+  printline(&quot;-&quot;,80);
+  println(str(Scriptlet));
+  printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+  printline(&quot;*&quot;,80);
+  println(&quot;It have error in your operation!!!&quot;);
+  println(&quot;1) The error message was below:&quot;);
+  printline(&quot;-&quot;,80);
+  println(me);
+  printline(&quot;=&quot;,80);
+  // put context variable errorCode
+  put(&quot;errorCode&quot;,&quot;911&quot;);
+  put(&quot;errorComponent&quot;,me);
+  if(checknull(Scriptlet)){
+     println(&quot;2) It used relation scriptlet source content was below:&quot;);
+     printline(&quot;-&quot;,80);
+     println(str(Scriptlet));
+     printline(&quot;=&quot;,80);
+  }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+  printline(&quot;*&quot;,80);
+  println(&quot;It was not used Scriptlet on input inspector&quot;);
+  println(&quot;javascriptlet content is empty!&quot;);
+  printline(&quot;=&quot;,80);
+}
+</script>
+    <type>RHINO</type>
+    <scriptRef>
+      <refId>f51315e7-0bf8-4f52-ab6e-4e9253c930e9</refId>
+      <refName>Retry and Get SQL Results</refName>
+    </scriptRef>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="855df283-8f12-48a5-87f6-2a03c4cf6806">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>true</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="a5158d32-c973-4c24-9aa8-f079dba0752e">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>ERROR</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="d62e53e0-f355-49f1-b2cb-4a7a8685caa2">
+      <annotation></annotation>
+      <name>retry</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>DIAGNOSED</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions>
+    <expression id="c0f1d94a-6b1a-4c8b-a108-d45d5a830807">
+      <annotation></annotation>
+      <name>errorCode</name>
+      <fieldName>returnResult</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters>
+        <scriptletFilter id="ada2ef9b-e3e0-4694-b0db-40af94a7dd81">
+          <annotation></annotation>
+          <name>Scriptlet</name>
+          <scriptlet id="e32efd60-ae12-4026-9bc8-c30698b31076">
+            <annotation></annotation>
+            <name>default</name>
+            <script>scriptletResult = scriptletContext.get(&quot;errorCode&quot;);</script>
+            <type>RHINO</type>
+          </scriptlet>
+        </scriptletFilter>
+      </filters>
+    </expression>
+    <expression id="5d676c50-fbb2-4745-95a0-5c7d57c530ef">
+      <annotation></annotation>
+      <name>errorComponent</name>
+      <fieldName>returnResult</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters>
+        <scriptletFilter id="2052b34e-bbad-4f0f-96d5-34db2dc6ce1c">
+          <annotation></annotation>
+          <name>Scriptlet</name>
+          <scriptlet id="1c6e4111-20b6-4c27-8f91-aa755fbc89c1">
+            <annotation></annotation>
+            <name>default</name>
+            <script>scriptletResult = scriptletContext.get(&quot;errorComponent&quot;);</script>
+            <type>RHINO</type>
+          </scriptlet>
+        </scriptletFilter>
+      </filters>
+    </expression>
+  </availableResultExpressions>
+  <resultExpression id="15e0e1aa-f971-4bfc-8b35-06339bb1686f">
+    <annotation></annotation>
+    <name>returnResult</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="76c331e1-9d85-4a5b-a8a2-56421715de06">
+    <baseIcon>sql_query.png</baseIcon>
+    <basePath>/Databases/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="8b445b6b-0b0f-4363-854a-1966881e853a">
+        <baseIcon>iterate.png</baseIcon>
+        <basePath>/Annotations/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <opRef>
+    <refId>ddd79f22-8b1e-4605-88d5-d912bb2da2b9</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="bbac8ffa-ed52-4c30-b4a6-09bfe3faa2c7">
+  <descriptionCdata><![CDATA[bbac8ffa-ed52-4c30-b4a6-09bfe3faa2c7.description=<pre>Retrieves multiple system account username and password and stores the values as flow variables. using the second part of the accountname as the prefix. eg. nucl.vcenter.ABCD \= vcenter.abcd\n\nInputs\:\n    accountName - The name of the system account.\n\nResults\:\n    Result - A message indicating if the operation was successful or not.\n\nResponses\:\n    success - The operation completed as stated in the description.\n    failure - The operation completed unsuccessfully.\n\n</pre>
+]]></descriptionCdata>
+  <annotation>bbac8ffa-ed52-4c30-b4a6-09bfe3faa2c7.description</annotation>
+  <name>Store Many System Accounts in Flow Variables</name>
+  <categories/>
+  <inputs>
+    <userInputBinding id="3bf4ca3a-e342-45e8-9906-02971e1dfad3">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>accountNameList</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt></prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+  </inputs>
+  <scriptlet id="b2dba2c0-f578-46b6-9ad9-bafca4119268">
+    <annotation></annotation>
+    <name>Operation Store Many System Accounts in Flow Variables (bbac8ffa-ed52-4c30-b4a6-09bfe3faa2c7)</name>
+    <script>try {
+    // retrieve the systemAccount username and password from the context
+    if (accountNameList.length == 0) throw &quot;No Accounts Specified&quot;;
+    accountNameListArray = accountNameList.split(&quot;,&quot;);
+    processedAccounts = [];
+    resultMessages = [];
+    for (var i = 0; i &lt; accountNameListArray.length; i++){
+    	setSingleAccount(accountNameListArray[i].trim());
+    }
+    /* Validate all accounts were processed */
+    if (processedAccounts.length == accountNameListArray.length){
+          scriptletResponse = &quot;success&quot;;
+    }
+    scriptletResult = resultMessages.join(&quot;, &quot;);
+} catch (e) {
+    scriptletResponse = &quot;failure&quot;;
+    scriptletResult = &quot;&quot; + e;
+}
+
+/* This function is adapted from the OOTB OO Intergration Operation Store System Account in Flow Variables. */
+function setSingleAccount(accountName){
+	username = scriptletContext.getSystemAccountUsername(accountName);
+    password = scriptletContext.getSystemAccountPassword(accountName);
+//    if ((username === null) || (username.equals(&quot;&quot;))) {
+      if ((username!=null) &amp;&amp; (username.equals(&quot;&quot;))) {
+        resultMessages.push(&apos;The provided system account: &apos;+ accountName + &apos; does not exist&apos;);
+        scriptletResponse = &apos;failure&apos;
+        return;
+    } else {
+    	/* Get the PREFIX for the variable from the second element of the account name */
+		accountPrefix = accountName.split(&quot;.&quot;)[1];
+		/* Special case for multiple vcenter account lookup*/
+		if (accountPrefix == &quot;vcenter&quot; &amp;&amp; processedAccounts.indexOf(&quot;vcenter&quot;) &gt; -1){
+				usernameVarName = accountPrefix + &apos;.remoteUsername&apos;;
+				passwordVarName = accountPrefix + &apos;.remotePassword&apos;;
+		} else {
+			usernameVarName = accountPrefix + &apos;.username&apos;;
+			passwordVarName = accountPrefix + &apos;.password&apos;;
+		}
+		resultMessages.push(&apos;The provided system account: &apos; + accountName + &apos; exists&apos;);
+//		resultMessages.push(&apos;The provided system account: &apos; + accountName + &apos; exists - set=(&apos; + usernameVarName + &apos;=&apos; + username + &apos;/&apos; + passwordVarName + &apos;=&apos; + password + &apos;)&apos;);
+		scriptletContext.put(usernameVarName, username);
+		scriptletContext.put(passwordVarName, password);
+		processedAccounts.push(accountPrefix);
+	}
+}</script>
+    <type>RHINO</type>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="7dd80317-d69c-4b35-874a-833cc188871a">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="6d3f7043-1bd7-4ba7-b187-2011130eebe2">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>true</isDefault>
+      <onFailure>true</onFailure>
+      <type>ERROR</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions/>
+  <resultExpression id="b4408fe3-538a-43ac-bd2f-167ffbb834d7">
+    <annotation></annotation>
+    <name>returnResult</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="30f02324-e84c-4cc3-bbd4-2bebb9fe4b6a">
+    <baseIcon>scriptlet.png</baseIcon>
+    <basePath>System</basePath>
+    <readOnly>false</readOnly>
+    <layers/>
+  </iconSpec>
+  <opRef>
+    <refId>ddd79f22-8b1e-4605-88d5-d912bb2da2b9</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="198eb6d0-862a-4e74-ba03-61b60901935c">
+  <descriptionCdata><![CDATA[198eb6d0-862a-4e74-ba03-61b60901935c.description=Attempts acquisition of a lock with an id given by the value of the lockId input.\n\n<pre>\nInputs\:\n   lockId - the id of the lock, maximum 255 characters.\n\nResponses\:\n   success - if the lock has been successfully acquired.\n   failure - if the lock has already been acquired.\n\nResult\:\n   there are no results.\n\nNotes\:\n\n1) The operation does not block waiting for a lock to become available.\n\n2) The locks acquired by this operation are not reentrant. This means that \n   once a lock is acquired by a run, all subsequent attempts at acquiring \n   the same lock by the same run (or any other run) will fail.\n\n3) Once a run terminates, all the locks that were acquired during its execution\n   are automatically released.\n</pre>
+]]></descriptionCdata>
+  <annotation>198eb6d0-862a-4e74-ba03-61b60901935c.description</annotation>
+  <name>Acquire Lock (retry)</name>
+  <categories/>
+  <inputs>
+    <userInputBinding id="0254c93b-4d02-42aa-9b66-79579bd3888c">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>lockId</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt></prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="723ea862-f1af-42c9-9da3-62cc97bd94b1">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <recordKey></recordKey>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>Lock_Id</inputSymbol>
+      <listDelimiter></listDelimiter>
+      <value>${lockId}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="78cb6107-c77a-4af8-82ac-cabbaf1331b9">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>interval</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="0ad1acd5-eaee-4ccf-827c-c26f9638058b">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>retry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="38099f42-95e8-4c26-be19-5e80923bdc86">
+    <annotation></annotation>
+    <name>Operation Acquire Lock (retry) (198eb6d0-862a-4e74-ba03-61b60901935c)</name>
+    <script>///
+eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); /* #include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/
+///
+/*
+(Nucleus_automation_design_specification_v41: 3.18.8.1) JavaScript Name: Acquire Lock (retry) oojs@Daway
+*/
+/// Main() Begin: 
+//=========================================================
+/// exectue javascript content @Daway
+try {
+if(!isnull(&quot;Scriptlet&quot;)){eval(Scriptlet);}else{
+//Begin :  your Scriptlet
+//------------------------------------------------------------------------
+////Title: Acuire Lock: (Nucleus_automation_design_specification_v40: 3.18.8.1)
+if ( &quot;0&quot; == getdid(&quot;Code&quot;) ) 
+{
+//Begin: if ( &quot;0&quot; == getdid(&quot;Code&quot;) ) 
+	done();
+	did(true);
+//End: if ( &quot;0&quot; == getdid(&quot;Code&quot;) ) 
+} 
+else if( doRetry() ) 
+{
+//Begin: else if( doRetry() )  
+	did(&quot;retry&quot;);
+//End: else if( doRetry() ) 
+}else {
+//Else: if ( &quot;0&quot; == getdid(&quot;Code&quot;) )  
+	put(&quot;errorCode&quot;,&quot;911&quot;)
+	put(&quot;errorComponent&quot;,&quot;Acquire Lock error &quot;+getdid(&quot;FailureMessage&quot;));
+
+did(false)
+//End: if ( &quot;0&quot; == getdid(&quot;Code&quot;) ) 
+}
+
+//------------------------------------------------------------------------
+//End   :  Your Scriptlet
+}
+// finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+    showSyntaxError();
+    did(false);
+} catch (e){
+    var errorMsg = str(e);
+    showErrorInfo(errorMsg);
+    did(false);
+}finally { 
+    println();
+}
+/// Main() End:   
+//Define Main() functions 
+//=========================================================
+//in Main catch
+function showSyntaxError(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+    printline(&quot;-&quot;,80);
+    println(getvar(&quot;Scriptlet&quot;));
+    printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;1) The error message was below:&quot;);
+    printline(&quot;-&quot;,80);
+    println(me);
+    printline(&quot;=&quot;,80);
+    // put context variable errorCode
+    put(&quot;errorCode&quot;,&quot;999&quot;);
+    put(&quot;errorComponent&quot;,me);
+    if(!isnull(&quot;Scriptlet&quot;)){
+        println(&quot;2) It used relation scriptlet source content was below:&quot;);
+        printline(&quot;-&quot;,80);
+        println(getvar(&quot;Scriptlet&quot;));
+        printline(&quot;=&quot;,80);
+    }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It was not used Scriptlet on input inspector&quot;);
+    println(&quot;javascriptlet content is empty!&quot;);
+    printline(&quot;=&quot;,80);
+}
+// end of Main() define functions
+//=========================================================
+// Begin  : your Define functions
+
+function done(){
+//Begin:
+    println(&quot;*&quot;,80);
+    println(&quot;Acquire Locked!!!&quot;);
+    printline(&quot;=&quot;,80);
+    print(&quot;Acquire Lock ID : &quot;);
+    println(getvar(&quot;Lock_Id&quot;));
+    print(&quot;Acquire Lock Code: &quot;);
+    println(getdid(&quot;Code&quot;));
+    (isnull(&quot;getdid(&apos;FailureMessage&apos;)&quot;))?&quot;&quot;:print(&quot;Acquire returnResult: &quot;);
+    (isnull(&quot;getdid(&apos;FailureMessage&apos;)&quot;))?&quot;&quot;:println(getdid(&quot;FailureMessage&quot;));  
+    printline(&quot;=&quot;,80);
+//End:
+}
+
+// doRetry() 
+ function doRetry()
+{
+// Begin: doRetry
+
+    var myRetry = getvar(get(&quot;myRetry&quot;));
+    if ( &quot;&quot;==myRetry )
+    {
+    //Begin: if ( &quot;&quot;==myRetry )
+    
+    	put(&quot;myRetry&quot;,getvar(&quot;retry&quot;) );
+      	myRetry = num(getvar(&quot;retry&quot;));
+    
+    //End: if ( &quot;&quot;==myRetry )
+    }
+    else
+    {
+    //Else Begin: if ( &quot;&quot;==myRetry )
+      	myRetry = num(get(&quot;myRetry&quot;)) ;
+    //Else End: if ( &quot;&quot;==myRetry )
+    }
+    
+    // save retry count
+    myRetry -= 1;
+    put(&quot;myRetry&quot;,myRetry);
+    
+    // check retry count
+    if(0 &gt;= myRetry)
+    {
+    //Begin: if(0 &gt;= myRetry)
+         return false;
+    //End: if(0 &gt;= myRetry)
+    }
+    else
+    {
+    //Else Begin: if(0 &gt;= myRetry)
+         sleep(getvar(&quot;interval&quot;));
+         return true;
+    //End Begin: if(0 &gt;= myRetry)
+    }  
+       
+// End: doRetry
+}
+
+// End    : your Define functions
+//=========================================================</script>
+    <type>RHINO</type>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="ee646930-e6e9-4bfd-b1a1-a78d111b6097">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules>
+        <expression id="0589af59-cdbc-463f-8152-4252e24d6206">
+          <annotation></annotation>
+          <name>Code</name>
+          <fieldName>Code</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <compare id="7161f437-e071-4b18-b51c-d7d78c3248f9">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>0</text>
+            <matchType>=</matchType>
+          </compare>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="c84b480f-e42e-4607-9252-dbb8ba5b1f0e">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>true</isDefault>
+      <onFailure>true</onFailure>
+      <type>ERROR</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="7b0520dd-b383-4a41-8bf3-dd7a820e7951">
+      <annotation></annotation>
+      <name>retry</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>DIAGNOSED</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions>
+    <expression id="0e54e1f4-5145-41aa-a08b-264e9866dfdd">
+      <annotation></annotation>
+      <name>a</name>
+      <fieldName>FailureMessage</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters/>
+    </expression>
+  </availableResultExpressions>
+  <resultExpression id="38b56646-4049-4e86-84a8-cc58843bccab">
+    <annotation></annotation>
+    <name>FailureMessage</name>
+    <fieldName>FailureMessage</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="3dc0e421-8452-4260-aa98-4a4f4a9ad5c4">
+    <baseIcon>wrench.png</baseIcon>
+    <basePath>Utilities/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="e4e68f37-1c45-4e95-bb7b-5d3a91f3a1aa">
+        <baseIcon>lock.png</baseIcon>
+        <basePath>Annotations/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <opRef>
+    <refId>d775dc59-0875-406c-af52-49e91577e1a9</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

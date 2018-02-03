@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="9d62fdda-8169-4e83-a54b-60d1303807ca">
+  <descriptionCdata><![CDATA[9d62fdda-8169-4e83-a54b-60d1303807ca.description=<pre>\nThis operation does not do anything. It can be used to filter flow variables by defining them as inputs and filtering them in the Results tab.\n\nInputs\:\n    field1 \u2013 An optional input that can be used for filtering flow variables.\n    field2 \u2013 An optional input that can be used for filtering flow variables.\n    field3 \u2013 An optional input that can be used for filtering flow variables.\n    field4 \u2013 An optional input that can be used for filtering flow variables.\n\nResults\:\n    returnResult - This is the primary output. It contains the value of  "field1" as it was specified at input or when filtered. \n\nResponses\:\n    success - The operation completed as stated in the description.\n</pre>
+]]></descriptionCdata>
+  <annotation>9d62fdda-8169-4e83-a54b-60d1303807ca.description</annotation>
+  <name>ScriptLet 3 Responses</name>
+  <categories/>
+  <inputs/>
+  <scriptlet id="ce276412-0ed7-426c-8594-7cfe175c44b3">
+    <annotation></annotation>
+    <name>Operation ScriptLet 21 Responses (9d62fdda-8169-4e83-a54b-60d1303807ca)</name>
+    <script>if (typeof field1 != &apos;undefined&apos;) {
+	scriptletResult = field1;
+} else {
+	scriptletResult = &quot;&quot;;
+} 
+</script>
+    <type>RHINO</type>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="2dfc0d43-961f-49ae-8fd7-b3acd8cb1b00">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>true</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="5a543779-e980-4b3f-9997-93274f3073b5">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>ERROR</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="33ae92b7-2124-4944-88d9-a6ad20152f1e">
+      <annotation></annotation>
+      <name>notMatch</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>NO_ACTION_TAKEN</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions/>
+  <resultExpression id="efa42327-b662-4fc4-ab03-dafdafd60b61">
+    <annotation></annotation>
+    <name>returnResult</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="a9fc1153-de50-4b95-9b4b-cfa5e0fe2f15">
+    <baseIcon>display_report.png</baseIcon>
+    <basePath>Utilities/</basePath>
+    <readOnly>false</readOnly>
+    <layers/>
+  </iconSpec>
+  <opRef>
+    <refId>ddd79f22-8b1e-4605-88d5-d912bb2da2b9</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

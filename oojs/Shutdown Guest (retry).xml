@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="05e22268-48a0-46ba-90c6-52f87f1f9ff5">
+  <descriptionCdata><![CDATA[05e22268-48a0-46ba-90c6-52f87f1f9ff5.843652f7-7c80-4c67-8176-ab9d276077ee.prompt=VMWare Host\:
+05e22268-48a0-46ba-90c6-52f87f1f9ff5.8b6695e9-c8bf-4479-99b7-05250757412f.prompt=Close session?\:
+05e22268-48a0-46ba-90c6-52f87f1f9ff5.8d89f7c5-a43e-42f3-9e6f-5939958c93e9.prompt=Virtual Machine\:
+05e22268-48a0-46ba-90c6-52f87f1f9ff5.a38a1cdf-329c-4943-a252-2ef1b2a7950f.prompt=Identify VM by\:
+05e22268-48a0-46ba-90c6-52f87f1f9ff5.ace83ef6-997e-4f44-8d5a-27bc6287ab3d.prompt=VMWare User\:
+05e22268-48a0-46ba-90c6-52f87f1f9ff5.d22930d5-ac14-4111-a658-a09c0635ea1f.prompt=Password\:
+05e22268-48a0-46ba-90c6-52f87f1f9ff5.description=<pre>Attempts to shutdown the guest virtual machine.\n\nInputs\:\nhost - VMWare host hostname or IP.\nuser - VMWare username.\npassword - VMWare user's password.\nport - Port to connect on.\nprotocol - Connection protocol (http or https).\ncloseSession - Close the internally kept VMWare Infrastructure API session at completion of operation (true, false).\nvirtualMachine - Primary Virtual Machine identifier. Inventorypath (Datacenter/vm/Folder/MyVM), Name of VM, IP (IPv4 or IPv6 depending upon ESX version), hostname (full), UUID, or the VM id (vm-123,123).\nvmIdentifierType - Virtual machine identifier type (inventorypath, name, ip, hostname, uuid, vmid).\n\nResponses\:\nsuccess - The operation completed successfully.\nfailure - Something went wrong.\n\nReturns\:\nreturnResult - Operation result message.\n\nNotes\:\nInventory Path Formatting\: If host is an ESX server inventory path will be\: ha-datacenter/vm/<name of vm> .  If host is a vCenter the inventory path will be\: <name of datacenter>/vm/<folders>/<name of vm> . The <folders>/<name of vm> part of the path is based on the "Virtual Machines & Templates" view in the vCenter client. The inventory path is case sensitive.\n</pre>
+]]></descriptionCdata>
+  <annotation>05e22268-48a0-46ba-90c6-52f87f1f9ff5.description</annotation>
+  <name>Shutdown Guest (retry)</name>
+  <categories/>
+  <inputs>
+    <userInputBinding id="843652f7-7c80-4c67-8176-ab9d276077ee">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>host</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>05e22268-48a0-46ba-90c6-52f87f1f9ff5.843652f7-7c80-4c67-8176-ab9d276077ee.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="ace83ef6-997e-4f44-8d5a-27bc6287ab3d">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>user</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>05e22268-48a0-46ba-90c6-52f87f1f9ff5.ace83ef6-997e-4f44-8d5a-27bc6287ab3d.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="d22930d5-ac14-4111-a658-a09c0635ea1f">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>ENCRYPTED</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>password</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>05e22268-48a0-46ba-90c6-52f87f1f9ff5.d22930d5-ac14-4111-a658-a09c0635ea1f.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="a5fbca89-5365-4567-bcc4-2dd1a9982a3b">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>port</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>443</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="aedd5000-4208-42e1-873f-662bfbc68ddd">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>protocol</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>https</value>
+      <record>false</record>
+    </staticBinding>
+    <userInputBinding id="8b6695e9-c8bf-4479-99b7-05250757412f">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>closeSession</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>05e22268-48a0-46ba-90c6-52f87f1f9ff5.8b6695e9-c8bf-4479-99b7-05250757412f.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <link>
+        <refId>96a1ed25-cdc9-4ff6-8fba-e9c044c5ca53</refId>
+        <refName>Boolean - False Default</refName>
+      </link>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="a38a1cdf-329c-4943-a252-2ef1b2a7950f">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>vmIdentifierType</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>05e22268-48a0-46ba-90c6-52f87f1f9ff5.a38a1cdf-329c-4943-a252-2ef1b2a7950f.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <link>
+        <refId>30d93841-3dba-4f85-a25d-425d36161504</refId>
+        <refName>VMReferenceType</refName>
+      </link>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="8d89f7c5-a43e-42f3-9e6f-5939958c93e9">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>virtualMachine</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>05e22268-48a0-46ba-90c6-52f87f1f9ff5.8d89f7c5-a43e-42f3-9e6f-5939958c93e9.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="1625c0ea-67f9-4cbb-897e-be94bcfa6ea2">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>embedScriptlet</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>/*  Embed JavaScriptlet OOJS@Daway */ 
+// Begin: Embed JavaScriptlet
+//------------------------------------------
+
+
+//------------------------------------------
+// End: Embed JavaScriptlet</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="f430c4bb-473f-4d49-8a5d-7c75643642eb">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorCodeList</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>{
+&quot;ModifyVM&quot;:&quot;221&quot;
+}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="96258d93-169c-48d4-a828-6e2495e366a1">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorCodeRetry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>{
+&quot;Failed to connect/authenticate to vCenter&quot;:&quot;200&quot;
+}</value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="422bf60c-05bc-4dad-884a-13eb1f9c3a34">
+    <annotation></annotation>
+    <name>Operation Shutdown Guest (retry) (05e22268-48a0-46ba-90c6-52f87f1f9ff5)</name>
+    <type>RHINO</type>
+    <scriptRef>
+      <refId>e41e6d11-2143-473a-9acc-f206f701fc68</refId>
+      <refName>VMware Virtual Infrastructure and vSphere API Component (retry)</refName>
+    </scriptRef>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="c5417341-b3e6-42a8-8980-1081eaa249ff">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules>
+        <expression id="b1ab0020-abdf-4bd6-a033-777fd19293f9">
+          <annotation></annotation>
+          <name>returnCode</name>
+          <fieldName>returnCode</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="dd6c363b-f012-4d4c-96b8-d4678cc42769">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>0</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>EXACT_MATCH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="e08c6308-02a1-40c4-a41a-ae5a1144d8c6">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>true</isDefault>
+      <onFailure>true</onFailure>
+      <type>ERROR</type>
+      <matchRules>
+        <expression id="950366a2-2e55-408c-af33-ebd73fbfa99b">
+          <annotation></annotation>
+          <name>returnCode</name>
+          <fieldName>returnCode</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="43334367-e672-4ce9-99e9-7c63b3abc24b">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>-1</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>EXACT_MATCH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="bebf05d9-57f2-4b73-9131-5500cf2e2f42">
+      <annotation></annotation>
+      <name>retry</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>DIAGNOSED</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions/>
+  <resultExpression id="1c37730c-a8ad-483b-8cc1-b92f3d733c87">
+    <annotation></annotation>
+    <name>returnCode</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="03ea0a87-1cb6-4db3-9086-633dd475a832">
+    <baseIcon>linux_server_plain.png</baseIcon>
+    <basePath>/Servers/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="cdb447d6-9346-420a-9377-31d42ef48bd6">
+        <baseIcon>shutdown.png</baseIcon>
+        <basePath>/Annotations/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <opRef>
+    <refId>d6f99d52-c22b-4030-bf5a-0160a14cc6e3</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

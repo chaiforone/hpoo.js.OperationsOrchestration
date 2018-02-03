@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scriptlet id="7dddd6a1-4bb2-4c29-aaba-f2ba8e9df6ed">
+  <descriptionCdata><![CDATA[7dddd6a1-4bb2-4c29-aaba-f2ba8e9df6ed.description=Running Scriptlets from Inputs Scriptlet Inspector, Instance flow don't used the normally Scriptlet of Inspector that value need empty to can be use this scirptlet.\nInputs\:\nInputs Inspector have to a name of "Scriptlet" to write script in it.\nIt normally return errorCode and errorCompont if the runtime Script have an exception. so, It's not need add errorCode and errorComponent on Results tab. if it want add errorCode and errorComponent need to use scriptletResult \= scriptletContext.get("errorCode"); to return errorCode value.\nResults\:\nreturnCode\nreturnResult\nexitStates //option
+]]></descriptionCdata>
+  <annotation>7dddd6a1-4bb2-4c29-aaba-f2ba8e9df6ed.description</annotation>
+  <name>Run Scriptlets from Inputs</name>
+  <script>eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); /* #include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/
+///
+/*
+(Nucleus_automation_design_specification_v40: 3.18.8.1) JavaScript Name: Run Scriptlets from Inputs @Daway
+*/
+/// Main() Begin: 
+//=========================================================
+/// execute javascript content @Daway
+try {
+if(!isnull(&quot;Scriptlet&quot;)){eval(Scriptlet);}else{
+//Begin :  your Scriptlet
+//------------------------------------------------------------------------
+
+
+
+
+
+//------------------------------------------------------------------------
+//End   :  Your Scriptlet
+}
+// finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+    showSyntaxError();
+    did(false);
+} catch (e){
+    var errorMsg = str(e);
+    showErrorInfo(errorMsg);
+    did(false);
+}finally { 
+    how = null;
+}
+/// Main() End:   
+//Define functions 
+//=========================================================
+//in Main catch
+function showSyntaxError(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+    printline(&quot;-&quot;,80);
+    println(getvar(&quot;Scriptlet&quot;));
+    printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;1) The error message was below:&quot;);
+    printline(&quot;-&quot;,80);
+    println(me);
+    printline(&quot;=&quot;,80);
+    // put context variable errorCode
+    put(&quot;errorCode&quot;,&quot;999&quot;);
+    put(&quot;errorComponent&quot;,me);
+    if(!isnull(&quot;Scriptlet&quot;)){
+        println(&quot;2) It used relation scriptlet source content was below:&quot;);
+        printline(&quot;-&quot;,80);
+        println(getvar(&quot;Scriptlet&quot;));
+        printline(&quot;=&quot;,80);
+    }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It was not used Scriptlet on input inspector&quot;);
+    println(&quot;javascriptlet content is empty!&quot;);
+    printline(&quot;=&quot;,80);
+}
+// end of define functions
+//=========================================================
+// Begin  : your Define functions
+
+// End    : your Define functions
+//=========================================================</script>
+  <type>RHINO</type>
+</scriptlet>

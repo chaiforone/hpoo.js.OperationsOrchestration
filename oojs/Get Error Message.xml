@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="03e8a2f0-aff1-466d-9ac2-e05695e1b9ed">
+  <descriptionCdata><![CDATA[03e8a2f0-aff1-466d-9ac2-e05695e1b9ed.description=<pre>This is an operation that does nothing. It can be used for filtering flow variables by feeding them in as inputs and filtering them on the results tab.\n\nResponses\:\n    success\n    failure\n</pre>
+]]></descriptionCdata>
+  <annotation>03e8a2f0-aff1-466d-9ac2-e05695e1b9ed.description</annotation>
+  <name>Get Error Message</name>
+  <categories/>
+  <inputs>
+    <staticBinding id="bdb76738-c912-4cf0-8051-69dfc7e5b0ad">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorCode</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="efeda86e-c33f-40b3-a570-5f672cf56f7a">
+    <annotation></annotation>
+    <name>Operation Get Error Message (03e8a2f0-aff1-466d-9ac2-e05695e1b9ed)</name>
+    <script>// Get Error Message
+//See bottom of Scriptlet for Mapping of Table to outputs.
+
+// One-liner to define JSON parser and stringifier.  Minified version of http://www.json.org/json2.js
+if(!this.JSON){this.JSON={};}(function(){function f(n){return n&lt;10?&apos;0&apos;+n:n;} if(typeof Date.prototype.toJSON!==&apos;function&apos;){Date.prototype.toJSON=function(key){return isFinite(this.valueOf())?this.getUTCFullYear()+&apos;-&apos;+ f(this.getUTCMonth()+1)+&apos;-&apos;+f(this.getUTCDate())+&apos;T&apos;+f(this.getUTCHours())+&apos;:&apos;+f(this.getUTCMinutes())+&apos;:&apos;+f(this.getUTCSeconds())+&apos;Z&apos;:null;};String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(key){return this.valueOf();};} var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,escapable=/[\\\&quot;\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,gap,indent,meta={&apos;\b&apos;:&apos;\\b&apos;,&apos;\t&apos;:&apos;\\t&apos;,&apos;\n&apos;:&apos;\\n&apos;,&apos;\f&apos;:&apos;\\f&apos;,&apos;\r&apos;:&apos;\\r&apos;,&apos;&quot;&apos;:&apos;\\&quot;&apos;,&apos;\\&apos;:&apos;\\\\&apos;},rep;function quote(string){escapable.lastIndex=0;return escapable.test(string)?&apos;&quot;&apos;+string.replace(escapable,function(a){var c=meta[a];return typeof c===&apos;string&apos;?c:&apos;\\u&apos;+(&apos;0000&apos;+a.charCodeAt(0).toString(16)).slice(-4);})+&apos;&quot;&apos;:&apos;&quot;&apos;+string+&apos;&quot;&apos;;} function str(key,holder){var i,k,v,length,mind=gap,partial,value=holder[key];if(value&amp;&amp;typeof value===&apos;object&apos;&amp;&amp;typeof value.toJSON===&apos;function&apos;){value=value.toJSON(key);}if(typeof rep===&apos;function&apos;){value=rep.call(holder,key,value);} switch(typeof value){case&apos;string&apos;:return quote(value);case&apos;number&apos;:return isFinite(value)?String(value):&apos;null&apos;;case&apos;boolean&apos;:case&apos;null&apos;:return String(value);case&apos;object&apos;:if(!value){return&apos;null&apos;;}gap+=indent;partial=[];if(Object.prototype.toString.apply(value)===&apos;[object Array]&apos;){length=value.length;for(i=0;i&lt;length;i+=1){partial[i]=str(i,value)||&apos;null&apos;;} v=partial.length===0?&apos;[]&apos;:gap?&apos;[\n&apos;+gap+partial.join(&apos;,\n&apos;+gap)+&apos;\n&apos;+mind+&apos;]&apos;:&apos;[&apos;+partial.join(&apos;,&apos;)+&apos;]&apos;;gap=mind;return v;}if(rep&amp;&amp;typeof rep===&apos;object&apos;){length=rep.length;for(i=0;i&lt;length;i+=1){k=rep[i];if(typeof k===&apos;string&apos;){v=str(k,value);if(v){partial.push(quote(k)+(gap?&apos;: &apos;:&apos;:&apos;)+v);}}}}else{for(k in value){if(Object.hasOwnProperty.call(value,k)){v=str(k,value);if(v){partial.push(quote(k)+(gap?&apos;: &apos;:&apos;:&apos;)+v);}}}} v=partial.length===0?&apos;{}&apos;:gap?&apos;{\n&apos;+gap+partial.join(&apos;,\n&apos;+gap)+&apos;\n&apos;+ mind+&apos;}&apos;:&apos;{&apos;+partial.join(&apos;,&apos;)+&apos;}&apos;;gap=mind;return v;}} if(typeof JSON.stringify!==&apos;function&apos;){JSON.stringify=function(value,replacer,space){var i;gap=&apos;&apos;;indent=&apos;&apos;;if(typeof space===&apos;number&apos;){for(i=0;i&lt;space;i+=1){indent+=&apos; &apos;;}}else if(typeof space===&apos;string&apos;){indent=space;} rep=replacer;if(replacer&amp;&amp;typeof replacer!==&apos;function&apos;&amp;&amp;(typeof replacer!==&apos;object&apos;||typeof replacer.length!==&apos;number&apos;)){throw new Error(&apos;JSON.stringify&apos;);} return str(&apos;&apos;,{&apos;&apos;:value});};} if(typeof JSON.parse!==&apos;function&apos;){JSON.parse=function(text,reviver){var j;function walk(holder,key){var k,v,value=holder[key];if(value&amp;&amp;typeof value===&apos;object&apos;){for(k in value){if(Object.hasOwnProperty.call(value,k)){v=walk(value,k);if(v!==undefined){value[k]=v;}else{delete value[k];}}}} return reviver.call(holder,key,value);} text=String(text);cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(a){return&apos;\\u&apos;+ (&apos;0000&apos;+a.charCodeAt(0).toString(16)).slice(-4);});} if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:[&quot;\\\/bfnrt]|u[0-9a-fA-F]{4})/g,&apos;@&apos;).replace(/&quot;[^&quot;\\\n\r]*&quot;|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,&apos;]&apos;).replace(/(?:^|:|,)(?:\s*\[)+/g,&apos;&apos;))){j=eval(&apos;(&apos;+text+&apos;)&apos;);return typeof reviver===&apos;function&apos;?walk({&apos;&apos;:j},&apos;&apos;):j;} throw new SyntaxError(&apos;JSON.parse&apos;);};}}());
+
+var errorJSON = {
+&quot;001&quot;:{&quot;Domain&quot;:&quot;Internal Error&quot;, &quot;Msg&quot;:&quot;Failed No errorCode Defined&quot;, &quot;Severity&quot;:&quot;Warning&quot;},
+&quot;006&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;End DR Scenarion&quot;, &quot;Severity&quot;:&quot;Minor&quot;},
+&quot;020&quot;:{&quot;Domain&quot;:&quot;Maintenance&quot;, &quot;Msg&quot;:&quot;Invalid VM Cluster name&quot;, &quot;Severity&quot;:&quot;Warning&quot;},
+&quot;021&quot;:{&quot;Domain&quot;:&quot;Maintenance&quot;, &quot;Msg&quot;:&quot;Invalid VM Data Store name&quot;, &quot;Severity&quot;:&quot;Warning&quot;},
+&quot;022&quot;:{&quot;Domain&quot;:&quot;Maintenance&quot;, &quot;Msg&quot;:&quot;Failed to register VM Cluster&quot;, &quot;Severity&quot;:&quot;Warning&quot;},
+&quot;023&quot;:{&quot;Domain&quot;:&quot;Maintenance&quot;, &quot;Msg&quot;:&quot;Failed to register VM Data Store&quot;, &quot;Severity&quot;:&quot;Warning&quot;},
+&quot;025&quot;:{&quot;Domain&quot;:&quot;Maintenance&quot;, &quot;Msg&quot;:&quot;Invalid MOE Resource Pool name&quot;, &quot;Severity&quot;:&quot;Warning&quot;},
+&quot;026&quot;:{&quot;Domain&quot;:&quot;Maintenance&quot;, &quot;Msg&quot;:&quot;Invalid MOE SPM Template name&quot;, &quot;Severity&quot;:&quot;Warning&quot;},
+&quot;027&quot;:{&quot;Domain&quot;:&quot;Maintenance&quot;, &quot;Msg&quot;:&quot;Failed to register MOE Resource Pool&quot;, &quot;Severity&quot;:&quot;Warning&quot;},
+&quot;028&quot;:{&quot;Domain&quot;:&quot;Maintenance&quot;, &quot;Msg&quot;:&quot;Failed to register MOE SPM Template&quot;, &quot;Severity&quot;:&quot;Warning&quot;},
+&quot;029&quot;:{&quot;Domain&quot;:&quot;Maintenance&quot;, &quot;Msg&quot;:&quot;VM in vCenter not registered in InfraDB&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;030&quot;:{&quot;Domain&quot;:&quot;Maintenance&quot;, &quot;Msg&quot;:&quot;Invalid CSA Subscription&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;031&quot;:{&quot;Domain&quot;:&quot;Maintenance&quot;, &quot;Msg&quot;:&quot;Unable to connect to vCenter ID, skipped&quot;, &quot;Severity&quot;:&quot;Warning&quot;},
+&quot;100&quot;:{&quot;Domain&quot;:&quot;InfraDB&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to InfraDB&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;105&quot;:{&quot;Domain&quot;:&quot;InfraDB&quot;, &quot;Msg&quot;:&quot;Failed to query InfraDB&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;106&quot;:{&quot;Domain&quot;:&quot;InfraDB&quot;, &quot;Msg&quot;:&quot;Failed to insert/update InfraDB&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;107&quot;:{&quot;Domain&quot;:&quot;InfraDB&quot;, &quot;Msg&quot;:&quot;Failed to execute stored procedure in InfraDB&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;108&quot;:{&quot;Domain&quot;:&quot;InfraDB&quot;, &quot;Msg&quot;:&quot;Failed to delete from InfraDB&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;109&quot;:{&quot;Domain&quot;:&quot;InfraDB&quot;, &quot;Msg&quot;:&quot;No available datastore capacity on cluster&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;110&quot;:{&quot;Domain&quot;:&quot;Input validation&quot;, &quot;Msg&quot;:&quot;Input validation failed&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;111&quot;:{&quot;Domain&quot;:&quot;Input validation&quot;, &quot;Msg&quot;:&quot;CPU out of range&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;112&quot;:{&quot;Domain&quot;:&quot;Input validation&quot;, &quot;Msg&quot;:&quot;Memory out of range&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;113&quot;:{&quot;Domain&quot;:&quot;Input validation&quot;, &quot;Msg&quot;:&quot;No Change requested&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;120&quot;:{&quot;Domain&quot;:&quot;IPAM&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to IPAM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;125&quot;:{&quot;Domain&quot;:&quot;IPAM&quot;, &quot;Msg&quot;:&quot;Failed to query IPAM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;126&quot;:{&quot;Domain&quot;:&quot;IPAM&quot;, &quot;Msg&quot;:&quot;Failed to register IP address&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;127&quot;:{&quot;Domain&quot;:&quot;IPAM&quot;, &quot;Msg&quot;:&quot;Failed to release IP address&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;128&quot;:{&quot;Domain&quot;:&quot;IPAM&quot;, &quot;Msg&quot;:&quot;Failed to find available IP&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;140&quot;:{&quot;Domain&quot;:&quot;Request validation&quot;, &quot;Msg&quot;:&quot;Request rejected due to invalid server status&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;200&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to vCenter&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;205&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to browse/read VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;206&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to create VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;207&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to update VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;208&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to delete VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;210&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to start VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;211&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to stop VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;213&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to snapshot VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;214&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to restore VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;215&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;No snapshot to restore from&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;220&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to attach disk&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;221&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to modify diSk&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;222&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to remove disk&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;223&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Unsupported request for change disk size&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;224&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Unsupported request for change storage class&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;225&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to flex CPU/Memory&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;226&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to create Snapshot&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;227&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to delete Snapshot&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;228&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to restore Snapshot&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;230&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to move VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;231&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to unprotect VM from DR&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;232&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to DR protect VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;233&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to DR Unprotect VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;234&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to Change DR group on protect VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;235&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to reserve semaphore for failover&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;236&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to reserve semaphore for failback&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;237&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to storage vMotion&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;238&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to move to DR Protected folder&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;239&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to move to Non DR Protected folder&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;240&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to do controled failover&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;241&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to do controlled failback&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;242&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to disable DR because server is in failover Data Center - failback required&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;243&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;No required datastore capacity&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;244&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to add NIC to VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;245&quot;:{&quot;Domain&quot;:&quot;vCenter&quot;, &quot;Msg&quot;:&quot;Failed to remove NIC from VM&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+//&quot;243&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;No required datastore capacity&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;250&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to MOE&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;253&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to upload HPIO template&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;254&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to delete HPIO template&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;255&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to browse/read server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;256&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to create server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;257&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to update server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;258&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to delete server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;260&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to start server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;261&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to stop server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;262&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Wrong power status of the server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;263&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to start server into PXE Boot&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;270&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to attach disk&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;271&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to modify disk&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;272&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to remove disk&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;273&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Unsupported request for change disk size&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;274&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Unsupported request for change storage class&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;275&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Unsupported request for disk removal&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;276&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to retrieve MOE Server info with LSMUTIL&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;277&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to retrieve MOE Server info with MXNODE&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;278&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to retrieve MOE Server info with getService API&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;281&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to get Request Inf&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;282&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to get Server Pool&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;283&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Failed to get Compute Server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;284&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Get Logical Server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;285&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Get Logical Server Info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;286&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;IO Add New Disk to LogicalServerGroup&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;287&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;IO Cannot Edit Logical Disks&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;288&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;IO Cannot get SAN Volume&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;289&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;IO Cannot Create IO Template&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;290&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Could not update MOE disk info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;291&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Could not update MOE server info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;292&quot;:{&quot;Domain&quot;:&quot;MOE&quot;, &quot;Msg&quot;:&quot;Waiting for MOE request failed or timed out&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;300&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to HPSA&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;304&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to execute MBC&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;305&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to browser/read server object&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;306&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to create server object&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;307&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to modify server object&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;308&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to delete server object&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;309&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to remediate server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;310&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to attach policy&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;311&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to detach policy&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;313&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to execute OS Build plan&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;315&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to execute script&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;316&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;No available running SA Core Server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;317&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to format data disk&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;318&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to flexup data disk&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;319&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to remove data disk&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;320&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to change permissions on mount point&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;321&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to do initial linux patching&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;322&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed initial patching in snapshot step&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;323&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed initial patching in pre-check step&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;324&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed initial patching in pre-install step&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;325&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed initial patching in linux patch tool step&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;326&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed initial patching in post-install step&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;327&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed initial patching in post-check step&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;328&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed initial patching in rollback step&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;329&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed initial patching rollback finished&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;330&quot;:{&quot;Domain&quot;:&quot;NAS&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to NAS&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;335&quot;:{&quot;Domain&quot;:&quot;NAS&quot;, &quot;Msg&quot;:&quot;Failed to read info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;336&quot;:{&quot;Domain&quot;:&quot;NAS&quot;, &quot;Msg&quot;:&quot;Failed to create volume&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;337&quot;:{&quot;Domain&quot;:&quot;NAS&quot;, &quot;Msg&quot;:&quot;Failed to modify volume&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;338&quot;:{&quot;Domain&quot;:&quot;NAS&quot;, &quot;Msg&quot;:&quot;Failed to delete volume&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;340&quot;:{&quot;Domain&quot;:&quot;NAS&quot;, &quot;Msg&quot;:&quot;Failed to create share&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;341&quot;:{&quot;Domain&quot;:&quot;NAS&quot;, &quot;Msg&quot;:&quot;Failed to create share ???? 340&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;342&quot;:{&quot;Domain&quot;:&quot;NAS&quot;, &quot;Msg&quot;:&quot;Failed to modify share&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;450&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to create protection group&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;451&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to Add Protection Group to Recovery Plan&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;452&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to create datastore&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;453&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to detach datastore&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;454&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to remove detached datastores&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;455&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to storage vMotion VMs into Transport Datastores before DR Scenario&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;456&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to protect VM in Transport Datastores before  DR Scenario&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;457&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to set priority in Transport Datastores before DR Scenario&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;458&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to failover into DR DC&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;459&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to failover into Primary DC&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;460&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to storage vMotion VM into Regular Datastore after DR Scenario&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;461&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to protect VM in Regular Datastores after DR Scenario&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;462&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to set priority in Regular Datastores after DR Scenario&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;463&quot;:{&quot;Domain&quot;:&quot;vCenter DR&quot;, &quot;Msg&quot;:&quot;Failed to get host and wwn info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;500&quot;:{&quot;Domain&quot;:&quot;ESL&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to ESL&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;505&quot;:{&quot;Domain&quot;:&quot;ESL&quot;, &quot;Msg&quot;:&quot;Failed to read info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;506&quot;:{&quot;Domain&quot;:&quot;ESL&quot;, &quot;Msg&quot;:&quot;Failed to create CI&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;507&quot;:{&quot;Domain&quot;:&quot;ESL&quot;, &quot;Msg&quot;:&quot;Failed to modify CI&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;508&quot;:{&quot;Domain&quot;:&quot;ESL&quot;, &quot;Msg&quot;:&quot;Failed to delete CI&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;520&quot;:{&quot;Domain&quot;:&quot;Monitoring&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to monitoring server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;525&quot;:{&quot;Domain&quot;:&quot;Monitoring&quot;, &quot;Msg&quot;:&quot;Failed to read info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;526&quot;:{&quot;Domain&quot;:&quot;Monitoring&quot;, &quot;Msg&quot;:&quot;Failed to create server object&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;527&quot;:{&quot;Domain&quot;:&quot;Monitoring&quot;, &quot;Msg&quot;:&quot;Failed to modify server object&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;528&quot;:{&quot;Domain&quot;:&quot;Monitoring&quot;, &quot;Msg&quot;:&quot;Failed to delete server object&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;529&quot;:{&quot;Domain&quot;:&quot;Monitoring&quot;, &quot;Msg&quot;:&quot;Failed to suspend monitoring&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;530&quot;:{&quot;Domain&quot;:&quot;Monitoring&quot;, &quot;Msg&quot;:&quot;Failed to resume monitoring&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;531&quot;:{&quot;Domain&quot;:&quot;Monitoring&quot;, &quot;Msg&quot;:&quot;Failed to run monitoring agent update on disk change&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;540&quot;:{&quot;Domain&quot;:&quot;Backup&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to Backup server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;545&quot;:{&quot;Domain&quot;:&quot;Backup&quot;, &quot;Msg&quot;:&quot;Failed to read info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;546&quot;:{&quot;Domain&quot;:&quot;Backup&quot;, &quot;Msg&quot;:&quot;Failed to register for backup&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;548&quot;:{&quot;Domain&quot;:&quot;Backup&quot;, &quot;Msg&quot;:&quot;Failed to unregister from backup&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;549&quot;:{&quot;Domain&quot;:&quot;Backup&quot;, &quot;Msg&quot;:&quot;Failed to run on-demand backup&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;550&quot;:{&quot;Domain&quot;:&quot;Backup&quot;, &quot;Msg&quot;:&quot;Failed to resume backup&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;551&quot;:{&quot;Domain&quot;:&quot;Backup&quot;, &quot;Msg&quot;:&quot;Failed to suspend backup&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;552&quot;:{&quot;Domain&quot;:&quot;Backup&quot;, &quot;Msg&quot;:&quot;Failed to modify backup window&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;560&quot;:{&quot;Domain&quot;:&quot;SMTP&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to SMTP&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;566&quot;:{&quot;Domain&quot;:&quot;SMTP&quot;, &quot;Msg&quot;:&quot;Failed to send mail&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;580&quot;:{&quot;Domain&quot;:&quot;HP DNS&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to DNS&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;585&quot;:{&quot;Domain&quot;:&quot;HP DNS&quot;, &quot;Msg&quot;:&quot;Failed to read record&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;586&quot;:{&quot;Domain&quot;:&quot;HP DNS&quot;, &quot;Msg&quot;:&quot;Failed to create record&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;587&quot;:{&quot;Domain&quot;:&quot;HP DNS&quot;, &quot;Msg&quot;:&quot;Failed to modify record&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;588&quot;:{&quot;Domain&quot;:&quot;HP DNS&quot;, &quot;Msg&quot;:&quot;Failed to delete record&quot;, &quot;errorComponentComment&quot;:&quot;(DNS URI; record params)&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;600&quot;:{&quot;Domain&quot;:&quot;MURCS&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to MURCS&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;605&quot;:{&quot;Domain&quot;:&quot;MURCS&quot;, &quot;Msg&quot;:&quot;Failed to read info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;606&quot;:{&quot;Domain&quot;:&quot;MURCS&quot;, &quot;Msg&quot;:&quot;Failed to create info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;607&quot;:{&quot;Domain&quot;:&quot;MURCS&quot;, &quot;Msg&quot;:&quot;Failed to modify info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;608&quot;:{&quot;Domain&quot;:&quot;MURCS&quot;, &quot;Msg&quot;:&quot;Failed to delete info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;620&quot;:{&quot;Domain&quot;:&quot;DoubleTake&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to DT&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;625&quot;:{&quot;Domain&quot;:&quot;DoubleTake&quot;, &quot;Msg&quot;:&quot;Failed to read job&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;626&quot;:{&quot;Domain&quot;:&quot;DoubleTake&quot;, &quot;Msg&quot;:&quot;Failed to create clone job&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;627&quot;:{&quot;Domain&quot;:&quot;DoubleTake&quot;, &quot;Msg&quot;:&quot;Failed to modify clone job&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;628&quot;:{&quot;Domain&quot;:&quot;DoubleTake&quot;, &quot;Msg&quot;:&quot;Failed to delete clone job&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;630&quot;:{&quot;Domain&quot;:&quot;DoubleTake&quot;, &quot;Msg&quot;:&quot;Failed to create cutover job&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;631&quot;:{&quot;Domain&quot;:&quot;DoubleTake&quot;, &quot;Msg&quot;:&quot;Failed to modify cutover job&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;632&quot;:{&quot;Domain&quot;:&quot;DoubleTake&quot;, &quot;Msg&quot;:&quot;Failed to delete cutover job&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;640&quot;:{&quot;Domain&quot;:&quot;Grid&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to Grid&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;641&quot;:{&quot;Domain&quot;:&quot;Grid&quot;, &quot;Msg&quot;:&quot;Call to script failed. Parameters incorrect&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;642&quot;:{&quot;Domain&quot;:&quot;Grid&quot;, &quot;Msg&quot;:&quot;Grid move script timeout.&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;643&quot;:{&quot;Domain&quot;:&quot;Grid&quot;, &quot;Msg&quot;:&quot;Grid parameter validation failed&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;645&quot;:{&quot;Domain&quot;:&quot;Grid&quot;, &quot;Msg&quot;:&quot;Failed to read info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;646&quot;:{&quot;Domain&quot;:&quot;Grid&quot;, &quot;Msg&quot;:&quot;Failed to start job&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;647&quot;:{&quot;Domain&quot;:&quot;Grid&quot;, &quot;Msg&quot;:&quot;Failed to complete job&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;660&quot;:{&quot;Domain&quot;:&quot;dbCloudManager&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to dbCldMgr&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;665&quot;:{&quot;Domain&quot;:&quot;dbCloudManager&quot;, &quot;Msg&quot;:&quot;Failed to read info&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;667&quot;:{&quot;Domain&quot;:&quot;dbCloudManager&quot;, &quot;Msg&quot;:&quot;Failed to start flow&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;668&quot;:{&quot;Domain&quot;:&quot;dbCloudManager&quot;, &quot;Msg&quot;:&quot;Failed to complete flow&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;701&quot;:{&quot;Domain&quot;:&quot;Server Automation&quot;, &quot;Msg&quot;:&quot;Failed to Stop SQL Service on a server&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;720&quot;:{&quot;Domain&quot;:&quot;FCSAN&quot;, &quot;Msg&quot;:&quot;Failed to create and activate zone&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;750&quot;:{&quot;Domain&quot;:&quot;3PAR&quot;, &quot;Msg&quot;:&quot;Failed to check or create Host Set&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;751&quot;:{&quot;Domain&quot;:&quot;3PAR&quot;, &quot;Msg&quot;:&quot;Failed to create datastore component&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;752&quot;:{&quot;Domain&quot;:&quot;3PAR&quot;, &quot;Msg&quot;:&quot;Failed to create Remote Copy Group&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;753&quot;:{&quot;Domain&quot;:&quot;3PAR&quot;, &quot;Msg&quot;:&quot;Failed to create volume&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;754&quot;:{&quot;Domain&quot;:&quot;3PAR&quot;, &quot;Msg&quot;:&quot;Failed to create VLUN&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;755&quot;:{&quot;Domain&quot;:&quot;3PAR&quot;, &quot;Msg&quot;:&quot;Failed to delete volume&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;756&quot;:{&quot;Domain&quot;:&quot;3PAR&quot;, &quot;Msg&quot;:&quot;Failed to delete VLUN&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;757&quot;:{&quot;Domain&quot;:&quot;3PAR&quot;, &quot;Msg&quot;:&quot;Failed to delete Remote Copy Group&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;801&quot;:{&quot;Domain&quot;:&quot;Headless flow&quot;, &quot;Msg&quot;:&quot;Not within Change window&quot;, &quot;Severity&quot;:&quot;Major&quot;},
+&quot;901&quot;:{&quot;Domain&quot;:&quot;Internal Error&quot;, &quot;Msg&quot;:&quot;Failed to connect/authenticate to CSA API&quot;, &quot;Severity&quot;:&quot;Critical&quot;},
+&quot;905&quot;:{&quot;Domain&quot;:&quot;Internal Error&quot;, &quot;Msg&quot;:&quot;Failed to read from CSA API&quot;, &quot;Severity&quot;:&quot;Critical&quot;},
+&quot;906&quot;:{&quot;Domain&quot;:&quot;Internal Error&quot;, &quot;Msg&quot;:&quot;Failed to write to CSA API&quot;, &quot;Severity&quot;:&quot;Critical&quot;},
+&quot;907&quot;:{&quot;Domain&quot;:&quot;Internal Error&quot;, &quot;Msg&quot;:&quot;Waiting exceeded&quot;, &quot;Severity&quot;:&quot;Critical&quot;},
+&quot;911&quot;:{&quot;Domain&quot;:&quot;Internal Error&quot;, &quot;Msg&quot;:&quot;OO internal error&quot;, &quot;Severity&quot;:&quot;Critical&quot;},
+&quot;999&quot;:{&quot;Domain&quot;:&quot;Internal Error&quot;, &quot;Msg&quot;:&quot;Unexpected Error Occurred&quot;, &quot;Severity&quot;:&quot;Critical&quot;}
+}
+
+try{
+	// Get the Current Date Timestamp
+	// If the errorcode is not known fallback to OO1
+	if (errorCode in errorJSON){
+		scriptletResult = JSON.stringify(errorJSON[errorCode]); 
+	} else{
+		scriptletResult = JSON.stringify(errorJSON[&quot;001&quot;]); 
+	}
+	scriptletResponse = &quot;success&quot;; 
+} catch (Exception){
+	scriptletResult = Exception; 
+	scriptletResponse = &quot;failure&quot;; 
+}
+
+
+
+</script>
+    <type>RHINO</type>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="ad14d669-b34f-4b4d-be77-d8fe77ccbc5a">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="c13ba725-1648-436a-8006-648fe1fbb004">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>true</isDefault>
+      <onFailure>true</onFailure>
+      <type>ERROR</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions>
+    <expression id="cbc7a38d-c949-419b-90d5-7ce76ef2b4e2">
+      <annotation></annotation>
+      <name>errorDate</name>
+      <fieldName>Field_1</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters>
+        <scriptletFilter id="bf44ec09-0b74-4a35-a135-c036d4735afc">
+          <annotation></annotation>
+          <name>Scriptlet</name>
+          <scriptlet id="5841e7c5-52c5-4f09-b396-75fe41978c4c">
+            <annotation></annotation>
+            <name>default</name>
+            <script>scriptletResult = &quot;Timestamp:&quot;+new java.util.Date()+&quot;\n&quot;+scriptletInput+&quot;\n&quot;+scriptletInput.length+&quot; characters&quot;</script>
+            <type>RHINO</type>
+            <scriptRef>
+              <refId>02c89075-4cdc-4fc0-a7b2-49c245e42e05</refId>
+              <refName>Get Error Timestamp</refName>
+            </scriptRef>
+          </scriptlet>
+        </scriptletFilter>
+      </filters>
+    </expression>
+  </availableResultExpressions>
+  <resultExpression id="311acddd-b82c-4e67-88c1-b38444b0948c">
+    <annotation></annotation>
+    <name>returnResult</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="137d6bdb-55fc-41ed-9607-1d90f3446315">
+    <baseIcon>display_report.png</baseIcon>
+    <basePath>Utilities/</basePath>
+    <readOnly>false</readOnly>
+    <layers/>
+  </iconSpec>
+  <opRef>
+    <refId>ddd79f22-8b1e-4605-88d5-d912bb2da2b9</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

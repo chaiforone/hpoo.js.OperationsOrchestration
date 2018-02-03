@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="19953d9b-4b45-4a72-a673-65f80c496d11">
+  <descriptionCdata><![CDATA[19953d9b-4b45-4a72-a673-65f80c496d11.25caec69-d8ea-4330-b77e-a2f08db60218.prompt=VMWare object type to search for\:
+19953d9b-4b45-4a72-a673-65f80c496d11.488b9123-e4f2-46e5-80cf-997b33232b70.prompt=Password\:
+19953d9b-4b45-4a72-a673-65f80c496d11.53f0c99d-53b7-4c0b-8229-f8d82218c1dc.prompt=Close session?\:
+19953d9b-4b45-4a72-a673-65f80c496d11.b89d6041-f5fb-41d0-86c1-0d98b5ec4a18.prompt=VMWare Host\:
+19953d9b-4b45-4a72-a673-65f80c496d11.d805f6a3-cde6-4873-be47-7e89cc3a3df3.prompt=VMWare User\:
+19953d9b-4b45-4a72-a673-65f80c496d11.description=<pre>Searches for VMWare objects containing a given name (ignoring case). Retrieves each object one at a time from an initial search query as the one used for the SQL Query operation.\n\nInputs\:\n    host - VMWare host hostname or IP.\n    user - VMWare username.\n    password - VMWare user's password.\n    port - Port to connect on.\n    protocol - Connection protocol.\nValid values\: "https", "http"\n    closeSession - Close the internally kept VMware Infrastructure API session at completion of operation.\nValid values\: "true", "false"\n    propsType - VMWare properties type to filter on. Type of object results desired.\nExample\: VirtualMachine, Network, ComputeResource, ClusterComputeResource, ResourcePool, HostSystem, Datastore, Datacenter, VirtualApp\n    nameToMatch - The string to perform a case insensitive contains match to.  Only objects that contain this string in their name will be matched.  If not specified, all objects of the specified type will be matched.\n\nResponses\:\n    success - The operation completed successfully and there are more results available.\n    failure - Something went wrong.\n    no more - There are no more results to retrieve.\n\nReturns\:\n    numberOfResults - Number of results from the query remaining to be retrieved.\n    returnResult - Query result item or operation result.\n</pre>
+19953d9b-4b45-4a72-a673-65f80c496d11.e08bf18f-5f4e-47a5-963c-122f9a605d26.prompt=Name to match on\:
+]]></descriptionCdata>
+  <annotation>19953d9b-4b45-4a72-a673-65f80c496d11.description</annotation>
+  <name>Simple Search (retry)</name>
+  <categories/>
+  <inputs>
+    <userInputBinding id="b89d6041-f5fb-41d0-86c1-0d98b5ec4a18">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>host</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>19953d9b-4b45-4a72-a673-65f80c496d11.b89d6041-f5fb-41d0-86c1-0d98b5ec4a18.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="d805f6a3-cde6-4873-be47-7e89cc3a3df3">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>user</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>19953d9b-4b45-4a72-a673-65f80c496d11.d805f6a3-cde6-4873-be47-7e89cc3a3df3.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="488b9123-e4f2-46e5-80cf-997b33232b70">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>ENCRYPTED</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>password</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>19953d9b-4b45-4a72-a673-65f80c496d11.488b9123-e4f2-46e5-80cf-997b33232b70.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="c350eef1-67c5-4764-9677-cc56d23ac495">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>port</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>443</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="0066b92b-bb6c-4191-821f-0508728c22de">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>protocol</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>https</value>
+      <record>false</record>
+    </staticBinding>
+    <userInputBinding id="53f0c99d-53b7-4c0b-8229-f8d82218c1dc">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>closeSession</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>19953d9b-4b45-4a72-a673-65f80c496d11.53f0c99d-53b7-4c0b-8229-f8d82218c1dc.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <link>
+        <refId>96a1ed25-cdc9-4ff6-8fba-e9c044c5ca53</refId>
+        <refName>Boolean - False Default</refName>
+      </link>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="25caec69-d8ea-4330-b77e-a2f08db60218">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>propsType</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>19953d9b-4b45-4a72-a673-65f80c496d11.25caec69-d8ea-4330-b77e-a2f08db60218.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <link>
+        <refId>ea5674df-41a9-4e1b-810c-284da784eb8c</refId>
+        <refName>VMWare Managed Object Types</refName>
+      </link>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="e08bf18f-5f4e-47a5-963c-122f9a605d26">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>nameToMatch</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>19953d9b-4b45-4a72-a673-65f80c496d11.e08bf18f-5f4e-47a5-963c-122f9a605d26.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="80f890c8-e710-4b35-8915-3184a9eb9601">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>embedScriptlet</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>/*  Embed JavaScriptlet OOJS@Daway */ 
+// Begin: Embed JavaScriptlet
+//------------------------------------------
+
+
+//------------------------------------------
+// End: Embed JavaScriptlet</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="9a6f35e9-20b1-4a05-b10b-b8d313b15bbf">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorCodeList</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>{
+&quot;ModifyVM&quot;:&quot;221&quot;
+}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="6c598316-8566-4b93-ae65-90246da72664">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorCodeRetry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>{
+&quot;Failed to connect/authenticate to vCenter&quot;:&quot;200&quot;
+}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="c8102b67-f1e8-402a-a009-2c727baa3fa3">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>interval</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="eaa87e6d-1ce7-4aab-a077-744a716575fa">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>retry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="b2341a5d-4b30-47b6-8e48-6a3c956bf819">
+    <annotation></annotation>
+    <name>Operation Simple Search (retry) (19953d9b-4b45-4a72-a673-65f80c496d11)</name>
+    <type>RHINO</type>
+    <scriptRef>
+      <refId>e41e6d11-2143-473a-9acc-f206f701fc68</refId>
+      <refName>VMware Virtual Infrastructure and vSphere API Component (retry)</refName>
+    </scriptRef>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="c6685cd9-9a30-4e69-a02a-5614a527120c">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>true</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules>
+        <expression id="c8c3eafc-88ac-40c9-959d-07af80eb7f37">
+          <annotation></annotation>
+          <name>returnCode</name>
+          <fieldName>returnCode</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="17cac035-cd43-4d86-9fe7-dd67e83fdf4c">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>0</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>EXACT_MATCH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="08012a5f-152e-452e-b38d-90e8b4e20e64">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>false</isDefault>
+      <onFailure>true</onFailure>
+      <type>ERROR</type>
+      <matchRules>
+        <expression id="0f378a9e-d866-412d-a1fe-837232f55bb9">
+          <annotation></annotation>
+          <name>returnCode</name>
+          <fieldName>returnCode</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="82217d60-df4d-4204-9f69-b3d085902b28">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>-1</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>EXACT_MATCH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="a9fdefa3-24f4-40e0-9222-80c057ec2f26">
+      <annotation></annotation>
+      <name>no more</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>NO_ACTION_TAKEN</type>
+      <matchRules>
+        <expression id="94805fa5-25fa-4787-ba47-aa8a652aeb62">
+          <annotation></annotation>
+          <name>returnCode</name>
+          <fieldName>returnCode</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="dc891ef5-dd3d-495e-9814-520a6758f619">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>1</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>EXACT_MATCH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="f30995ed-234c-445b-a093-c951185b2611">
+      <annotation></annotation>
+      <name>retry</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>DIAGNOSED</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions/>
+  <resultExpression id="247e8d4b-bd08-41f5-bfc0-079d1099a41e">
+    <annotation></annotation>
+    <name>returnCode</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="25913cd9-180e-4b93-a9eb-d11220e2c3b6">
+    <baseIcon>sql_query.png</baseIcon>
+    <basePath>/Databases/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="2061e5c4-6bf2-4324-b88b-85f69f4f2ac0">
+        <baseIcon>find.png</baseIcon>
+        <basePath>/Annotations/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <opRef>
+    <refId>90f7eb98-07d6-4b85-b7b3-5aa69433d0b6</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

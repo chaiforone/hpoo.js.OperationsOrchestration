@@ -1,0 +1,980 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow id="317e59e5-ff96-46fc-9055-747aa1acfe22">
+  <descriptionCdata><![CDATA[317e59e5-ff96-46fc-9055-747aa1acfe22.0afec63c-85c7-42bd-9fa8-65a8d96086ce.callout=Check Inputs\:\n-Inputs\:\nobject\: JSON format \nlist\: check var list\nreplaceEnterKeyInObject\:true\n-Results\:\nit's default return hidden errorCode & errorComponent, do not add them.\n
+317e59e5-ff96-46fc-9055-747aa1acfe22.511d0112-2e54-48ce-9298-00f868409008.description=<pre>\nRuns a SQL command against an Oracle database using the information in the tnsnames.ora file.  \n\nInputs\:\n    TNSPath- The path to the folder of the TNS file tnsnames.ora. This path must be accessible by the OO RAS service. For example, if the RAS and the Oracle server are installed on the same Windows system, the TNSPath might look like \u201CC\:\\app\\Administrator\\product\\11.1.0\\db_1\\network\\admin\u201D. If the RAS and the Oracle server are on different Windows systems, you can copy the tnsnames.ora file to the RAS system, then the TNSPath might look like \u201CC\:\\Program Files\\Hewlett-Packard\\Operations Orchestration\\RAS\\Java\\Default\\webapp\\conf\u201D or \u201CC\:\\Temp\u201D depending on where you place the .ora file. \n    TNSEntry - The entry name in the tnsnames.ora file that contains the connection information. The value for this input is case insensitive. For example, the value for the TNSEntry input is \u201CTestEntry\u201D  if the content in the tnsnames.ora file looks like the following\: \n\nTestEntry \=\n  (DESCRIPTION \=\n   (ADDRESS \= (PROTOCOL \= TCP)(HOST \= 16.110.111.111)(PORT \= 1521))\n   (CONNECT_DATA \=\n     (SERVER \= DEDICATED)\n     (SERVICE_NAME \= orcl)\n   )\n )\n\n    Username - The username to connect to the Oracle database. \n    Password - The password for the Username.\n    Command - The command to execute. \n    timeout - Seconds to wait before timing out the SQL command execution.\nDefault values\: 0 \n\nResults\:\n    returnResult - Specifies whether the command executed successfully. \n    outputText - The output of the command execution. \n    updateCount - The update count of the command executed.\n\nResponses\:\n    success - The command executed successfully.\n    failure - Failed to execute the command.\n    retry - Failed to retry the command.\n\nNotes\:\n1. This operation only supports Oracle.\n2. It is possible to run PL/SQL procedures using this operation. The examples below show the syntax to use for a PL/SQL script\:\n\nBEGIN\n  send_message(addressee\=>'b@hp.com',sender\=>'pas@hp.com',subject\=>'Test',message\=>'Test');\nEND;\n\nExample 1\: BEGIN send_message(addressee\=>'b@hp.com',sender\=>'pas@hp.com',subject\=>'Test',message\=>'Test');END;\n\nExample 2\: BEGIN send_message('b@hp.com','pas@hp.com','Test','Test');END;\n\nExample 3\: {CALL send_message(addressee\=>'b@hp.com',sender\=>'pas@hp.com',subject\=>'Test',message\=>'Test')}\n\nExample 4\: {CALL send_message('b@hp.com','pas@hp.com','Test','Test')}\n</pre>
+317e59e5-ff96-46fc-9055-747aa1acfe22.511d0112-2e54-48ce-9298-00f868409008.prompt=///\neval(String(scriptletContext.get("nucl.base.oojs"))); /* \#include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/\n///\n/*\n(Nucleus_automation_design_specification_v41\: 3.18.2.40) JavaScript Name\: TNS Names SQL Command (retry) @Daway\n*/\n\n\n//\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\n// Begin  \: your Define functions\n\n// Show SQL Command Info\nhow.showCmdInfo \= function (){\n// Begin\: function showCmdInfo()\n\n    printline("\=",80);\n    println("SQL CMD runtime state\:");\n    println("TnsEntry          \: " + how.TnsEntry );\n\tprintln("TnsPath           \: " + how.TnsPath );\n\tprintln("Username          \: " + how.Username );\n\tprintln("SQL CMD          \:");\n\tprintline("-",80);\n\tprintln( how.sqlcmd );\n    printline("-",80);\n    println("returnCode   \: " + how.returnCode );\n    println("returnResult \: " + how.returnResult );\n    println("updateCount \: "  + how.updateCount );\n    println("exception \: "  + how.exception );\n    printline("\=",80);\n    \n// End\: function showCmdInfo()\n}\n\n// Get SQL Enviroment\nhow.getSqlEnv \= function (){\n//Begin\: function getSqlEnv()\n\n\thow.TnsEntry\=getvar("TNSEntry");\n\thow.TnsPath\=getvar("TNSPath");\n\thow.Username\=getvar("Username");\n\thow.sqlcmd\=getvar("Command");\n\thow.returnCode\=getdid("returnCode");\n\thow.returnResult\=getdid("returnResult");\n\thow.updateCount\=getdid("updateCount");\n\thow.exception\=getdid("exception");\n\treturn how;\n\t\n//End\: function getSqlEnv()\n}\n// Get Error Code \nhow.getErrorCode \= function (){\n//Begin\: function getErrorCode()\n\n\t// get retry code     \n    how.getRetryCode();\n    // get errorCode\n\tvar oSqlTypeList \= json(getvar("errorCodeList"));\n\tvar sqlType \= "";\n\tfor ( one in oSqlTypeList )\n\t{\n\t// Begin\: for ( one in oSqlTypeList )\n\t    if (regex(one,"gi").test(getvar("Command")) ) \n\t    {\n\t    \t how.sqlType \= one;\n\t    \t how.errorCode \= oSqlTypeList[one];\n\t    \t break;\n\t    }\n\t\t// End\: for ( one in oSqlTypeList )\t\n\t}\n\t\n    return how;\n\t\n//End\: function getErrorCode()\n}\n\n// Get Retry Error Code \nhow.getRetryCode \= function (){\n//Begin\: function getRetryCode()\n     \n\t// get retry code\n\tvar oSqlConnect \= json(getvar("errorCodeRetry"));\n\thow.retryErrorCode  \= oSqlConnect["RETRYCODE"];\n\t\n    return how;\n\t\n//End\: function getRetryCode()\n}\n\n// Put Error Code\nhow.putErrorCode \= function (){\n// Begin\: function putErrorCode()\n\tput("errorCode",how.errorCode);\n\tvar errorString  \= "$TnsEntry\:"+how.TnsEntry;\n\t    errorString +\= ";$TnsPath\:"+how.TnsPath;\n\t    errorString +\= ";$Username\:"+how.Username;\n\t    errorString +\= ";$returnResult\:"+how.returnResult;\n\t    errorString +\= ";$exception\:"+how.exception;\n\tput("errorComponent",errorString);\n    \n// End\: function putErrorCode()\n}\n\n// Put Connect Error Code\nhow.putRetryErrorCode \= function (){\n// Begin\: function putErrorCode()\n\tput("errorCode",how.retryErrorCode);\n\tvar errorString  \= "$TnsEntry\:"+how.TnsEntry;\n\t    errorString +\= ";$TnsPath\:"+how.TnsPath;\n\t    errorString +\= ";$Username\:"+how.Username;\n\t    errorString +\= ";$returnResult\:"+how.returnResult;\n\t    errorString +\= ";$exception\:"+how.exception;\n\tput("errorComponent",errorString);\n    \n// End\: function putErrorCode()\n}\n\n// Put Error Success Code\nhow.putSuccessCode \= function (){\n// Begin\: function putSuccessCode()\n\n\tput("errorCode","000");\n\tvar errorString  \= "$TnsEntry\:"+how.TnsEntry;\n\t    errorString +\= ";$TnsPath\:"+how.TnsPath;\n\t    errorString +\= ";$Username\:"+how.Username;\n\t    errorString +\= ";$returnResult\:"+how.returnResult;\n\n\tput("errorComponent",errorString);\n    \n// End\: function putSuccessCode()\n}\n\n//check SQL result\nhow.checkSqlResult \= function (){\n//Begin\: function checkSqlResult()\n\n    if (/Invalid TNSPath for Oracle/g.test(getdid("returnResult")))\n    {\n    \thow.connectError \= true;\n    }\n    else if (/invalid username/g.test(getdid("returnResult")))\n    {\n        how.authorError \= true;\n        how.connectError \= false;\n    }\n    else if (/ORA-/g.test(getdid("returnResult")))\n    {\t\n        println("Oracle Execute Command Error\!\!");\n    \thow.runtimeError \= true;\n    \thow.authorError \= false;\n    \thow.connectError \= false;\n    }\n    else\n    {\n    \t//println("SQL runtime --- error"); include success sql  \!\!\!\!\!\!\n       \thow.runtimeError \= true;\n       \thow.authorError \= false;\n       \thow.connectError \= false;\n    }\n    return how;\n\n//End\: function checkSqlResult()\n}\n\n//do retry\nhow.doRetry \= function (){\n// Begin\: function doRetry()\n    var myRetry \= getvar(get("myRetry"));\n    if ( ""\=\=myRetry ){\n        put("myRetry",getvar("retry") );\n        myRetry \= num(getvar("retry"));\n    }else{\n        myRetry \= num(get("myRetry")) ;\n    }\n    myRetry -\= 1;\n    put("myRetry",myRetry);\n    if(0 >\= myRetry){\n        how.retry \= false;\n        return false;\n    }else{\n        sleep(interval);\n        how.retry \= true;\n        return true;\n    }     \n// End\: function doRetry()\n}\n\n\n// Show SQL Command Info\nhow.showErrorCode \= function (){\n// Begin\: function showCmdInfo()\n\n    printline("-",80);\n    println("errorCode        \: " + how.errorCode );\n    printline("-",80);\n\n// End\: function showCmdInfo()\n}\n\n// Show SQL Command Info\nhow.showRetryErrorCode \= function (){\n// Begin\: function showCmdInfo()\n\n    printline("-",80);\n    println("errorCode        \: " + how.retryErrorCode );\n    printline("-",80);\n\n// End\: function showCmdInfo()\n}\n// End    \: your Define functions\n//\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\n\n/// Main() Begin\: \n//\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\n/// exectue javascript content @Daway\ntry {\n//if(\!isnull("Scriptlet")){eval(Scriptlet);}else{\n//Begin \:  your Scriptlet\n//------------------------------------------------------------------------\nhow.getSqlEnv();\nhow.getErrorCode();\nhow.checkSqlResult();\n\nif(0 \=\= num(getdid("returnCode"))){\n// (0)Begin\: SQL Command Success\n\n\tprintln("Success Execute SQL Command\!");\n\thow.showCmdInfo();\n\thow.putSuccessCode();\n\tdid(true);\n\n// (0)End\: SQL Command Success\n}else if(-1 \=\= num(getdid("returnCode"))){\n// (-1)Else If Begin\: SQL Command Success\n\n\tprintln("Failure in Execute SQL Command\!");\n    if ( how.connectError ){\n    //Begin\: if ( how.connectError )\n        println("Connect error\!\!\!\!\!\!");\n        if ( how.doRetry() )\n        {\n            println("do Retry...");\n            how.showRetryErrorCode();\n            how.showCmdInfo();\n            how.putRetryErrorCode();\n            did("retry");\n        }\n        else\n        {\n            how.showRetryErrorCode();\n        \thow.showCmdInfo();\n            how.putRetryErrorCode();\n            did(false);\n        }\n    //End\: if ( how.connectError )   \n    }\n    else if ( how.authorError )\n    {\n    //Begin\: else if ( how.authorError )\n        println("author error");\n        how.showRetryErrorCode();\n        how.showCmdInfo();\n        how.putRetryErrorCode();\n        did(false);\n    //END\: else if ( how.authorError )\n    }\n    else if ( how.runtimeError )\n    {\n    //Else Begin\: if ( how.connectError )\n        how.showErrorCode();\n        how.showCmdInfo();\n        how.putErrorCode();\n        did(false);\n    //Else End\: if ( how.connectError )\n    }\n    else\n    {\n    \tprintln("Unknown error");\n    \thow.showErrorCode();\n    \thow.showCmdInfo();\n    \thow.putErrorCode();\n    \tdid(false)\n    }\n    \n// (-1)Else If End\: SQL Command Success\n}else{\n// (?)Else Begin\: SQL Command Success\n\n\tprintln("Failure During Execute SQL Command\!");\n\thow.showCmdInfo();\n\thow.putErrorCode();\n\tdid(false);\n\n// (?)End\: SQL Command Success\n}\n\n\n//------------------------------------------------------------------------\n//End   \:  Your Scriptlet\n//}\n// finalize oo javascirpt flow\n} catch(e if e instanceof SyntaxError){\n    showSyntaxError();\n    did(false);\n} catch (e){\n    var errorMsg \= str(e);\n    showErrorInfo(errorMsg);\n    did(false);\n}finally { \nhow\=null;\n}\n/// Main() End\:   \n//Define Main() functions \n//\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\n//in Main catch\nfunction showSyntaxError(){\n    printline("*",80);\n    println("It have error in your operation\!\!\!");\n    println("SyntaxError in the javascriptlet content is\:");\n    printline("-",80);\n    println(getvar("Scriptlet"));\n    printline("\=",80);\n}\n//in Main catch\nfunction showErrorInfo(me){\n    printline("*",80);\n    println("It have error in your operation\!\!\!");\n    println("1) The error message was below\:");\n    printline("-",80);\n    println(me);\n    printline("\=",80);\n    // put context variable errorCode\n    put("errorCode","999");\n    put("errorComponent",me);\n    if(\!isnull("Scriptlet"))\n    {\n        println("2) It used relation scriptlet source content was below\:");\n        printline("-",80);\n        println(getvar("Scriptlet"));\n        printline("\=",80);\n    }\n}\n//in Main emptyInfo\nfunction showEmptyInfo(){\n    printline("*",80);\n    println("It was not used Scriptlet on input inspector");\n    println("javascriptlet content is empty\!");\n    printline("\=",80);\n}\n\n// end of Main() define functions\n//\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\n
+317e59e5-ff96-46fc-9055-747aa1acfe22.514833cf-fdf0-47f7-902e-e06331223ccc.description=<pre>\nAccepts an object in the JavaScript Object Notation format (JSON) and and\ncreates and populates a flow variable for each member in the object.\nand check variable null from list for object inputs\n\nThe JSON format encodes objects as a set of unordered key/value pairs, which is\nsimilar to a structure or map in other programming languages.  For example,\n   { "city" \: "Palo Alto", \n     "state" \: "CA" }\nis an object with two elements one with the name "city" having the value "Palo\nAlto", and the other being the name "state" with the value "CA".  This operation\nwould create the flow variables city and state with the values "Palo Alto" and\n"CA".\n\nA optional prefix string can be specified that will be prepended to each flow\nvariable that is created.  For example, if the prefix is set to "my.", then\nthen the above object would result in the variables my.city (with value "Palo\nAlto") and my.state (with value "CA").  This can be useful if flow variables\nalready exist with the given names to avoid overwriting their values.\n\nJavaScript objects are useful for representing structured data, and are\nespecially when used within an array.  For example, an operation that retrieves\na set of incidents from an external system may return the entire list in one\narray of incident objects.  The description of the enclosing folder,\n/Library/Utility Operations/Container/JavaScript Objects has more examples, and\nthe JSON format is described completely at http\://www.json.org.\n\nInputs\n\n   object\n      The JavaScript object that will be converted into flow variables.  The\n      operation will return a failure if the it is not a JavaScript object.\n     i.e. \= { "city" \: "Palo Alto", "state" \: "CA","empty"\:"","noValue"\:"${noValue}" }\n \n  replaceEnterKeyInObject \n       The JavaScript object include hidden enter key replace other key\n      true is replace enterKey\n      false or null is not replace enterKey  \n\n  list\n     Check Variables list.  \n    The operation will return a failure if the variable value is null in variable list.\n     i.e. \=  city,empty,noValue\n\n  delimiter\n    The delimiter use on list. default is comma.\n    i.e. \= ,\n\n   prefix\n      The prefix to prepend to each flow variable name that will be created.\n      This is useful for creating unique variable names.\n    \nResponses\n\n   success\n      The flow variables were successfully created from the object.\n\n   failure\n      There was some error in processing the object, most likely because the\n      object is not in valid JavaScript Object Notation.  You may wish to use a\n      tool such as http\://www.jsonlint.com/ to help diagnose problems with\n      JavaScript Object Notation.\n\nOutputs\n    returnResult - This is the primary output.\n    default this operation return errorCode and errorComponent that donot need add errorCode and errorComponent\n    if you want add errorCode and errorComponent used below scriptlet, please refer Outputs sample\n       errorCode  from returnResult scriptlet\:    scriptletResult \= scriptletContext.get("errorCode"); \n       errorComponent   from returnResult scriptlet\:   scriptletResult \= scriptletContext.get("errorComponent");\n\n</pre>
+317e59e5-ff96-46fc-9055-747aa1acfe22.5c0e5556-839c-410d-9b5c-238c08567da8.callout=3.18.2.xx    Update Backup Window\nThis subflow adds a Backup Schedule into the InfraDB\nSQL CMD1\:\n   UPDATE BACKUPOPTIONS  \n   SET HASBACKUPENABLED \= 'Y', BAKWINDOWSTART \= '${backupWindowStart}', BAKWINDOWEND \= '${backupWindowEnd}', RETENTIONPERIOD \= '${retentionPeriod}'\n   WHERE SERVERID \= ${serverID};
+317e59e5-ff96-46fc-9055-747aa1acfe22.8f75059b-84ae-4885-a4d6-6c792b910705.callout=\ (Nucleus_automation_design_specification_v40) \: 3.17.8.4 BCKU_Modify Backup \n
+317e59e5-ff96-46fc-9055-747aa1acfe22.eed9d84b-c045-481d-a733-481125001aa7.callout=Return SQL result\:\n-Inputs\:\nerrorCode\nerrorComponent\nsqlRowCount\nsqlRowResult\: JSON format Array rows\nif (record \= 1){\n-Inputs Option\nSELECT columns\n}\n-Results\:\nerrorCode\nerrorComponent\nsqlRowCount\nsqlRowResult\nif (record \= 1){\n-Inputs Option\nSELECT columns\n}\n
+317e59e5-ff96-46fc-9055-747aa1acfe22.fed51b98-47e3-4325-878c-b0aae425dd4c.callout=used operation\:\n/Databases [1.1.0]/Library/Operations/Databases/Oracle/TNS Names SQL Command\n\n-Inputs\:\nCommand\n-Results\:\ninKey\t\ninTnsEntry\t\ninDelimeter\t\ninTnsPath\t\ninUsername\t\ninCommand\t\noutRowLeft\t\noutColumnNames\toutReturnCode\noutQueryCount\noutReturn\t\nout\t\noutException\t\noutSessionId\t\noutFailureMessage\noutTimedOut\t\n-SQL Command\:\n
+]]></descriptionCdata>
+  <annotation></annotation>
+  <name>Update Backup Window</name>
+  <categories/>
+  <inputs>
+    <staticBinding id="83a8b212-4f50-4cc0-9717-08bdf17e2668">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>serverID</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="125f9208-8c00-4464-97e8-c4fbdad45817">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>backupWindowStart</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="6553a847-bda9-4ba4-8dde-3593a416af1b">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>backupWindowEnd</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="c44cb6b2-d2db-4c98-96a2-66f5cf3f0d90">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>retentionPeriod</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="b87c6bdf-e5e1-40b1-9649-d8084902bfbe">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>interval</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="72d071cd-058c-4c8b-ae8d-e3c2ba78a766">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>retry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="607b2eb1-354a-4145-b630-c27a92590cd5">
+    <annotation></annotation>
+    <name>Operation Update Backup Window (317e59e5-ff96-46fc-9055-747aa1acfe22)</name>
+    <type>RHINO</type>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="fb20cd3e-a103-4a11-a1b8-e89bd32365e9">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>false</isDefault>
+      <onFailure>true</onFailure>
+      <type>ERROR</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="7d3c3a80-8fe0-4434-8913-ad55fe11331f">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>true</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions>
+    <expression id="7b62c0f4-2fdd-42f5-abbb-683a83a7be4d">
+      <annotation></annotation>
+      <name>errorCode</name>
+      <fieldName>errorCode</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters/>
+    </expression>
+    <expression id="d3bc1d02-1fc1-448e-91cc-311db8a80342">
+      <annotation></annotation>
+      <name>errorComponent</name>
+      <fieldName>errorComponent</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters/>
+    </expression>
+  </availableResultExpressions>
+  <resultExpression id="f15f7b11-2d11-4681-9726-7c1d716a7404">
+    <annotation></annotation>
+    <name>FailureMessage</name>
+    <fieldName>FailureMessage</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="2242ab11-0741-4c11-9291-c697b3d3ac41">
+    <baseIcon>database_green.png</baseIcon>
+    <basePath>/Databases/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="6dd522e3-32d7-48dc-8e02-fce95a1e657c">
+        <baseIcon>add.png</baseIcon>
+        <basePath>/Annotations/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <callouts>
+    <callout id="8f75059b-84ae-4885-a4d6-6c792b910705">
+      <text>317e59e5-ff96-46fc-9055-747aa1acfe22.8f75059b-84ae-4885-a4d6-6c792b910705.callout</text>
+      <bounds>
+        <x>0.0</x>
+        <y>0.0</y>
+        <width>571.0</width>
+        <height>31.0</height>
+      </bounds>
+      <layer>-1</layer>
+    </callout>
+    <callout id="0afec63c-85c7-42bd-9fa8-65a8d96086ce">
+      <text>317e59e5-ff96-46fc-9055-747aa1acfe22.0afec63c-85c7-42bd-9fa8-65a8d96086ce.callout</text>
+      <bounds>
+        <x>31.0</x>
+        <y>421.0</y>
+        <width>121.0</width>
+        <height>179.0</height>
+      </bounds>
+      <layer>-1</layer>
+      <step>
+        <refId>514833cf-fdf0-47f7-902e-e06331223ccc</refId>
+      </step>
+    </callout>
+    <callout id="5c0e5556-839c-410d-9b5c-238c08567da8">
+      <text>317e59e5-ff96-46fc-9055-747aa1acfe22.5c0e5556-839c-410d-9b5c-238c08567da8.callout</text>
+      <bounds>
+        <x>31.0</x>
+        <y>600.0</y>
+        <width>360.0</width>
+        <height>93.0</height>
+      </bounds>
+      <layer>-1</layer>
+    </callout>
+    <callout id="eed9d84b-c045-481d-a733-481125001aa7">
+      <text>317e59e5-ff96-46fc-9055-747aa1acfe22.eed9d84b-c045-481d-a733-481125001aa7.callout</text>
+      <bounds>
+        <x>272.0</x>
+        <y>421.0</y>
+        <width>121.0</width>
+        <height>179.0</height>
+      </bounds>
+      <layer>-1</layer>
+      <step>
+        <refId>592048d4-3fd4-468a-a610-af71ce666742</refId>
+      </step>
+    </callout>
+    <callout id="fed51b98-47e3-4325-878c-b0aae425dd4c">
+      <text>317e59e5-ff96-46fc-9055-747aa1acfe22.fed51b98-47e3-4325-878c-b0aae425dd4c.callout</text>
+      <bounds>
+        <x>152.0</x>
+        <y>420.0</y>
+        <width>121.0</width>
+        <height>179.0</height>
+      </bounds>
+      <layer>-1</layer>
+      <step>
+        <refId>511d0112-2e54-48ce-9298-00f868409008</refId>
+      </step>
+    </callout>
+  </callouts>
+  <checkPointFlow>true</checkPointFlow>
+  <compatibleRuntimeContext>false</compatibleRuntimeContext>
+  <historyCheckPointFlow>true</historyCheckPointFlow>
+  <steps>
+    <step id="514833cf-fdf0-47f7-902e-e06331223ccc">
+      <annotation>317e59e5-ff96-46fc-9055-747aa1acfe22.514833cf-fdf0-47f7-902e-e06331223ccc.description</annotation>
+      <name>Check null List from Inputs</name>
+      <bounds>
+        <x>43.0</x>
+        <y>118.0</y>
+      </bounds>
+      <layer>-1</layer>
+      <hideInbound>false</hideInbound>
+      <iconSpec id="052f3eef-32d4-40d3-9a9b-5495ab3860a9">
+        <baseIcon>jar_bean.png</baseIcon>
+        <basePath>/Others/</basePath>
+        <readOnly>false</readOnly>
+        <layers>
+          <iconSpec id="a98a03d3-32de-4d2e-b419-b96f74d6dba9">
+            <baseIcon>check2.png</baseIcon>
+            <basePath>/Annotations/</basePath>
+            <readOnly>false</readOnly>
+            <layers/>
+          </iconSpec>
+        </layers>
+      </iconSpec>
+      <addResultToRunContext>false</addResultToRunContext>
+      <isCriticalStep>false</isCriticalStep>
+      <isNonBlocking>false</isNonBlocking>
+      <isParallelStep>false</isParallelStep>
+      <isSingleResponse>false</isSingleResponse>
+      <recordInHistory>false</recordInHistory>
+      <recordRawOutput>true</recordRawOutput>
+      <recordPrimaryOutput>true</recordPrimaryOutput>
+      <checkPointStep>true</checkPointStep>
+      <historyCheckPointStep>true</historyCheckPointStep>
+      <scriptResultStep>false</scriptResultStep>
+      <userPrompt></userPrompt>
+      <bindings>
+        <staticBinding id="b2970019-73e5-48e7-997d-1a1f9091ceda">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>object</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>{&quot;serverID&quot;:&quot;${serverID}&quot;,
+&quot;backupWindowStart&quot;:&quot;${backupWindowStart}&quot;,
+&quot;backupWindowEnd&quot;:&quot;${backupWindowEnd}&quot;,
+&quot;retentionPeriod&quot;:&quot;${retentionPeriod}&quot;}</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="f0894885-8be7-430e-9714-87586967b3fc">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>list</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>serverID,backupWindowStart,backupWindowEnd,retentionPeriod</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="8017aa22-cb15-4e10-b7b8-fdaaee340f1d">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>delimiter</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>,</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="2fbfda1f-8b83-4013-9f45-b01faef50f9e">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>prefix</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="3beaa3d1-8375-402a-a7f0-c27325b509bd">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>replaceEnterKeyInObject</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>true</value>
+          <record>false</record>
+        </staticBinding>
+      </bindings>
+      <transitions>
+        <transition id="9dd6320b-f486-41e1-8cc4-9ae0ef969560">
+          <annotation></annotation>
+          <name>failure(Check Inputs and hidden return errorCode)</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>failure</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>592048d4-3fd4-468a-a610-af71ce666742</refId>
+          </destination>
+          <source>
+            <refId>514833cf-fdf0-47f7-902e-e06331223ccc</refId>
+          </source>
+          <positions>
+            <point>
+              <x>909.0</x>
+              <y>14.104972375690636</y>
+            </point>
+            <point>
+              <x>92.0</x>
+              <y>329.0</y>
+            </point>
+            <point>
+              <x>92.0</x>
+              <y>329.0</y>
+            </point>
+            <point>
+              <x>92.0</x>
+              <y>329.0</y>
+            </point>
+            <point>
+              <x>1257.0</x>
+              <y>137.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>261.4067439625653</x>
+            <y>45.350623730856746</y>
+          </labelPosition>
+        </transition>
+        <transition id="9d211fc2-dcd3-422d-b5fb-0f6ed545de1d">
+          <annotation></annotation>
+          <name>success</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>success</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>511d0112-2e54-48ce-9298-00f868409008</refId>
+          </destination>
+          <source>
+            <refId>514833cf-fdf0-47f7-902e-e06331223ccc</refId>
+          </source>
+          <positions>
+            <point>
+              <x>93.0</x>
+              <y>152.0</y>
+            </point>
+            <point>
+              <x>213.0</x>
+              <y>154.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>443.57012093065134</x>
+            <y>-48.024172201030325</y>
+          </labelPosition>
+        </transition>
+      </transitions>
+      <properties/>
+      <opRef>
+        <refId>ffc5b98d-1ff8-4754-ba4d-26f38e48711c</refId>
+      </opRef>
+      <assignments/>
+      <throttleSize>0</throttleSize>
+    </step>
+    <step id="511d0112-2e54-48ce-9298-00f868409008">
+      <annotation>317e59e5-ff96-46fc-9055-747aa1acfe22.511d0112-2e54-48ce-9298-00f868409008.description</annotation>
+      <name>TNS Names SQL Command (retry)</name>
+      <bounds>
+        <x>163.0</x>
+        <y>120.0</y>
+      </bounds>
+      <layer>-1</layer>
+      <hideInbound>false</hideInbound>
+      <iconSpec id="a2da1c94-1808-4937-a46e-fa734e1cf775">
+        <baseIcon>database_oracle.png</baseIcon>
+        <basePath>/Databases/</basePath>
+        <readOnly>false</readOnly>
+        <layers>
+          <iconSpec id="91c36463-e842-4c71-83d3-2ab7568ea6dd">
+            <baseIcon>restart_reboot.png</baseIcon>
+            <basePath>/Annotations/</basePath>
+            <readOnly>false</readOnly>
+            <layers/>
+          </iconSpec>
+        </layers>
+      </iconSpec>
+      <addResultToRunContext>false</addResultToRunContext>
+      <isCriticalStep>false</isCriticalStep>
+      <isNonBlocking>false</isNonBlocking>
+      <isParallelStep>false</isParallelStep>
+      <isSingleResponse>false</isSingleResponse>
+      <recordInHistory>false</recordInHistory>
+      <recordRawOutput>true</recordRawOutput>
+      <recordPrimaryOutput>true</recordPrimaryOutput>
+      <checkPointStep>true</checkPointStep>
+      <historyCheckPointStep>true</historyCheckPointStep>
+      <scriptResultStep>false</scriptResultStep>
+      <userPrompt>317e59e5-ff96-46fc-9055-747aa1acfe22.511d0112-2e54-48ce-9298-00f868409008.prompt</userPrompt>
+      <scriptlet id="958ccb0a-282f-4e8f-ace9-5005b98ca551">
+        <annotation></annotation>
+        <name>Step TNS Names SQL Command (retry) in Flow Update Backup Window (511d0112-2e54-48ce-9298-00f868409008)</name>
+        <script></script>
+        <type>RHINO</type>
+      </scriptlet>
+      <bindings>
+        <staticBinding id="39b1847c-5dc1-4136-949a-47d702281225">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey></fromContextKey>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>Command</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>BEGIN 
+   UPDATE BACKUPOPTIONS  
+   SET HASBACKUPENABLED = &apos;Y&apos;, BAKWINDOWSTART = &apos;${backupWindowStart}&apos;, BAKWINDOWEND = &apos;${backupWindowEnd}&apos;, RETENTIONPERIOD = &apos;${retentionPeriod}&apos;
+   WHERE SERVERID = ${serverID};
+  
+   commit; 
+END;</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="5d71b97e-50e3-4378-8207-6d7e67e9ed8d">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorCodeList</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>{
+ &quot;SELECT&quot;:&quot;105&quot;,
+ &quot;INSERT&quot;:&quot;106&quot;,
+ &quot;UPDATE&quot;:&quot;106&quot;,
+  &quot;CALL&quot;:&quot;107&quot;,
+  &quot;DELETE&quot;:&quot;108&quot;
+}</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="38ed4a7f-ccb9-4253-b0b6-479ee90425a7">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorCodeRetry</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>{
+&quot;RETRYCODE&quot;:&quot;100&quot;
+}</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="5d76ca31-7bb2-4f22-aaca-0fe50659e6c8">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey>nucl.infradb.tns.path</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>TNSPath</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="9c9ee448-d6c1-48c4-992d-b99d96e9a969">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey>nucl.infradb.tns.entry</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>TNSEntry</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <identityBinding id="32ead3df-8588-4fff-86e0-762397a0edd2">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey></fromContextKey>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>Username</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <record>false</record>
+          <link>
+            <refId>22e1ebaf-ddbd-4ed0-94f7-6a828ad4a315</refId>
+            <refName>nucl.infradb</refName>
+          </link>
+          <identityAttribute>USERNAME</identityAttribute>
+        </identityBinding>
+        <identityBinding id="7dad7a12-3191-413e-8e2f-76f087cfedc5">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey></fromContextKey>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>ENCRYPTED</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>Password</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <record>false</record>
+          <link>
+            <refId>22e1ebaf-ddbd-4ed0-94f7-6a828ad4a315</refId>
+            <refName>nucl.infradb</refName>
+          </link>
+          <identityAttribute>PASSWORD</identityAttribute>
+        </identityBinding>
+        <staticBinding id="a453baec-f3ec-45bf-a6cd-c473cd006a3a">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>timeout</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="b9d56acd-efe1-4cb6-803a-aff32b67deb3">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>interval</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="d92538dd-ba11-4642-9b6e-ec1dba6fc13f">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>retry</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+      </bindings>
+      <transitions>
+        <transition id="e850cf38-2c5c-44bd-9aae-c42a04012308">
+          <annotation></annotation>
+          <name>success</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>success</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>cea04ecb-8a86-4391-8060-ac64024c0946</refId>
+          </destination>
+          <source>
+            <refId>511d0112-2e54-48ce-9298-00f868409008</refId>
+          </source>
+          <positions>
+            <point>
+              <x>213.0</x>
+              <y>154.0</y>
+            </point>
+            <point>
+              <x>332.0</x>
+              <y>152.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>497.5206270299984</x>
+            <y>-48.15922110685384</y>
+          </labelPosition>
+        </transition>
+        <transition id="361471ec-f60e-461a-9604-34f7eba877b7">
+          <annotation></annotation>
+          <name>failure(Update InfraDB)</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>failure</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>592048d4-3fd4-468a-a610-af71ce666742</refId>
+          </destination>
+          <source>
+            <refId>511d0112-2e54-48ce-9298-00f868409008</refId>
+          </source>
+          <positions>
+            <point>
+              <x>213.14893617021275</x>
+              <y>186.0</y>
+            </point>
+            <point>
+              <x>210.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>210.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>331.0</x>
+              <y>343.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>474.0947541664891</x>
+            <y>-1.0566324147339021</y>
+          </labelPosition>
+        </transition>
+        <transition id="4bc1712a-5e7e-44d6-9904-df6103e425b2">
+          <annotation></annotation>
+          <name>retry</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>retry</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>511d0112-2e54-48ce-9298-00f868409008</refId>
+          </destination>
+          <source>
+            <refId>511d0112-2e54-48ce-9298-00f868409008</refId>
+          </source>
+          <positions>
+            <point>
+              <x>203.5</x>
+              <y>186.0</y>
+            </point>
+            <point>
+              <x>240.0</x>
+              <y>90.0</y>
+            </point>
+            <point>
+              <x>240.0</x>
+              <y>90.0</y>
+            </point>
+            <point>
+              <x>180.0</x>
+              <y>90.0</y>
+            </point>
+            <point>
+              <x>180.0</x>
+              <y>90.0</y>
+            </point>
+            <point>
+              <x>213.0</x>
+              <y>170.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>483.333333333346</x>
+            <y>12.000000000000012</y>
+          </labelPosition>
+        </transition>
+      </transitions>
+      <properties/>
+      <opRef>
+        <refId>4d917ab7-b9e1-4c59-8e01-c6f8372e4369</refId>
+      </opRef>
+      <assignments/>
+      <throttleSize>0</throttleSize>
+    </step>
+    <returnStep id="592048d4-3fd4-468a-a610-af71ce666742">
+      <annotation></annotation>
+      <name>Error : failure</name>
+      <bounds>
+        <x>281.0</x>
+        <y>293.0</y>
+      </bounds>
+      <layer>-1</layer>
+      <hideInbound>false</hideInbound>
+      <addResultToRunContext>false</addResultToRunContext>
+      <isCriticalStep>false</isCriticalStep>
+      <isNonBlocking>false</isNonBlocking>
+      <isParallelStep>false</isParallelStep>
+      <isSingleResponse>false</isSingleResponse>
+      <recordInHistory>false</recordInHistory>
+      <recordRawOutput>true</recordRawOutput>
+      <recordPrimaryOutput>true</recordPrimaryOutput>
+      <checkPointStep>true</checkPointStep>
+      <historyCheckPointStep>true</historyCheckPointStep>
+      <scriptResultStep>false</scriptResultStep>
+      <userPrompt></userPrompt>
+      <bindings>
+        <staticBinding id="bb1a9363-0254-4ae6-a5ce-c748a1d1ac23">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorCode</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="6dadb4ab-c6e6-4213-a579-2b645f612d7f">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorComponent</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+      </bindings>
+      <transitions>
+        <transition id="5dc56721-5a85-434b-a36a-4e6f1be48a9d">
+          <annotation></annotation>
+          <name>return</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>failure</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>592048d4-3fd4-468a-a610-af71ce666742</refId>
+          </destination>
+          <source>
+            <refId>592048d4-3fd4-468a-a610-af71ce666742</refId>
+          </source>
+          <positions/>
+        </transition>
+      </transitions>
+      <properties/>
+      <returnStepType>ERROR</returnStepType>
+      <assignments>
+        <flowVariableAssignment id="1fb530b4-992c-4c4d-8334-57e04eaf2401">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_OUTPUT_FIELD</assignmentTargetType>
+          <contextKey>errorCode</contextKey>
+          <expression id="d56f400d-8052-4130-a32e-1babdf91063b">
+            <annotation></annotation>
+            <name>Input: errorCode</name>
+            <fieldName>errorCode</fieldName>
+            <sourceType>INPUT</sourceType>
+            <filters/>
+          </expression>
+        </flowVariableAssignment>
+        <flowVariableAssignment id="2d27d4e1-5b2f-418f-a8b3-e6ff76a9cb60">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_OUTPUT_FIELD</assignmentTargetType>
+          <contextKey>errorComponent</contextKey>
+          <expression id="7f75e89a-da37-4553-b12f-5ba2c89f7797">
+            <annotation></annotation>
+            <name>Input: errorComponent</name>
+            <fieldName>errorComponent</fieldName>
+            <sourceType>INPUT</sourceType>
+            <filters/>
+          </expression>
+        </flowVariableAssignment>
+      </assignments>
+    </returnStep>
+    <returnStep id="cea04ecb-8a86-4391-8060-ac64024c0946">
+      <annotation></annotation>
+      <name>Resolved : success</name>
+      <bounds>
+        <x>282.0</x>
+        <y>118.0</y>
+      </bounds>
+      <layer>-1</layer>
+      <hideInbound>false</hideInbound>
+      <addResultToRunContext>false</addResultToRunContext>
+      <isCriticalStep>false</isCriticalStep>
+      <isNonBlocking>false</isNonBlocking>
+      <isParallelStep>false</isParallelStep>
+      <isSingleResponse>false</isSingleResponse>
+      <recordInHistory>false</recordInHistory>
+      <recordRawOutput>true</recordRawOutput>
+      <recordPrimaryOutput>true</recordPrimaryOutput>
+      <checkPointStep>true</checkPointStep>
+      <historyCheckPointStep>true</historyCheckPointStep>
+      <scriptResultStep>false</scriptResultStep>
+      <userPrompt></userPrompt>
+      <bindings>
+        <staticBinding id="2de6bb3d-62eb-456f-88f5-845ffda5a6ea">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorCode</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="34d54a22-1d22-4a35-9555-0d5afbab06de">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorComponent</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="5aa77518-dd66-4b72-8d88-ddbe15e50702">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>sqlRowResult</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="71c438ce-3ff9-45a3-b268-ca6b56661b48">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>sqlRowCount</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+      </bindings>
+      <transitions>
+        <transition id="bb1762f9-3add-4d69-b6b4-c7b73eb02657">
+          <annotation></annotation>
+          <name>return</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>success</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>cea04ecb-8a86-4391-8060-ac64024c0946</refId>
+          </destination>
+          <source>
+            <refId>cea04ecb-8a86-4391-8060-ac64024c0946</refId>
+          </source>
+          <positions/>
+        </transition>
+      </transitions>
+      <properties/>
+      <returnStepType>RESOLVED</returnStepType>
+      <assignments>
+        <flowVariableAssignment id="9d52dc86-b628-4a20-89f1-b9c7f95be89d">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_OUTPUT_FIELD</assignmentTargetType>
+          <contextKey>sqlRowResult</contextKey>
+          <expression id="1c3aa3d9-1920-4f11-ab76-162e52ca2879">
+            <annotation></annotation>
+            <name>Input: sqlRowResult</name>
+            <fieldName>sqlRowResult</fieldName>
+            <sourceType>INPUT</sourceType>
+            <filters/>
+          </expression>
+        </flowVariableAssignment>
+        <flowVariableAssignment id="19928039-3f38-471b-9412-4d2c86e6d605">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_OUTPUT_FIELD</assignmentTargetType>
+          <contextKey>sqlRowCount</contextKey>
+          <expression id="b752dfea-3ea0-4fa6-8ce9-e0ca6a0a0482">
+            <annotation></annotation>
+            <name>Input: sqlRowCount</name>
+            <fieldName>sqlRowCount</fieldName>
+            <sourceType>INPUT</sourceType>
+            <filters/>
+          </expression>
+        </flowVariableAssignment>
+        <flowVariableAssignment id="51a01cb0-9074-4103-9221-013990050714">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_OUTPUT_FIELD</assignmentTargetType>
+          <contextKey>errorComponent</contextKey>
+          <expression id="f515b037-65e0-4d8b-af74-e65f0cac4fd9">
+            <annotation></annotation>
+            <name>Input: errorComponent</name>
+            <fieldName>errorComponent</fieldName>
+            <sourceType>INPUT</sourceType>
+            <filters/>
+          </expression>
+        </flowVariableAssignment>
+        <flowVariableAssignment id="6bd78b29-fbf8-4a1b-9943-b1b309646704">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_OUTPUT_FIELD</assignmentTargetType>
+          <contextKey>errorCode</contextKey>
+          <expression id="6cfe4d7d-acc8-4f8d-b68e-57f75ee200e9">
+            <annotation></annotation>
+            <name>Input: errorCode</name>
+            <fieldName>errorCode</fieldName>
+            <sourceType>INPUT</sourceType>
+            <filters/>
+          </expression>
+        </flowVariableAssignment>
+      </assignments>
+    </returnStep>
+  </steps>
+  <startSteps>514833cf-fdf0-47f7-902e-e06331223ccc</startSteps>
+</flow>

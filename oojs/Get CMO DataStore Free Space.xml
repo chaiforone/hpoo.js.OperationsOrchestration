@@ -1,0 +1,1866 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow id="e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1">
+  <descriptionCdata><![CDATA[e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.2780716a-61d7-4804-b47e-a11413dabf8e.callout=Check Inputs\:\n-Inputs\:\nvCenterIP,diskDsName,freeSize,interval,retry\n\n-Results\:\nhideReturn(errorCode,errorComponent)\n\n
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.49af0afc-54bd-43bc-923e-dc2c39b26148.description=<pre>Searches for VMWare objects containing a given name (ignoring case). Retrieves each object one at a time from an initial search query as the one used for the SQL Query operation.\n\nInputs\:\n    host - VMWare host hostname or IP.\n    user - VMWare username.\n    password - VMWare user's password.\n    port - Port to connect on.\n    protocol - Connection protocol.\nValid values\: "https", "http"\n    closeSession - Close the internally kept VMware Infrastructure API session at completion of operation.\nValid values\: "true", "false"\n    propsType - VMWare properties type to filter on. Type of object results desired.\nExample\: VirtualMachine, Network, ComputeResource, ClusterComputeResource, ResourcePool, HostSystem, Datastore, Datacenter, VirtualApp\n    nameToMatch - The string to perform a case insensitive contains match to.  Only objects that contain this string in their name will be matched.  If not specified, all objects of the specified type will be matched.\n\nResponses\:\n    success - The operation completed successfully and there are more results available.\n    failure - Something went wrong.\n    no more - There are no more results to retrieve.\n\nReturns\:\n    numberOfResults - Number of results from the query remaining to be retrieved.\n    returnResult - Query result item or operation result.\n</pre>
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.84ead256-5223-4732-b468-819e21785764.callout=Return error info\:\n-Inputs\:\nerrorCode,errorComponent\n\n-Resupts(Flow OutPut)\nerrorCode,errorComponent
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.93cff419-493d-406a-b193-ce61b836fff6.description=<pre>\nAccepts an object in the JavaScript Object Notation format (JSON) and and\ncreates and populates a flow variable for each member in the object.\n\nThe JSON format encodes objects as a set of unordered key/value pairs, which is\nsimilar to a structure or map in other programming languages.  For example,\n   { "city" \: "Palo Alto", \n     "state" \: "CA" }\nis an object with two elements one with the name "city" having the value "Palo\nAlto", and the other being the name "state" with the value "CA".  This operation\nwould create the flow variables city and state with the values "Palo Alto" and\n"CA".\n\nA optional prefix string can be specified that will be prepended to each flow\nvariable that is created.  For example, if the prefix is set to "my.", then\nthen the above object would result in the variables my.city (with value "Palo\nAlto") and my.state (with value "CA").  This can be useful if flow variables\nalready exist with the given names to avoid overwriting their values.\n\nJavaScript objects are useful for representing structured data, and are\nespecially when used within an array.  For example, an operation that retrieves\na set of incidents from an external system may return the entire list in one\narray of incident objects.  The description of the enclosing folder,\n/Library/Utility Operations/Container/JavaScript Objects has more examples, and\nthe JSON format is described completely at http\://www.json.org.\n\nInputs\n\n   object\n      The JavaScript object that will be converted into flow variables.  The\n      operation will return a failure if the it is not a JavaScript object.\n     i.e. \= { "city" \: "Palo Alto", "state" \: "CA","empty"\:"","noValue"\:"${noValue}" }\n  \n   list\n     Check Variables list.  \n    The operation will return a failure if the variable value is null in variable list.\n     i.e. \=  city,empty,noValue\n  delimiter\n    The delimiter use on list. default is comma.\n    i.e. \= ,\n   prefix\n      The prefix to prepend to each flow variable name that will be created.\n      This is useful for creating unique variable names.\n\nResponses\n\n   success\n      The flow variables were successfully created from the object.\n\n   failure\n      There was some error in processing the object, most likely because the\n      object is not in valid JavaScript Object Notation.  You may wish to use a\n      tool such as http\://www.jsonlint.com/ to help diagnose problems with\n      JavaScript Object Notation.\n\nOutputs\n\n   A separate output will be created for each member of the object.  Each of\n   these outputs may in turn contain another object or array.\n</pre>
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.a79c4892-29cd-43c6-8320-df96409e36a6.description=<pre>Search for VMWare objects of type propsType and their properties (propsPathset) from a root object (if any) specified by propsRootObjType and propsRootObj. Retrieve each object's properties one at a time from an initial search query ala SQL Query operation. Please see VMWare Integration Guide for more details.\n\nInputs\:\nhost - VMWare host hostname or IP.\nuser - VMWare username.\npassword - VMWare user's password.\nport - Port to connect on.\nprotocol - Connection protocol (http or https).\ncloseSession - Close the internally kept VMWare Infrastructure API session at completion of operation (true, false).\npropsType - VMWare properties type (Task, Datacenter, VirtualMachine, Network etc.) to filter on. Type of object results desired.\npropsPathset - Property filter's pathset, comma-delimited (eg. name, info.name, runtime.host).\npropsRootObjType - The type of the Managed Object Reference (such as VirtualMachine, HostSystem, ComputeResource, ResourcePool, Alarm, Datacenter, Datastore) to begin the search on. Leaving this blank will default the root object to the root folder of the ESX or VC host. \npropsRootObj - The value of the reference (such as vm-123, datastore-123, network-123) used as a root object. Leaving this blank will default the root object to be the root folder of the ESX or VC host. \n\nResponses\:\nsuccess - The operation completed successfully.\nfailure - Something went wrong. See returnResult for details.\nno more - There are no more results to retrieve.\n\nReturns\:\nnumberOfResults - Number of results from the query remaining to be retrieved.\nreturnResult - Query result item or reason for failure.</pre>
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.a79c4892-29cd-43c6-8320-df96409e36a6.prompt=name,summary.capacity,summary.url,summary.freeSpace,vm\ndatastore-3535
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.acac4457-126c-4ae8-b996-408965164785.callout=3.18.4.16 Get DataStore Free Space\nThis subflow retrieves free space on a given VM Data Store. If free space is less then provided size then returns error 
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.c93844b9-861b-4712-b72a-a0c7750bc0ab.callout=\ (Nucleus_automation_design_specification_v41\:) 3.18.4.16 Get DataStore Free Space
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.cedd31fb-b8d6-499d-bc6c-1f90bb539a1e.description=<pre>\nThis operation running scriptlet from Inputs, It can be used to script flow.\nattention that do'not used Scriptlet tab, it need empty can be running script from Inputs script. \nThis operation does not do anything. It can be used to filter flow variables by defining them as inputs and filtering them in the Results tab.\n\nInputs\:\n    Scriptlet - write on javascript.\n\nResults\:\n    returnResult - This is the primary output.\n    default this operation return errorCode and errorComponent that donot need add errorCode and errorComponent\n    if you want add errorCode and errorComponent used below scriptlet, please refer Outputs sample\n       errorCode  from returnResult scriptlet\:    scriptletResult \= scriptletContext.get("errorCode"); \n       errorComponent   from returnResult scriptlet\:   scriptletResult \= scriptletContext.get("errorComponent");\nResponses\:\n    success - The operation completed as stated in the description.\n    failure   -  The operation failure as stated in the description.\n    other -  The operation other as stated in the description.\nExamples of usage \:\n\n// This template shows how to access operation return data, inputs and context data \n// and how to set context data, responses and results. \n\n//convert to JSON object\njsObject \= JSON.parse({"var1"\:"value1"}); \nmyValue \= jsonOBJ["var1"];\n\n// To access an input simply refer to the input name from the Inputs panel.  For example\: \nmyData \= inputName; \n \n// To get value associated with the context key myContextKey\: \nmyContextData \= get("myContextKey"); \n \n// To get value associated with the context key myContextKey from the local context\: \nmyContextData \= let("myContextKey"); \n \n// To access the return code from a command line or script (note it is a string and must \n// be converted into an integer for numeric processing)\: \ncode \=getcode();\n \n// To access the output from the operation (for example stdout)\: \ndata \= getoutput() \n \n// To access the error string from the operation (for example stderr)\: \nerror \=geterror();\n \n// Other operations may have different result variables available.  To see the list for \n// a particular operation open the "Result from Field" dropdown on the Outputs tab \n \n// To set the response of the operation (must match one of the responses from the Responses tab)\: \ndid(true); // did("success")\ndid(false); // did("failure")\ndid("other");\n \n// To set the result of the operation \nprint( "Your Result Here"); \nprintln( "Your Result Here"); \n// Use the context to hold data for use by other steps.  It is also helpful to place information \n// into the context to examine variables when developing and debugging scriptlets. \n// For example to place the OutputString information into a context key called 'Output'\: \nputglobal("Output", data); \n \n// Note that the Key and Value are both strings.  For example to place 'code' into the context\: \nputglobal("Code", code.toString()); \n \n// You can also place data into the local context, which means it will only be available to \n// the current flow, but not to its parent flow or other subflows.  To do this\: \nput("LocalVariable","LocalValue"); \n\n// You can use error function to throw eror message.\nerror("throw error message");\n \n// sleep flow\nsleep(interval)\n\n</pre>
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.d7a574ed-c40f-4aa6-a80b-5f5be1b76563.callout=Write Log\:\n-Inputs\:\ndiskSize\nfreeSpace\nScriptlet\n\n-Results\:\t\nhideReturn(errorCode,errorComponent)\n
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.daae859c-ec29-496e-8cbe-42a42c7b306b.description=<pre>\nGet Error Codes\n\nInputs\:\nerrorCode\=911\t\nerrorComponent\=${errorComponent}\n\nResponses\:\nsuccess\n**************************************************************************************************************\nDomain\tERRORCODE\tERRORMSG\tERRORCOMPONENT\nSuccess\t0\tSuccessfully completed\t(last used component)\nMaintenance\t20\tInvalid VM Cluster name\t(vCenter URL; VM Cluster name)\nMaintenance\t21\tInvalid VM Data Store name\t(vCenter URL; VM Data Store name)\nMaintenance\t22\tFailed to register VM Cluster\t(vCenter URL; VM Cluster name)\nMaintenance\t23\tFailed to register VM Data Store\t(vCenter URL; VM Data Store name)\nMaintenance\t25\tInvalid MOE Resource Pool name\t(MOE URL; Resource Pool name)\nMaintenance\t26\tInvalid MOE SPM Template name\t(MOE URL; SPM Template name)\nMaintenance\t27\tFailed to register MOE Resource Pool\t(MOE URL; Resource Pool name)\nMaintenance\t28\tFailed to register MOE SPM Template\t(MOE URL; SPM Template name)\nInfraDB\t100\tFailed to connect/authenticate to InfraDB\t(InfraDB Connection string)\nInfraDB\t105\tFailed to query InfraDB\t(InfraDB Connection string; SELECT statement)\nInfraDB\t106\tFailed to insert/update InfraDB\t(InfraDB Connection string; INSERT/UPDATE statement)\nInfraDB\t107\tFailed to execute stored procedure in InfraDB\t(InfraDB Connection string; Name of StoredProcedure)\nInput validation\t110\tInput validation failed\t(name/value of failed subscriber option)\nIPAM\t120\tFailed to connect/authenticate to IPAM\t(IPAM URL)\nIPAM\t125\tFailed to query IPAM\t(IPAM URL; query command)\nIPAM\t126\tFailed to register IP address\t(IPAM URL; VLAN)\nIPAM\t127\tFailed to release IP address\t(IPAM URL; VLAN; IP address)\nvCenter\t200\tFailed to connect/authenticate to vCenter\t(vCenter URL)\nvCenter\t205\tFailed to browse/read VM\t(vCenter URL; VM path/UUID)\nvCenter\t206\tFailed to create VM\t(vCenter URL; VM path)\nvCenter\t207\tFailed to update VM\t(vCenter URL; VM path/UUID)\nvCenter\t208\tFailed to delete VM\t(vCenter URL; VM path/UUID)\nvCenter\t210\tFailed to start VM\t(vCenter URL; VM path/UUID)\nvCenter\t211\tFailed to stop VM\t(vCenter URL; VM path/UUID)\nvCenter\t213\tFailed to snapshot VM\t(vCenter URL; VM path/UUID)\nvCenter\t214\tFailed to restore VM\t(vCenter URL; VM path/UUID)\nvCenter\t215\tNo snapshot to restore from\t(vCenter URL; VM path/UUID)\nvCenter\t220\tFailed to attach disk\t(vCenter URL; VM path/UUID)\nvCenter\t221\tFailed to modify disk\t(vCenter URL; VM path/UUID)\nvCenter\t222\tFailed to remove disk\t(vCenter URL; VM path/UUID)\nvCenter\t223\tUnsupported request for change disk size\t(vCenter URL; VM path/UUID)\nvCenter\t224\tUnsupported request for change storage class\t(vCenter URL; VM path/UUID)\nvCenter\t225\tFailed to flex CPU/Memory\t(vCenter URL; VM path/UUID)\nvCenter\t226\tFailed to create Snapshot\t(vCenter URL; VM path/UUID; VMSNAPSHOT)\nvCenter\t227\tFailed to delete Snapshot\t(vCenter URL; VM path/UUID; VMSNAPSHOT)\nvCenter\t228\tFailed to restore Snapshot\t(vCenter URL; VM path/UUID; VMSNAPSHOT)\nvCenter\t230\tFailed to move VM\t(vCenter URL; VM path/UUID)\nvCenter\t231\tFailed to unprotect VM from DR\t(vCenter URL; VM path/UUID)\nvCenter\t232\tFailed to DR protect VM\t(vCenter URL; VM path/UUID)\nvCenter\t233\tFailed to DR Unprotect VM\t(vCenter URL; VM path/UUID)\nvCenter\t234\tFailed to Change DR group on protect VM\t(vCenter URL; VM path/UUID)\nvCenter\t235\tFailed to reserve semaphore for failover\t(vCenter URL; VM path/UUID)\nvCenter\t236\tFailed to reserve semaphore for failback\t(vCenter URL; VM path/UUID)\nvCenter\t237\tFailed to storage vMotion\t(vCenter URL; VM path/UUID)\nvCenter\t238\tFailed to move to DR Protected folder\t(vCenter URL; VM path/UUID)\nvCenter\t239\tFailed to move to Non DR Protected folder\t(vCenter URL; VM path/UUID)\nvCenter\t240\tFailed to do controled failover\t(vCenter URL; VM path/UUID)\nvCenter\t241\tFailed to do controlled failback\t(vCenter URL; VM path/UUID)\nvCenter\t242\tFailed to disable DR because server is in failover Data Center - failback required\t(vCenter URL; VM path/UUID)\nMOE\t253\tFailed to upload HPIO template\t(RESPRVFQDN; template name)\nMOE\t254\tFailed to delete HPIO template\t(RESPRVFQDN; template name)\nMOE\t255\tFailed to browse/read server\t(RESPRVFQDN; SERVICENAME)\nMOE\t256\tFailed to create server\t(RESPRVFQDN; template name)\nMOE\t257\tFailed to update server\t(RESPRVFQDN; SERVICENAME)\nMOE\t258\tFailed to delete server\t(RESPRVFQDN; SERVICENAME)\nMOE\t260\tFailed to start server\t(RESPRVFQDN; SERVICENAME)\nMOE\t261\tFailed to stop server\t(RESPRVFQDN; SERVICENAME)\nMOE\t262\tWrong power status of the server\t(RESPRVFQDN; SERVICENAME)\nMOE\t270\tFailed to attach disk\t(RESPRVFQDN; SERVICENAME)\nMOE\t271\tFailed to modify disk\t(RESPRVFQDN; SERVICENAME)\nMOE\t272\tFailed to remove disk\t(RESPRVFQDN; SERVICENAME)\nMOE\t273\tUnsupported request for change disk size\t(RESPRVFQDN; SERVICENAME)\nMOE\t274\tUnsupported request for change storage class\t(RESPRVFQDN; SERVICENAME)\nMOE\t275\tUnsupported request for disk removal\t(RESPRVFQDN; SERVICENAME)\nMOE\t276\tFailed to retrieve MOE Server info with LSMUTIL\t(RESPRVFQDN; SERVICENAME)\nMOE\t277\tFailed to retrieve MOE Server info with MXNODE\t(RESPRVFQDN; SERVICENAME)\nMOE\t278\tFailed to retrieve MOE Server info with getService API\t(RESPRVFQDN; SERVICENAME)\nMOE\t281\tFailed to get Request Info\t(RESPRVFQDN; SERVICENAME)\nMOE\t282\tFailed to get Server Pool\t(RESPRVFQDN; SERVICENAME)\nMOE\t283\tFailed to get Compute Server\t(RESPRVFQDN; SERVICENAME)\nMOE\t284\tGet Logical Server\t(RESPRVFQDN; SERVICENAME)\nMOE\t285\tGet Logical Server Info\t(RESPRVFQDN; SERVICENAME)\nMOE\t286\tIO Add New Disk to LogicalServerGroup\t(RESPRVFQDN; SERVICENAME)\nMOE\t287\tIO Cannot Edit Logical Disks\t(RESPRVFQDN; SERVICENAME)\nMOE\t288\tIO Cannot get SAN Volume\t(RESPRVFQDN; SERVICENAME)\nMOE\t289\tIO Cannot Create IO Template\t(RESPRVFQDN; SERVICENAME)\nMOE\t290\tCould not update MOE disk info\t(RESPRVFQDN; SERVICENAME)\nMOE\t291\tCould not update MOE server info\t(RESPRVFQDN; SERVICENAME)\nServer Automation\t300\tFailed to connect/authenticate to HPSA\t(HPSA URL)\nServer Automation\t304\tFailed to execute MBC\t(HPSA URL; MBC params)\nServer Automation\t305\tFailed to browser/read server object\t(HPSA URL; server ID; server name)\nServer Automation\t306\tFailed to create server object\t(HPSA URL; server name)\nServer Automation\t307\tFailed to modify server object\t(HPSA URL; server ID; server name)\nServer Automation\t308\tFailed to delete server object\t(HPSA URL; server ID; server name)\nServer Automation\t309\tFailed to remediate server\t(HPSA URL; server ID; server name)\nServer Automation\t310\tFailed to attach policy\t(HPSA URL; server ID; server name, policy name)\nServer Automation\t311\tFailed to detach policy\t(HPSA URL; server ID; server name, policy name)\nServer Automation\t313\tFailed to execute OS Build plan\t(HPSA URL; server ID; server name, OSBP name)\nServer Automation\t315\tFailed to execute script\t(HPSA URL; server ID; server name, script name)\nServer Automation\t316\tNo available running SA Core Server\t(HPSA URL; server ID; server name)\nServer Automation\t317\tFailed to format data disk\t(HPSA URL; server ID; server name)\nServer Automation\t318\tFailed to flexup data disk\t(HPSA URL; server ID; server name)\nServer Automation\t319\tFailed to remove data disk\t(HPSA URL; server ID; server name)\nServer Automation\t320\tFailed to change permissions on mount point\t(HPSA URL; server ID; server name)\nNAS\t330\tFailed to connect/authenticate to NAS\t(NAS URI)\nNAS\t335\tFailed to read info\t(NAS URI; object ID/name)\nNAS\t336\tFailed to create volume\t(NAS URI; object ID/name)\nNAS\t337\tFailed to modify volume\t(NAS URI; object ID/name)\nNAS\t338\tFailed to delete volume\t(NAS URI; object ID/name)\nNAS\t340\tFailed to create share\t(NAS URI; object ID/name)\nNAS\t341\tFailed to create share\t(NAS URI; object ID/name)\nNAS\t342\tFailed to modify share\t(NAS URI; object ID/name)\nESL\t500\tFailed to connect/authenticate to ESL\t(ESL URL)\nESL\t505\tFailed to read info\t(ESL URL; CI ID/name)\nESL\t506\tFailed to create CI\t(ESL URL; CI name)\nESL\t507\tFailed to modify CI\t(ESL URL; CI ID/name)\nESL\t508\tFailed to delete CI\t(ESL URL; CI ID/name)\nMonitoring\t520\tFailed to connect/authenticate to monitoring server\t(Monitoring server URI)\nMonitoring\t525\tFailed to read info\t(Monitoring server URI; object FQDN)\nMonitoring\t526\tFailed to create server object\t(Monitoring server URI; object FQDN)\nMonitoring\t527\tFailed to modify server object\t(Monitoring server URI; object FQDN)\nMonitoring\t528\tFailed to delete server object\t(Monitoring server URI; object FQDN)\nMonitoring\t529\tFailed to suspend monitoring\t(Monitoring server URI; object FQDN)\nMonitoring\t530\tFailed to resume monitoring\t(Monitoring server URI; object FQDN)\nBackup\t540\tFailed to connect/authenticate to Backup server\t(Backup server URL)\nBackup\t545\tFailed to read info\t(Backup server URI; server FQDN)\nBackup\t546\tFailed to register for backup\t(Backup server URI; server FQDN)\nBackup\t548\tFailed to unregister from backup\t(Backup server URI; server FQDN)\nBackup\t549\tFailed to run on-demand backup\t(Backup server URI; server FQDN)\nBackup\t550\tFailed to resume backup\t(Backup server URI; server FQDN)\nBackup\t551\tFailed to suspend backup\t(Backup server URI; server FQDN)\nBackup\t552\tFailed to modify backup window\t(Backup server URI; server FQDN)\nSMTP\t560\tFailed to connect/authenticate to SMTP\t(SMTP URI)\nSMTP\t566\tFailed to send mail\t(SMTP URI; target email address)\nHP DNS\t580\tFailed to connect/authenticate to DNS\t(DNS URI)\nHP DNS\t585\tFailed to read record\t(DNS URI; record params)\nHP DNS\t586\tFailed to create record\t(DNS URI; record params)\nHP DNS\t587\tFailed to modify record\t(DNS URI; record params)\nHP DNS\t588\tFailed to delete record\t(DNS URI; record params)\nMURCS\t600\tFailed to connect/authenticate to MURCS\t(MURCS URI)\nMURCS\t605\tFailed to read info\t(MURCS URI; parameters)\nMURCS\t606\tFailed to create info\t(MURCS URI; parameters)\nMURCS\t607\tFailed to modify info\t(MURCS URI; parameters)\nMURCS\t608\tFailed to delete info\t(MURCS URI; parameters)\nDoubleTake\t620\tFailed to connect/authenticate to DT\t(DT server URI)\nDoubleTake\t625\tFailed to read job\t(DT server URI; DT job ID)\nDoubleTake\t626\tFailed to create clone job\t(DT server URI; DT job params)\nDoubleTake\t627\tFailed to modify clone job\t(DT server URI; DT job ID)\nDoubleTake\t628\tFailed to delete clone job\t(DT server URI; DT job ID)\nDoubleTake\t630\tFailed to create cutover job\t(DT server URI; DT job params)\nDoubleTake\t631\tFailed to modify cutover job\t(DT server URI; DT job ID)\nDoubleTake\t632\tFailed to delete cutover job\t(DT server URI; DT job ID)\nGrid\t640\tFailed to connect/authenticate to Grid\t(Grid URI)\nGrid\t641\tCall to script failed. Parameters incorrect\t(Grid URI; GridMoveCall)\nGrid\t642\tGrid move script timeout.\t(Grid URI; GridMoveCall)\nGrid\t643\tGrid parameter validation failed\t(Grid URI; GridMoveCall)\nGrid\t645\tFailed to read info\t(Grid URI; read command)\nGrid\t646\tFailed to start job\t(Grid URI; job command)\nGrid\t647\tFailed to complete job\t(Grid URI; job command)\ndbCloudManager\t660\tFailed to connect/authenticate to dbCldMgr\t(dbCloudManager URI)\ndbCloudManager\t665\tFailed to read info\t(dbCloudManager URI; parameters)\ndbCloudManager\t667\tFailed to start flow\t(dbCloudManager URI; flow name/path)\ndbCloudManager\t668\tFailed to complete flow\t(dbCloudManager URI; flow name/path)\nHeadless flow\t801\tNot within Change window\t(Change ID)\nInternal Error\t901\tFailed to connect/authenticate to CSA API\t(CSA URL)\nInternal Error\t905\tFailed to read from CSA API\t(CSA URL; REST call)\nInternal Error\t906\tFailed to write to CSA API\t(CSA URL; REST call)\nInternal Error\t907\tWaiting exceeded\t(error details)\nInternal Error\t911\tOO internal error\t(error details)\nUnexpected Error\t999\tUnexpected Error Occurred\t(error details)\n\n</pre>
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.description=<pre>\negister From Backup\n\nInputs\:\nSERVER.BACKUPENABLE\nSERVER.BACKUPRETENTION\nSERVER.BACKUPWINDOW\nSERVER.SERVERID\nSERVER.VMUUID\nSERVER.FQDN\nVCENTER.FQDN\nVCENTER.NAME\nVCENTER.VMDATACENTER\nBUR.VLANGID\nBUR.HOSTNAME\nBUR.FQDN\nTOTALDISKSIZE\nBACKUPOPTION\nOVERRIDEJRAS\nRETRY\nINTEVAL\n\nReturns\:\n\nResponses\:\nSuccess,Falure\n\n</pre>
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.f99718fc-95f2-4286-bf37-e795ebb92947.callout=Run PoserCli\:\n-Inputs\:\nnameToMatch,\nScriptlet\n\n-Results\:\t\nhideReturn(propsRootObj\nerrorCode,errorComponent)\n
+e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.fec54db0-4b1b-49a0-a3cb-d0dcccea6418.callout=Run PoserCli\:\n-Inputs\:\npropsRootObj,\nScriptlet\n\n-Results\:\t\nhideReturn(freeSpace,\nerrorCode,errorComponent)\n
+]]></descriptionCdata>
+  <annotation>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.description</annotation>
+  <name>Get CMO DataStore Free Space</name>
+  <categories/>
+  <inputs>
+    <staticBinding id="8184aef6-346f-4f31-bd39-b419cd766815">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>serverResPrvFQDN</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="58d97de8-7b8f-48cf-a70d-29968118b299">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>vcenter.username</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="91f14156-5cf6-4c89-b620-52273dd1fda2">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>vcenter.password</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="0b2f2817-e279-4b44-938d-6e664aacd12d">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>diskDsName</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="7fba25f6-35e7-45f3-9ef3-aa0498c6c79b">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>freeSize</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="f68042a4-792e-4140-8aee-ffef1e9d9973">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>rasGroup</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="1b23f547-7bb2-4689-badc-e57386e11baf">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>interval</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="0ff38eaa-7942-433a-8b56-fecde5c9d3d4">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>retry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="25d01d22-44d7-4e9c-abf0-1f95333c9d62">
+    <annotation></annotation>
+    <name>Operation Get CMO DataStore Free Space (e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1)</name>
+    <type>RHINO</type>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="40b5d96a-349e-400d-a9d6-cda4c06bf74e">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>false</isDefault>
+      <onFailure>true</onFailure>
+      <type>ERROR</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="cbe53825-0198-4ea6-a511-72887d91aa9c">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>true</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions/>
+  <resultExpression id="65552bb5-f7e7-4c0b-bcc0-b6ece0fee803">
+    <annotation></annotation>
+    <name>FailureMessage</name>
+    <fieldName>FailureMessage</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="9216c666-3954-485b-a4a6-99b93cca89c2">
+    <baseIcon>orange_server_plain.png</baseIcon>
+    <basePath>/Servers/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="f5e22354-fd28-4df7-9f7f-c1664fca8e67">
+        <baseIcon>view.png</baseIcon>
+        <basePath>/Annotations/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <callouts>
+    <callout id="c93844b9-861b-4712-b72a-a0c7750bc0ab">
+      <text>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.c93844b9-861b-4712-b72a-a0c7750bc0ab.callout</text>
+      <bounds>
+        <x>1.0</x>
+        <y>0.0</y>
+        <width>660.0</width>
+        <height>31.0</height>
+      </bounds>
+      <layer>-1</layer>
+    </callout>
+    <callout id="f99718fc-95f2-4286-bf37-e795ebb92947">
+      <text>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.f99718fc-95f2-4286-bf37-e795ebb92947.callout</text>
+      <bounds>
+        <x>150.0</x>
+        <y>421.0</y>
+        <width>121.0</width>
+        <height>179.0</height>
+      </bounds>
+      <layer>-1</layer>
+      <step>
+        <refId>49af0afc-54bd-43bc-923e-dc2c39b26148</refId>
+      </step>
+    </callout>
+    <callout id="d7a574ed-c40f-4aa6-a80b-5f5be1b76563">
+      <text>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.d7a574ed-c40f-4aa6-a80b-5f5be1b76563.callout</text>
+      <bounds>
+        <x>388.0</x>
+        <y>421.0</y>
+        <width>121.0</width>
+        <height>179.0</height>
+      </bounds>
+      <layer>-1</layer>
+      <step>
+        <refId>cedd31fb-b8d6-499d-bc6c-1f90bb539a1e</refId>
+      </step>
+    </callout>
+    <callout id="acac4457-126c-4ae8-b996-408965164785">
+      <text>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.acac4457-126c-4ae8-b996-408965164785.callout</text>
+      <bounds>
+        <x>29.0</x>
+        <y>600.0</y>
+        <width>602.0</width>
+        <height>89.0</height>
+      </bounds>
+      <layer>-1</layer>
+    </callout>
+    <callout id="84ead256-5223-4732-b468-819e21785764">
+      <text>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.84ead256-5223-4732-b468-819e21785764.callout</text>
+      <bounds>
+        <x>508.0</x>
+        <y>421.0</y>
+        <width>121.0</width>
+        <height>179.0</height>
+      </bounds>
+      <layer>-1</layer>
+      <step>
+        <refId>daae859c-ec29-496e-8cbe-42a42c7b306b</refId>
+      </step>
+    </callout>
+    <callout id="2780716a-61d7-4804-b47e-a11413dabf8e">
+      <text>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.2780716a-61d7-4804-b47e-a11413dabf8e.callout</text>
+      <bounds>
+        <x>30.0</x>
+        <y>421.0</y>
+        <width>121.0</width>
+        <height>179.0</height>
+      </bounds>
+      <layer>-1</layer>
+      <step>
+        <refId>93cff419-493d-406a-b193-ce61b836fff6</refId>
+      </step>
+    </callout>
+    <callout id="fec54db0-4b1b-49a0-a3cb-d0dcccea6418">
+      <text>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.fec54db0-4b1b-49a0-a3cb-d0dcccea6418.callout</text>
+      <bounds>
+        <x>270.0</x>
+        <y>421.0</y>
+        <width>121.0</width>
+        <height>179.0</height>
+      </bounds>
+      <layer>-1</layer>
+      <step>
+        <refId>a79c4892-29cd-43c6-8320-df96409e36a6</refId>
+      </step>
+    </callout>
+  </callouts>
+  <checkPointFlow>true</checkPointFlow>
+  <compatibleRuntimeContext>false</compatibleRuntimeContext>
+  <historyCheckPointFlow>true</historyCheckPointFlow>
+  <steps>
+    <step id="93cff419-493d-406a-b193-ce61b836fff6">
+      <annotation>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.93cff419-493d-406a-b193-ce61b836fff6.description</annotation>
+      <name>Check null List from Inputs</name>
+      <bounds>
+        <x>40.0</x>
+        <y>115.0</y>
+      </bounds>
+      <layer>-1</layer>
+      <hideInbound>false</hideInbound>
+      <iconSpec id="e0ad940f-23d6-4b4b-bdf2-5132f971c061">
+        <baseIcon>jar_bean.png</baseIcon>
+        <basePath>/Others/</basePath>
+        <readOnly>false</readOnly>
+        <layers>
+          <iconSpec id="b68fd0d0-3a2a-4062-a012-3ded487014b4">
+            <baseIcon>check2.png</baseIcon>
+            <basePath>/Annotations/</basePath>
+            <readOnly>false</readOnly>
+            <layers/>
+          </iconSpec>
+        </layers>
+      </iconSpec>
+      <addResultToRunContext>false</addResultToRunContext>
+      <isCriticalStep>false</isCriticalStep>
+      <isNonBlocking>false</isNonBlocking>
+      <isParallelStep>false</isParallelStep>
+      <isSingleResponse>false</isSingleResponse>
+      <recordInHistory>false</recordInHistory>
+      <recordRawOutput>true</recordRawOutput>
+      <recordPrimaryOutput>true</recordPrimaryOutput>
+      <checkPointStep>true</checkPointStep>
+      <historyCheckPointStep>true</historyCheckPointStep>
+      <scriptResultStep>false</scriptResultStep>
+      <userPrompt></userPrompt>
+      <scriptlet id="f4137c4b-5e14-4dff-a918-330179ca405b">
+        <annotation></annotation>
+        <name>Step Check null List from Inputs in Flow Get CMO DataStore Free Space (93cff419-493d-406a-b193-ce61b836fff6)</name>
+        <script></script>
+        <type>RHINO</type>
+      </scriptlet>
+      <bindings>
+        <staticBinding id="6da497ec-36e3-45f0-b7a0-123bd86cac3f">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>object</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>{
+&quot;vCenterHost&quot;:&quot;${serverResPrvFQDN}&quot;,
+&quot;diskDsName&quot;:&quot;${diskDsName}&quot;,
+&quot;freeSize&quot;:&quot;${freeSize}&quot;,
+&quot;overrideJRAS&quot;:&quot;${overrideJRAS}&quot;,
+&quot;interval&quot;:&quot;${interval}&quot;,
+&quot;retry&quot;:&quot;${retry}&quot;
+}</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="eeecebc6-052d-46da-b71e-47c5f4f7c3ea">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>list</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>vCenterHost,diskDsName,freeSize,interval,retry</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="41884fdd-9c83-4d1f-b0d9-84254202cd03">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>delimiter</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>,</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="590632fb-3504-4745-b92a-cab212eb9306">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>prefix</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="fea0e4e9-e68a-4be2-94a6-d128d8956764">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>replaceEnterKeyInObject</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>true</value>
+          <record>false</record>
+        </staticBinding>
+      </bindings>
+      <transitions>
+        <transition id="6e48d2f3-8065-48f0-8fb8-ca73c19d6ffe">
+          <annotation></annotation>
+          <name>failure(Checking Inputs)</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>failure</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>daae859c-ec29-496e-8cbe-42a42c7b306b</refId>
+          </destination>
+          <source>
+            <refId>93cff419-493d-406a-b193-ce61b836fff6</refId>
+          </source>
+          <positions>
+            <point>
+              <x>102.0</x>
+              <y>162.2869022869023</y>
+            </point>
+            <point>
+              <x>90.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>90.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>569.0</x>
+              <y>347.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>183.90669685502831</x>
+            <y>-5.68969512746407</y>
+          </labelPosition>
+        </transition>
+        <transition id="a10badd5-1b57-4545-8f59-3f0bf6454b51">
+          <annotation></annotation>
+          <name>success</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>success</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>49af0afc-54bd-43bc-923e-dc2c39b26148</refId>
+          </destination>
+          <source>
+            <refId>93cff419-493d-406a-b193-ce61b836fff6</refId>
+          </source>
+          <positions>
+            <point>
+              <x>90.0</x>
+              <y>149.0</y>
+            </point>
+            <point>
+              <x>211.0</x>
+              <y>149.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>461.0014301187958</x>
+            <y>-42.93757940107492</y>
+          </labelPosition>
+        </transition>
+      </transitions>
+      <properties/>
+      <opRef>
+        <refId>ffc5b98d-1ff8-4754-ba4d-26f38e48711c</refId>
+      </opRef>
+      <assignments/>
+      <throttleSize>0</throttleSize>
+    </step>
+    <step id="cedd31fb-b8d6-499d-bc6c-1f90bb539a1e">
+      <annotation>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.cedd31fb-b8d6-499d-bc6c-1f90bb539a1e.description</annotation>
+      <name>If Flex Disk Down not possible</name>
+      <bounds>
+        <x>402.0</x>
+        <y>114.0</y>
+      </bounds>
+      <layer>-1</layer>
+      <hideInbound>false</hideInbound>
+      <iconSpec id="960ae69d-c947-41a4-90fd-490d05deae0e">
+        <baseIcon>branch_element.png</baseIcon>
+        <basePath>/Others/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+      <addResultToRunContext>false</addResultToRunContext>
+      <isCriticalStep>false</isCriticalStep>
+      <isNonBlocking>false</isNonBlocking>
+      <isParallelStep>false</isParallelStep>
+      <isSingleResponse>false</isSingleResponse>
+      <recordInHistory>false</recordInHistory>
+      <recordRawOutput>true</recordRawOutput>
+      <recordPrimaryOutput>true</recordPrimaryOutput>
+      <checkPointStep>true</checkPointStep>
+      <historyCheckPointStep>true</historyCheckPointStep>
+      <scriptResultStep>false</scriptResultStep>
+      <userPrompt></userPrompt>
+      <scriptlet id="c5b33df4-7ec3-47fd-9d5d-196d1b8f48b2">
+        <annotation></annotation>
+        <name>Step If Flex Disk Down not possible in Flow Get CMO DataStore Free Space (cedd31fb-b8d6-499d-bc6c-1f90bb539a1e)</name>
+        <script></script>
+        <type>RHINO</type>
+      </scriptlet>
+      <bindings>
+        <staticBinding id="263b1bcd-cf46-41ca-9dcc-2b49f39a740a">
+          <annotation></annotation>
+          <fromContextKey>freeSize</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>diskSize</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="fa607625-9695-43b6-8d94-7b8f9c9f88e5">
+          <annotation></annotation>
+          <fromContextKey>rasGroup</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>overrideJRAS</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="d47b67c6-5e10-40b9-813e-418ee4fc5d0b">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>freeSpace</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="13f3cea2-f52f-4da5-b2f2-1f15c9c9cfcf">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>maxSize</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="90f5c5b6-070b-42c4-90f5-7eda6cbaeb0f">
+          <annotation></annotation>
+          <fromContextKey>nucl.vm.datastore.freepct.cmo</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>freePct</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="9db0a407-6546-4c7b-9fd3-fec41f7434ce">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>Scriptlet</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>/*
+(Nucleus_automation_design_specification_v41 ):3.17.4.13  Server Modify Disk Size
+@Daway
+*/
+
+// Begin Main()
+
+ var pct = num(freePct/100);
+ var checkDiskSize = num(freeSpace) -  num(diskSize) &gt; num(maxSize)*pct;
+ if (checkDiskSize ) {
+ // Begin :   if ( freeSpace &gt; diskSize ) 
+
+        showInfo();
+        println(&quot;goto: success response &quot; );
+        put(&quot;errorCode&quot;,&quot;000&quot;);
+        var errorMsg = &quot;vCenterIP:&quot;+get(&quot;serverResPrvFQDN&quot;)+&quot;;DsName:&quot;+get(&quot;diskDsName&quot;);
+        errorMsg += &quot;;freeSpace - diskSize &gt; num(maxSize*pct)  is &quot;+ checkDiskSize;
+        put(&quot;errorComponent&quot;,errorMsg);
+        did(true);
+
+// Begin :   if ( freeSpace &gt; diskSize ) 
+}else {
+//Else Begin :  if ( freeSpace &gt; diskSize ) 
+
+        showInfo();
+        println(&quot;goto: failue response &quot; );
+        put(&quot;errorCode&quot;,&quot;223&quot;);
+        var errorMsg = &quot;vCenterIP:&quot;+get(&quot;serverResPrvFQDN&quot;)+&quot;;DsName:&quot;+get(&quot;diskDsName&quot;);
+        errorMsg += &quot;;freeSpace &gt; diskSize  is &quot;+checkDiskSize;
+        put(&quot;errorComponent&quot;,errorMsg);
+        did(false);
+
+//Else Begin :  if ( freeSpace &gt; diskSize ) 
+}
+printline(&quot;=&quot;,80);
+//End Main()
+// Define function
+function showInfo(){
+//Begin: function showInfo()
+        printline(&quot;-&quot;,80);
+        println(&quot;reeSpace &gt; diskSize  is &quot;+ getvar(&quot;checkDiskSize&quot;));
+        println(&quot;freeSpace : &quot;+ getvar(&quot;freeSpace&quot;));
+        println(&quot;Request Free diskSize : &quot;+ getvar(&quot;diskSize&quot;));
+//End: function showInfo()
+}</value>
+          <record>false</record>
+        </staticBinding>
+      </bindings>
+      <transitions>
+        <transition id="261dbd0d-df66-4bcc-989a-784495e08ccb">
+          <annotation></annotation>
+          <name>success</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>success</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>6498aeaa-b59d-4b41-a4ae-9f48233e6b0e</refId>
+          </destination>
+          <source>
+            <refId>cedd31fb-b8d6-499d-bc6c-1f90bb539a1e</refId>
+          </source>
+          <positions>
+            <point>
+              <x>304.0</x>
+              <y>166.0</y>
+            </point>
+            <point>
+              <x>572.0</x>
+              <y>147.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>444.88928800730537</x>
+            <y>-38.32341531047876</y>
+          </labelPosition>
+        </transition>
+        <transition id="5a732b62-92ec-4017-90ad-a099298292dd">
+          <annotation></annotation>
+          <name>failure(Checking DiskSize)</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>failure</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>daae859c-ec29-496e-8cbe-42a42c7b306b</refId>
+          </destination>
+          <source>
+            <refId>cedd31fb-b8d6-499d-bc6c-1f90bb539a1e</refId>
+          </source>
+          <positions>
+            <point>
+              <x>330.4848484848485</x>
+              <y>180.0</y>
+            </point>
+            <point>
+              <x>448.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>448.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>451.0</x>
+              <y>347.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>397.58513389825856</x>
+            <y>1.4925596284185516</y>
+          </labelPosition>
+        </transition>
+      </transitions>
+      <properties/>
+      <opRef>
+        <refId>05b7f0c6-d88d-49a0-a13b-d8e74276da3a</refId>
+      </opRef>
+      <assignments>
+        <flowVariableAssignment id="78d545a9-6a54-467d-adc0-7e694dc73256">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_VARIABLE</assignmentTargetType>
+          <contextKey>errorCode</contextKey>
+          <expression id="f36f0dc2-869f-49ae-9de3-be9bc5f72942">
+            <annotation></annotation>
+            <name>Result: errorCode</name>
+            <fieldName>errorCode</fieldName>
+            <sourceType>AVAILABLE_RESULT</sourceType>
+            <filters>
+              <scriptletFilter id="50c598d3-dcc5-4c70-81bd-3f16369d6601">
+                <annotation></annotation>
+                <name>Scriptlet</name>
+                <scriptlet id="78b081b9-c2ac-49ad-93e4-fb3e841459ef">
+                  <annotation></annotation>
+                  <name>default</name>
+                  <script>scriptletResult =  scriptletContext.get(&quot;errorCode&quot;);</script>
+                  <type>RHINO</type>
+                </scriptlet>
+              </scriptletFilter>
+            </filters>
+          </expression>
+        </flowVariableAssignment>
+        <flowVariableAssignment id="e1f9e452-c2e9-422c-8700-41e90917cf37">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_VARIABLE</assignmentTargetType>
+          <contextKey>errorComponent</contextKey>
+          <expression id="d8bdee9e-0542-4d11-9e7e-c77e884db6a7">
+            <annotation></annotation>
+            <name>Result: errorComponent</name>
+            <fieldName>errorComponent</fieldName>
+            <sourceType>AVAILABLE_RESULT</sourceType>
+            <filters>
+              <scriptletFilter id="cd02a74f-fb41-4860-98c9-00696ac36178">
+                <annotation></annotation>
+                <name>Scriptlet</name>
+                <scriptlet id="cff3bea1-e667-47d5-9dba-adde757d13b6">
+                  <annotation></annotation>
+                  <name>default</name>
+                  <script>scriptletResult =  scriptletContext.get(&quot;errorComponent&quot;);</script>
+                  <type>RHINO</type>
+                </scriptlet>
+              </scriptletFilter>
+            </filters>
+          </expression>
+        </flowVariableAssignment>
+      </assignments>
+      <throttleSize>0</throttleSize>
+    </step>
+    <returnStep id="6498aeaa-b59d-4b41-a4ae-9f48233e6b0e">
+      <annotation></annotation>
+      <name>Resolved : success</name>
+      <bounds>
+        <x>521.0</x>
+        <y>113.0</y>
+      </bounds>
+      <layer>-1</layer>
+      <hideInbound>false</hideInbound>
+      <iconSpec id="647cb71f-e26c-496f-ba25-829b427c2dcc">
+        <baseIcon>return_success.png</baseIcon>
+        <basePath>System</basePath>
+        <readOnly>true</readOnly>
+        <layers/>
+      </iconSpec>
+      <addResultToRunContext>false</addResultToRunContext>
+      <isCriticalStep>false</isCriticalStep>
+      <isNonBlocking>false</isNonBlocking>
+      <isParallelStep>false</isParallelStep>
+      <isSingleResponse>false</isSingleResponse>
+      <recordInHistory>false</recordInHistory>
+      <recordRawOutput>true</recordRawOutput>
+      <recordPrimaryOutput>true</recordPrimaryOutput>
+      <checkPointStep>true</checkPointStep>
+      <historyCheckPointStep>true</historyCheckPointStep>
+      <scriptResultStep>false</scriptResultStep>
+      <userPrompt></userPrompt>
+      <bindings>
+        <staticBinding id="6a437681-b532-4a0f-8d55-29fbc8ca5a7d">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>freeSpace</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="638ac928-6d79-42f5-a1f1-eaf65b72f56f">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorCode</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="7c8cb8f8-6870-4c55-a6c2-b832f79490b3">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorComponent</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+      </bindings>
+      <transitions>
+        <transition id="b9197bc2-d3f1-464d-b4a5-b7312ea5ade3">
+          <annotation></annotation>
+          <name>return</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>success</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>6498aeaa-b59d-4b41-a4ae-9f48233e6b0e</refId>
+          </destination>
+          <source>
+            <refId>6498aeaa-b59d-4b41-a4ae-9f48233e6b0e</refId>
+          </source>
+          <positions/>
+        </transition>
+      </transitions>
+      <properties/>
+      <returnStepType>RESOLVED</returnStepType>
+      <assignments>
+        <flowVariableAssignment id="403082fa-7b4b-4e24-8a9b-7c3059f73f6b">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_OUTPUT_FIELD</assignmentTargetType>
+          <contextKey>freeSpace</contextKey>
+          <expression id="fb5f8959-9dcc-49c7-a644-378044a25efb">
+            <annotation></annotation>
+            <name>Input: freeSpace</name>
+            <fieldName>freeSpace</fieldName>
+            <sourceType>INPUT</sourceType>
+            <filters/>
+          </expression>
+        </flowVariableAssignment>
+        <flowVariableAssignment id="0abd4671-8a55-48b2-aeb3-31be91f1c585">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_OUTPUT_FIELD</assignmentTargetType>
+          <contextKey>errorCode</contextKey>
+          <expression id="e119bd1b-9c19-4726-b566-9d909fa5571a">
+            <annotation></annotation>
+            <name>Input: errorCode</name>
+            <fieldName>errorCode</fieldName>
+            <sourceType>INPUT</sourceType>
+            <filters/>
+          </expression>
+        </flowVariableAssignment>
+        <flowVariableAssignment id="b5e3b604-8412-4191-8aca-d0b314b0e337">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_OUTPUT_FIELD</assignmentTargetType>
+          <contextKey>errorComponent</contextKey>
+          <expression id="705a479b-768d-4086-8bc4-cc96070dd044">
+            <annotation></annotation>
+            <name>Input: errorComponent</name>
+            <fieldName>errorComponent</fieldName>
+            <sourceType>INPUT</sourceType>
+            <filters/>
+          </expression>
+        </flowVariableAssignment>
+      </assignments>
+    </returnStep>
+    <step id="a79c4892-29cd-43c6-8320-df96409e36a6">
+      <annotation>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.a79c4892-29cd-43c6-8320-df96409e36a6.description</annotation>
+      <name>Get Datastore Properties by Cluster</name>
+      <bounds>
+        <x>282.0</x>
+        <y>115.0</y>
+      </bounds>
+      <layer>-1</layer>
+      <hideInbound>false</hideInbound>
+      <iconSpec id="1a16626c-ba73-4a28-8964-a28deb93feb4">
+        <baseIcon>jdbc_query.png</baseIcon>
+        <basePath>/Databases/</basePath>
+        <readOnly>false</readOnly>
+        <layers>
+          <iconSpec id="ec148b70-18a7-4d35-9c0d-d66c5e38d640">
+            <baseIcon>find.png</baseIcon>
+            <basePath>/Annotations/</basePath>
+            <readOnly>false</readOnly>
+            <layers/>
+          </iconSpec>
+        </layers>
+      </iconSpec>
+      <addResultToRunContext>false</addResultToRunContext>
+      <isCriticalStep>false</isCriticalStep>
+      <isNonBlocking>false</isNonBlocking>
+      <isParallelStep>false</isParallelStep>
+      <isSingleResponse>false</isSingleResponse>
+      <recordInHistory>false</recordInHistory>
+      <recordRawOutput>true</recordRawOutput>
+      <recordPrimaryOutput>true</recordPrimaryOutput>
+      <checkPointStep>true</checkPointStep>
+      <historyCheckPointStep>true</historyCheckPointStep>
+      <scriptResultStep>false</scriptResultStep>
+      <userPrompt>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.a79c4892-29cd-43c6-8320-df96409e36a6.prompt</userPrompt>
+      <scriptlet id="ea4a73e5-8815-4686-9a3e-9ebb3f5955ab">
+        <annotation></annotation>
+        <name>Step Get Datastore Properties by Cluster in Flow Get CMO DataStore Free Space (a79c4892-29cd-43c6-8320-df96409e36a6)</name>
+        <type>RHINO</type>
+      </scriptlet>
+      <bindings>
+        <staticBinding id="8c703964-801b-41e8-b85d-7367f390a600">
+          <annotation></annotation>
+          <toContextKey>host</toContextKey>
+          <fromContextKey></fromContextKey>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>propsPathset</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>summary.freeSpace,summary.capacity</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="f788574c-7f51-4010-8436-13883637257e">
+          <annotation></annotation>
+          <fromContextKey>rasGroup</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>overrideJRAS</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="2347d635-3afb-4696-b9bd-7b5d70835feb">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>embedScriptlet</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>/*  Embed JavaScriptlet OOJS@Daway */ 
+// Begin: Embed JavaScriptlet
+//------------------------------------------
+
+// output propsRootObj
+var myResult = how.returnResult;
+var me = &quot;summary.freeSpace:&quot;;
+var regXme = &quot;summary\.freeSpace:.*&quot;;
+if ( RegExp(regXme,&quot;gi&quot;).test(myResult) ){
+        var freeSpace = RegExp(regXme,&quot;gi&quot;).exec(myResult).toString().replace(me,&quot;&quot;);
+        var freeSpaceGb = num(freeSpace)/(1024*1024*1024);
+        println(&quot;freeSpace :&quot;+freeSpace);
+        println(&quot;freeSpace(Gb) : &quot;+freeSpaceGb);
+        put(&quot;freeSpace&quot;,+ freeSpaceGb);
+}
+
+var max = &quot;summary.capacity:&quot;;
+var regXcap = &quot;summary\.capacity:[0-9]*&quot;;
+if ( RegExp(regXcap,&quot;gi&quot;).test(myResult) ){
+        var maxSize = RegExp(regXcap,&quot;gi&quot;).exec(myResult).toString().replace(max,&quot;&quot;);
+        //var maxSize = tempMaxSize.substring(0, tempMaxSize.length-1);
+        var maxSizeGb = num(maxSize)/(1024*1024*1024);
+        println(&quot;maxSize :&quot;+maxSize);
+        println(&quot;maxSize(Gb) : &quot;+maxSizeGb);
+        put(&quot;maxSize&quot;,+ maxSizeGb);
+}
+//------------------------------------------
+// End: Embed JavaScriptlet</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="0d314c43-1289-4004-b32e-e145111658de">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorCodeList</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>{
+     &quot;Unsupported request for change disk size&quot;:&quot;223&quot;
+}</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="8144a83b-7a36-4974-8343-058e55df2986">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorCodeRetry</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>{
+&quot;Failed to connect/authenticate&quot;:&quot;200&quot;
+}</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="d33e9c23-8fb9-4807-a338-eee6b0ea1480">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>propsRootObj</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="884ce885-7088-4289-95d3-3244e0975fac">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey></fromContextKey>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>propsRootObjType</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>Datastore</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="38a4e039-354e-4e80-95bd-0a25994e646f">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey>vCenterHost</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>host</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <identityBinding id="186a354f-237f-416d-b647-90989fa3ff63">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey>vcenter.username</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>user</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <record>false</record>
+          <link>
+            <refId>c00685cb-8517-4deb-a426-2f2736322386</refId>
+            <refName>nucl.vcenter</refName>
+          </link>
+          <identityAttribute>USERNAME</identityAttribute>
+        </identityBinding>
+        <identityBinding id="9cc39742-9474-4f67-a574-050f10bc077c">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey>vcenter.password</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>ENCRYPTED</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>password</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <record>false</record>
+          <link>
+            <refId>c00685cb-8517-4deb-a426-2f2736322386</refId>
+            <refName>nucl.vcenter</refName>
+          </link>
+          <identityAttribute>PASSWORD</identityAttribute>
+        </identityBinding>
+        <staticBinding id="0f58a9f8-b852-4ad4-8305-d943a8e2a2c3">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey></fromContextKey>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>propsType</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>Datastore</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="b7827f05-f75f-4763-beed-c0c00bf6eb21">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey></fromContextKey>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>port</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>443</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="20321ca3-3215-4d2d-b9fb-69a1d862af30">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey></fromContextKey>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>protocol</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>https</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="cc2e9f1d-53e4-46cb-8162-d389cf371e09">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>closeSession</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>true</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="8a964374-cb54-4df1-b2c5-e353f91fcc1d">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>interval</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="6f94dfe5-0a48-49c0-ba48-604aa76fffae">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>retry</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+      </bindings>
+      <transitions>
+        <transition id="9498d315-4dad-431c-92b4-471610ec3d53">
+          <annotation></annotation>
+          <name>success</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>success</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>cedd31fb-b8d6-499d-bc6c-1f90bb539a1e</refId>
+          </destination>
+          <source>
+            <refId>a79c4892-29cd-43c6-8320-df96409e36a6</refId>
+          </source>
+          <positions>
+            <point>
+              <x>331.0</x>
+              <y>149.0</y>
+            </point>
+            <point>
+              <x>449.0</x>
+              <y>148.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>521.0132097562437</x>
+            <y>-44.6023172319491</y>
+          </labelPosition>
+        </transition>
+        <transition id="d3c032f0-31b5-463e-8daa-eae3ab08cc9f">
+          <annotation></annotation>
+          <name>failure(Getting FreeSpace)</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>failure</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>daae859c-ec29-496e-8cbe-42a42c7b306b</refId>
+          </destination>
+          <source>
+            <refId>a79c4892-29cd-43c6-8320-df96409e36a6</refId>
+          </source>
+          <positions>
+            <point>
+              <x>343.0</x>
+              <y>174.625</y>
+            </point>
+            <point>
+              <x>330.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>330.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>569.0</x>
+              <y>347.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>317.4774998458676</x>
+            <y>-0.37302718745798</y>
+          </labelPosition>
+        </transition>
+        <transition id="7a1b2515-774f-4c04-889c-63a227e7e757">
+          <annotation></annotation>
+          <name>no more</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>no more</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>daae859c-ec29-496e-8cbe-42a42c7b306b</refId>
+          </destination>
+          <source>
+            <refId>a79c4892-29cd-43c6-8320-df96409e36a6</refId>
+          </source>
+          <positions>
+            <point>
+              <x>337.0</x>
+              <y>174.625</y>
+            </point>
+            <point>
+              <x>330.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>330.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>569.0</x>
+              <y>347.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>272.29726584174824</x>
+            <y>0.5245694823627844</y>
+          </labelPosition>
+        </transition>
+        <transition id="05069366-9201-4a21-ae9c-db1fe8295cd2">
+          <annotation></annotation>
+          <name>retry</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>retry</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>a79c4892-29cd-43c6-8320-df96409e36a6</refId>
+          </destination>
+          <source>
+            <refId>a79c4892-29cd-43c6-8320-df96409e36a6</refId>
+          </source>
+          <positions>
+            <point>
+              <x>321.5</x>
+              <y>181.0</y>
+            </point>
+            <point>
+              <x>360.0</x>
+              <y>90.0</y>
+            </point>
+            <point>
+              <x>360.0</x>
+              <y>90.0</y>
+            </point>
+            <point>
+              <x>300.0</x>
+              <y>90.0</y>
+            </point>
+            <point>
+              <x>300.0</x>
+              <y>90.0</y>
+            </point>
+            <point>
+              <x>331.0</x>
+              <y>165.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>516.6666666666666</x>
+            <y>12.0</y>
+          </labelPosition>
+        </transition>
+      </transitions>
+      <properties/>
+      <opRef>
+        <refId>24ec2e87-f85c-4591-9898-25c3fe8f7b24</refId>
+      </opRef>
+      <assignments/>
+      <throttleSize>0</throttleSize>
+    </step>
+    <returnStep id="daae859c-ec29-496e-8cbe-42a42c7b306b">
+      <annotation>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.daae859c-ec29-496e-8cbe-42a42c7b306b.description</annotation>
+      <name>Error : failure</name>
+      <bounds>
+        <x>520.0</x>
+        <y>295.0</y>
+      </bounds>
+      <layer>-1</layer>
+      <hideInbound>false</hideInbound>
+      <iconSpec id="3f794642-848f-4860-9012-9ac61b740ff8">
+        <baseIcon>return_failure.png</baseIcon>
+        <basePath>System</basePath>
+        <readOnly>true</readOnly>
+        <layers/>
+      </iconSpec>
+      <addResultToRunContext>false</addResultToRunContext>
+      <isCriticalStep>false</isCriticalStep>
+      <isNonBlocking>false</isNonBlocking>
+      <isParallelStep>false</isParallelStep>
+      <isSingleResponse>false</isSingleResponse>
+      <recordInHistory>false</recordInHistory>
+      <recordRawOutput>true</recordRawOutput>
+      <recordPrimaryOutput>true</recordPrimaryOutput>
+      <checkPointStep>true</checkPointStep>
+      <historyCheckPointStep>true</historyCheckPointStep>
+      <scriptResultStep>false</scriptResultStep>
+      <userPrompt></userPrompt>
+      <bindings>
+        <staticBinding id="63ff7c5f-4a72-4991-bcc0-6573d212e03b">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorCode</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="9e3f3fc7-b96d-491a-928c-bb2afc0970e1">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorComponent</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+      </bindings>
+      <transitions>
+        <transition id="bb959eda-dba5-4543-bce8-edf625ee26ca">
+          <annotation></annotation>
+          <name>return</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>failure</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>daae859c-ec29-496e-8cbe-42a42c7b306b</refId>
+          </destination>
+          <source>
+            <refId>daae859c-ec29-496e-8cbe-42a42c7b306b</refId>
+          </source>
+          <positions/>
+        </transition>
+      </transitions>
+      <properties/>
+      <returnStepType>ERROR</returnStepType>
+      <assignments>
+        <flowVariableAssignment id="2a8c8b82-2be8-41de-8402-0e2ab6d347dd">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_OUTPUT_FIELD</assignmentTargetType>
+          <contextKey>errorComponent</contextKey>
+          <expression id="a334459e-bb51-4d24-9a77-30dbf73f4600">
+            <annotation></annotation>
+            <name>Input: errorComponent</name>
+            <fieldName>errorComponent</fieldName>
+            <sourceType>INPUT</sourceType>
+            <filters/>
+          </expression>
+        </flowVariableAssignment>
+        <flowVariableAssignment id="85156578-25af-45b6-ac28-ee6d4912cf3a">
+          <annotation></annotation>
+          <name>assignment</name>
+          <action>OVERWRITE</action>
+          <assignmentTargetType>FLOW_OUTPUT_FIELD</assignmentTargetType>
+          <contextKey>errorCode</contextKey>
+          <expression id="ad7e0d00-81a4-4357-9a65-7e5d1a97a68e">
+            <annotation></annotation>
+            <name>Input: errorCode</name>
+            <fieldName>errorCode</fieldName>
+            <sourceType>INPUT</sourceType>
+            <filters/>
+          </expression>
+        </flowVariableAssignment>
+      </assignments>
+    </returnStep>
+    <step id="49af0afc-54bd-43bc-923e-dc2c39b26148">
+      <annotation>e9c5f3f4-9a3b-41af-a064-4dbc6f2956b1.49af0afc-54bd-43bc-923e-dc2c39b26148.description</annotation>
+      <name>Simple Search</name>
+      <bounds>
+        <x>162.0</x>
+        <y>115.0</y>
+      </bounds>
+      <layer>-1</layer>
+      <hideInbound>false</hideInbound>
+      <iconSpec id="e7db95cc-01a7-43f6-83b8-2ce57b87a835">
+        <baseIcon>sql_query.png</baseIcon>
+        <basePath>/Databases/</basePath>
+        <readOnly>false</readOnly>
+        <layers>
+          <iconSpec id="6652de6f-6d3c-4a35-a08d-32d066cb004f">
+            <baseIcon>find.png</baseIcon>
+            <basePath>/Annotations/</basePath>
+            <readOnly>false</readOnly>
+            <layers/>
+          </iconSpec>
+        </layers>
+      </iconSpec>
+      <addResultToRunContext>false</addResultToRunContext>
+      <isCriticalStep>false</isCriticalStep>
+      <isNonBlocking>false</isNonBlocking>
+      <isParallelStep>false</isParallelStep>
+      <isSingleResponse>false</isSingleResponse>
+      <recordInHistory>false</recordInHistory>
+      <recordRawOutput>true</recordRawOutput>
+      <recordPrimaryOutput>true</recordPrimaryOutput>
+      <checkPointStep>true</checkPointStep>
+      <historyCheckPointStep>true</historyCheckPointStep>
+      <scriptResultStep>false</scriptResultStep>
+      <userPrompt></userPrompt>
+      <scriptlet id="92e6aa10-c206-4c78-ab8a-9450d103ba14">
+        <annotation></annotation>
+        <name>Step Simple Search in Flow Get CMO DataStore Free Space (49af0afc-54bd-43bc-923e-dc2c39b26148)</name>
+        <script></script>
+        <type>RHINO</type>
+      </scriptlet>
+      <bindings>
+        <staticBinding id="1f80ffab-b8af-45bf-b7e1-ff980a1c588a">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey>diskDsName</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>nameToMatch</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="87d0fbcf-c5a5-4a63-afdf-88e9282f1083">
+          <annotation></annotation>
+          <fromContextKey>rasGroup</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>overrideJRAS</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="af6e1cd2-e10c-4674-8e45-d5d6bec81d70">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>embedScriptlet</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>/*  Embed JavaScriptlet OOJS@Daway */ 
+// Begin: Embed JavaScriptlet
+//------------------------------------------
+
+// output propsRootObj
+var propsRootObj = /.*=/g.exec(how.returnResult).toString().replace(&quot;=&quot;,&quot;&quot;);
+println(&quot;propsRootObj : &quot; + propsRootObj);
+put(&quot;propsRootObj&quot;,propsRootObj);
+
+//------------------------------------------
+// End: Embed JavaScriptlet</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="986ad508-317c-4106-9951-70798a05a785">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorCodeList</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>{
+&quot;Failed to modify disk&quot;:&quot;221&quot;
+}</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="f43a6c20-094e-4eeb-8310-02aff3dff89a">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>errorCodeRetry</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>{
+&quot;Failed to connect/authenticate&quot;:&quot;200&quot;
+}</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="8f0964bb-67f6-47ac-982a-97bd196c98ca">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey></fromContextKey>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>propsType</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>Datastore</value>
+          <record>false</record>
+        </staticBinding>
+        <identityBinding id="d64aef2b-cf3c-4b81-96bb-2f254ebc3a47">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey>vCenterHost</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>host</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <record>false</record>
+          <link>
+            <refId>c00685cb-8517-4deb-a426-2f2736322386</refId>
+            <refName>nucl.vcenter</refName>
+          </link>
+          <identityAttribute>USERNAME</identityAttribute>
+        </identityBinding>
+        <identityBinding id="6aea121e-4b3b-487e-bbbb-59b44a512cf9">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey>vcenter.username</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>user</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <record>false</record>
+          <link>
+            <refId>c00685cb-8517-4deb-a426-2f2736322386</refId>
+            <refName>nucl.vcenter</refName>
+          </link>
+          <identityAttribute>USERNAME</identityAttribute>
+        </identityBinding>
+        <identityBinding id="8cc1611f-0e21-4c09-a9c0-f0d1e7a1c150">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey>vcenter.password</fromContextKey>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>ENCRYPTED</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>password</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <record>false</record>
+          <link>
+            <refId>c00685cb-8517-4deb-a426-2f2736322386</refId>
+            <refName>nucl.vcenter</refName>
+          </link>
+          <identityAttribute>PASSWORD</identityAttribute>
+        </identityBinding>
+        <staticBinding id="3a37ce44-d2be-4bbd-a7fe-f0d6fad219bf">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey></fromContextKey>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>port</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>443</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="47c13144-a607-4f66-97b8-33e7011fa098">
+          <annotation></annotation>
+          <toContextKey></toContextKey>
+          <fromContextKey></fromContextKey>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>protocol</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>https</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="6e531d8b-11fd-410e-a4ce-aa0986725418">
+          <annotation></annotation>
+          <assignFromContext>false</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>true</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>closeSession</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value>true</value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="691a3964-08bc-4359-8106-0bf33e033a05">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>interval</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+        <staticBinding id="72abe032-2a06-4c62-a3a8-994158ef280b">
+          <annotation></annotation>
+          <assignFromContext>true</assignFromContext>
+          <assignToContext>false</assignToContext>
+          <inputType>STRING</inputType>
+          <isList>false</isList>
+          <required>false</required>
+          <isPersisted>true</isPersisted>
+          <inputSymbol>retry</inputSymbol>
+          <listDelimiter>,</listDelimiter>
+          <value></value>
+          <record>false</record>
+        </staticBinding>
+      </bindings>
+      <transitions>
+        <transition id="afefb0d9-3e58-49d1-bd69-2e9aa5747d90">
+          <annotation></annotation>
+          <name>no more</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>no more</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>daae859c-ec29-496e-8cbe-42a42c7b306b</refId>
+          </destination>
+          <source>
+            <refId>49af0afc-54bd-43bc-923e-dc2c39b26148</refId>
+          </source>
+          <positions>
+            <point>
+              <x>215.0</x>
+              <y>166.32596685082873</y>
+            </point>
+            <point>
+              <x>210.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>210.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>569.0</x>
+              <y>347.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>236.35708552375678</x>
+            <y>1.4837275362005957</y>
+          </labelPosition>
+        </transition>
+        <transition id="55529a81-2ff3-41de-afa5-0063eeea630b">
+          <annotation></annotation>
+          <name>success</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>success</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>a79c4892-29cd-43c6-8320-df96409e36a6</refId>
+          </destination>
+          <source>
+            <refId>49af0afc-54bd-43bc-923e-dc2c39b26148</refId>
+          </source>
+          <positions>
+            <point>
+              <x>209.0</x>
+              <y>149.0</y>
+            </point>
+            <point>
+              <x>331.0</x>
+              <y>149.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>580.2376763123916</x>
+            <y>-43.748043161746835</y>
+          </labelPosition>
+        </transition>
+        <transition id="08b8a14d-5115-494d-8c1b-9efef49d05cc">
+          <annotation></annotation>
+          <name>failure(Getting DataStoreID )</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>failure</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>daae859c-ec29-496e-8cbe-42a42c7b306b</refId>
+          </destination>
+          <source>
+            <refId>49af0afc-54bd-43bc-923e-dc2c39b26148</refId>
+          </source>
+          <positions>
+            <point>
+              <x>221.0</x>
+              <y>166.32596685082873</y>
+            </point>
+            <point>
+              <x>210.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>210.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>210.0</x>
+              <y>330.0</y>
+            </point>
+            <point>
+              <x>569.0</x>
+              <y>347.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>199.45018801426846</x>
+            <y>1.0074793096660266</y>
+          </labelPosition>
+        </transition>
+        <transition id="4c2c03c3-0424-4217-a9e8-e22b8a57c362">
+          <annotation></annotation>
+          <name>retry</name>
+          <command>NEXT</command>
+          <linkMode>false</linkMode>
+          <responseSymbol>retry</responseSymbol>
+          <shouldHandoff>false</shouldHandoff>
+          <transitionValue>0.0</transitionValue>
+          <destination>
+            <refId>49af0afc-54bd-43bc-923e-dc2c39b26148</refId>
+          </destination>
+          <source>
+            <refId>49af0afc-54bd-43bc-923e-dc2c39b26148</refId>
+          </source>
+          <positions>
+            <point>
+              <x>201.5</x>
+              <y>181.0</y>
+            </point>
+            <point>
+              <x>240.0</x>
+              <y>90.0</y>
+            </point>
+            <point>
+              <x>240.0</x>
+              <y>90.0</y>
+            </point>
+            <point>
+              <x>180.0</x>
+              <y>90.0</y>
+            </point>
+            <point>
+              <x>180.0</x>
+              <y>90.0</y>
+            </point>
+            <point>
+              <x>211.0</x>
+              <y>165.0</y>
+            </point>
+          </positions>
+          <labelPosition>
+            <x>516.6666666666666</x>
+            <y>9.0</y>
+          </labelPosition>
+        </transition>
+      </transitions>
+      <properties/>
+      <opRef>
+        <refId>19953d9b-4b45-4a72-a673-65f80c496d11</refId>
+      </opRef>
+      <assignments/>
+      <throttleSize>0</throttleSize>
+    </step>
+  </steps>
+  <startSteps>93cff419-493d-406a-b193-ce61b836fff6</startSteps>
+</flow>

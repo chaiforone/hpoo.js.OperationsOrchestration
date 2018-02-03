@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="5e16cbda-ac6a-4d23-b8fe-007e3962a59b">
+  <descriptionCdata><![CDATA[5e16cbda-ac6a-4d23-b8fe-007e3962a59b.1247d099-9da2-4db4-9533-64be175f0883.prompt=Password\:
+5e16cbda-ac6a-4d23-b8fe-007e3962a59b.3190da6f-a5ba-4fdb-9c54-fc580326df89.prompt=Folder path to create\:
+5e16cbda-ac6a-4d23-b8fe-007e3962a59b.a5cdc1ee-17aa-4cf5-aff6-c4da915c6331.prompt=VMWare Host\:
+5e16cbda-ac6a-4d23-b8fe-007e3962a59b.c2875480-74c1-401a-8adc-46118d9b010d.prompt=VMWare User\:
+5e16cbda-ac6a-4d23-b8fe-007e3962a59b.description=<pre>Creates a new inventory folder in a Datacenter as seen in vCenter "Inventory > VMs and Templates" view.\n\nInputs\:\n    host - VMware vCenter host hostname or IP.\n    user - VMware username.\n    password - VMware user's password.\n    port - Port to connect on.\nExamples\: 443, 80\n    protocol - Connection protocol.\nValid values\: "https", "http"\n    closeSession - Close the internally kept VMware Infrastructure API session at completion of operation.\n    vmDatacenter - Datacenter to create new VM inventory folder in.\n    vmFolder - Path of VM inventory folder to create.  Folder names are delimited by a forward slash "/". Will create any parent folders if they do not already exist.  This input is case sensitive.\nExample\: /Hewlett Packard/Operations Orchestration/Templates\n\nResponses\:\n    success - The operation completed successfully.\n    failure - Something went wrong.\n\nResults\:\n    returnResult - This is the primary output.  Descriptive result of the operation.  Reason for error on failure.\n    folderID - The ID of the created folder.\n</pre>
+5e16cbda-ac6a-4d23-b8fe-007e3962a59b.e7d84aeb-20b0-44d9-b52f-7b39d02e24ef.prompt=Close session?\:
+5e16cbda-ac6a-4d23-b8fe-007e3962a59b.f2cd0d37-f75e-48a0-9cd0-b5c290824595.prompt=Target datacenter\:
+]]></descriptionCdata>
+  <annotation>5e16cbda-ac6a-4d23-b8fe-007e3962a59b.description</annotation>
+  <name>Create VM Folder (retry)</name>
+  <categories/>
+  <inputs>
+    <userInputBinding id="a5cdc1ee-17aa-4cf5-aff6-c4da915c6331">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>host</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>5e16cbda-ac6a-4d23-b8fe-007e3962a59b.a5cdc1ee-17aa-4cf5-aff6-c4da915c6331.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="c2875480-74c1-401a-8adc-46118d9b010d">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>user</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>5e16cbda-ac6a-4d23-b8fe-007e3962a59b.c2875480-74c1-401a-8adc-46118d9b010d.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="1247d099-9da2-4db4-9533-64be175f0883">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>ENCRYPTED</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>password</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>5e16cbda-ac6a-4d23-b8fe-007e3962a59b.1247d099-9da2-4db4-9533-64be175f0883.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="01b48510-ff54-45dc-9c59-3a81f54e2a56">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>port</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>443</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="b435f983-ec36-464d-ad77-486386703029">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>protocol</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>https</value>
+      <record>false</record>
+    </staticBinding>
+    <userInputBinding id="e7d84aeb-20b0-44d9-b52f-7b39d02e24ef">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>closeSession</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>5e16cbda-ac6a-4d23-b8fe-007e3962a59b.e7d84aeb-20b0-44d9-b52f-7b39d02e24ef.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <link>
+        <refId>96a1ed25-cdc9-4ff6-8fba-e9c044c5ca53</refId>
+        <refName>Boolean - False Default</refName>
+      </link>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="f2cd0d37-f75e-48a0-9cd0-b5c290824595">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>vmDatacenter</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>5e16cbda-ac6a-4d23-b8fe-007e3962a59b.f2cd0d37-f75e-48a0-9cd0-b5c290824595.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="3190da6f-a5ba-4fdb-9c54-fc580326df89">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>vmFolder</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>5e16cbda-ac6a-4d23-b8fe-007e3962a59b.3190da6f-a5ba-4fdb-9c54-fc580326df89.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="8252b6ad-f776-4de3-9315-a18f507ac20f">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>embedScriptlet</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>/*  Embed JavaScriptlet OOJS@Daway */ 
+// Begin: Embed JavaScriptlet
+//------------------------------------------
+
+
+//------------------------------------------
+// End: Embed JavaScriptlet</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="606c5e8f-de73-44e8-93aa-bf432994d827">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorCodeList</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>{
+&quot;ModifyVM&quot;:&quot;221&quot;
+}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="b994d396-a01e-4fbe-9517-f1817cfc1da1">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorCodeRetry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>{
+&quot;Failed to connect/authenticate to vCenter&quot;:&quot;200&quot;
+}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="c73a1935-ce43-4e82-acd5-22494fca15f5">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>interval</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="a1587041-4cd3-4300-afac-5164b89b8af2">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>retry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="380a650d-d6d7-411f-9f4f-25a64da02677">
+    <annotation></annotation>
+    <name>Operation Create VM Folder (retry) (5e16cbda-ac6a-4d23-b8fe-007e3962a59b)</name>
+    <type>RHINO</type>
+    <scriptRef>
+      <refId>e41e6d11-2143-473a-9acc-f206f701fc68</refId>
+      <refName>VMware Virtual Infrastructure and vSphere API Component (retry)</refName>
+    </scriptRef>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="a50b5341-4353-4aff-847e-3a9eb005e318">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules>
+        <expression id="565fcd2a-1c1d-4e23-ad77-e12cecf04c8b">
+          <annotation></annotation>
+          <name>returnCode</name>
+          <fieldName>returnCode</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="6a3f033d-2d8b-47e6-a26f-1430a33de2f2">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>0</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>EXACT_MATCH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="ed40f7df-48fe-4040-9f61-9a5193c0acdd">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>true</isDefault>
+      <onFailure>true</onFailure>
+      <type>ERROR</type>
+      <matchRules>
+        <expression id="26fd2d3b-bdac-4d99-9f9f-7419d2234f45">
+          <annotation></annotation>
+          <name>returnCode</name>
+          <fieldName>returnCode</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="eeb9b10c-1f00-42ee-a41b-12e58c17d596">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>-1</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>EXACT_MATCH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="e40940dc-3709-4079-ae75-cfda7f9f0b26">
+      <annotation></annotation>
+      <name>retry</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>DIAGNOSED</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions/>
+  <resultExpression id="778e3d3d-69be-42c2-9c30-2a5bc9fd43f4">
+    <annotation></annotation>
+    <name>returnCode</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="4497fa21-ae1f-4b1a-85b6-61a9c2e3d635">
+    <baseIcon>folder.png</baseIcon>
+    <basePath>/E-mail/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="99b3e48d-53c8-423d-b568-663dd13e80cf">
+        <baseIcon>add.png</baseIcon>
+        <basePath>/Annotations/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <opRef>
+    <refId>ee10819c-dca3-4ce0-84ad-5d6275a19abe</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

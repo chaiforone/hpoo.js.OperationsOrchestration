@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scriptlet id="9e70b5fc-1fa0-43a8-a287-0967241c9403">
+  <descriptionCdata><![CDATA[]]></descriptionCdata>
+  <annotation></annotation>
+  <name>Retry and Run PowerShell Script</name>
+  <script>///
+eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); /* #include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/
+///
+/*
+(Nucleus_automation_design_specification_v40: 3.18.8.1) JavaScript Name: Run Scriptlets from Inputs @Daway
+*/
+/// Main() Begin: 
+//=========================================================
+/// exectue javascript content @Daway
+try {
+//if(!isnull(&quot;Scriptlet&quot;)){eval(Scriptlet);}else{
+//Begin :  your Scriptlet
+//------------------------------------------------------------------------
+putResult();
+if(0 == num(getdid(&quot;returnCode&quot;))){
+//Begin :  if ( 0 = num(getdid(&quot;returnCode&quot;)))
+	println(&quot;Sucess&quot;);
+	showInfo();
+	errorCode000();
+//End   :  if ( 0 = num(getdid(&quot;returnCode&quot;)))
+}else{
+// Else Begin: if ( 0 = num(getdid(&quot;returnCode&quot;)))
+	println(&quot;Faliure&quot;);
+	
+	//
+	printline(&quot;=&quot;,80);
+	//check Connect
+	if ( checkConnect() ){
+	// Begin: Check Connect
+    	put(&quot;connectError&quot;,&quot;true&quot;);
+		if(doRetry()){
+    		putErrorInfo();   	
+    		showInfo();
+    		errorCode200();
+   			did(&quot;retry&quot;);
+ 		}else{
+    	//putErrorInfo();
+    		showInfo();
+    		errorCode200();
+ 			did(false);
+    	}
+    put(&quot;connectError&quot;,&quot;true&quot;);
+// End: Check Connect
+}else{
+// Begin: PowerCLI Runtime error
+    showInfo();
+	errorCodeIs();
+// End: PowerCLI Runtime error
+}
+printline(&quot;=&quot;,80);
+// Else   End: if ( 0 = num(getdid(&quot;returnCode&quot;)))
+}
+
+//------------------------------------------------------------------------
+//End   :  Your Scriptlet
+//}
+// finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+    showSyntaxError();
+    did(false);
+} catch (e){
+    var errorMsg = str(e);
+    showErrorInfo(errorMsg);
+    did(false);
+}finally { 
+    println();
+}
+/// Main() End:   
+//Define Main() functions 
+//=========================================================
+//in Main catch
+function showSyntaxError(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+    printline(&quot;-&quot;,80);
+    println(getvar(&quot;Scriptlet&quot;));
+    printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;1) The error message was below:&quot;);
+    printline(&quot;-&quot;,80);
+    println(me);
+    printline(&quot;=&quot;,80);
+    // put context variable errorCode
+    put(&quot;errorCode&quot;,&quot;999&quot;);
+    put(&quot;errorComponent&quot;,me);
+    if(!isnull(&quot;Scriptlet&quot;)){
+        println(&quot;2) It used relation scriptlet source content was below:&quot;);
+        printline(&quot;-&quot;,80);
+        println(getvar(&quot;Scriptlet&quot;));
+        printline(&quot;=&quot;,80);
+    }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It was not used Scriptlet on input inspector&quot;);
+    println(&quot;javascriptlet content is empty!&quot;);
+    printline(&quot;=&quot;,80);
+}
+// end of Main() define functions
+//=========================================================
+// Begin  : your Define functions
+// Show PowerCLI Info
+function showInfo(){
+    printline(&quot;-&quot;,80);
+	println(&quot;returnCode : &quot;+getdid(&quot;returnCode&quot;));
+	println(&quot;exception : &quot;+getdid(&quot;exception&quot;));
+	println(&quot;objectsCount : &quot;+getdid(&quot;objectsCount&quot;));
+	printline(&quot;-&quot;,80);
+	println(&quot;returnResult : &quot;+getdid(&quot;returnResult&quot;));
+	printline(&quot;=&quot;,80);
+}
+// Set PowerCLI Info
+function putResult(){
+	put(&quot;outReturnCode&quot;,getdid(&quot;returnCode&quot;));
+	put(&quot;outException&quot;,getdid(&quot;exception&quot;));
+	put(&quot;outObjectsCount&quot;,getdid(&quot;objectsCount&quot;));
+	put(&quot;outReturnResult&quot;,getdid(&quot;returnResult&quot;));;
+}
+//do retry.   
+// doRetry() 
+function doRetry(){
+// Begin: doRetry
+    var myRetry = getvar(get(&quot;myRetry&quot;));
+    if ( &quot;&quot;==myRetry ){
+      put(&quot;myRetry&quot;,getvar(&quot;retry&quot;) );
+      myRetry = num(getvar(&quot;retry&quot;));
+    }else{
+      myRetry = num(get(&quot;myRetry&quot;)) ;
+    }
+    myRetry -= 1;
+    put(&quot;myRetry&quot;,myRetry);
+    if(0 &gt;= myRetry){
+         return false;
+    }else{
+         sleep(interval);
+         return true;
+    }     
+// End: doRetry
+}
+// put errorCode from errorCodeList
+function errorCodeIs(){
+	put(&quot;errorCode&quot;,errorCodeList);
+	putErrorInfo();
+}
+// put errorCode 000
+function errorCode000(){
+	put(&quot;errorCode&quot;,&quot;000&quot;);
+	putErrorInfo();
+}
+// put errorCode connect
+function errorCode200(){
+	put(&quot;errorCode&quot;,&quot;200&quot;);
+	putErrorInfo();
+}
+//Check Connect from exception
+function checkConnect(){return /Connect-VIServer -Server/g.test(getdid(&quot;exception&quot;));}
+// put errorComponent
+function putErrorInfo(){
+	put(&quot;errorComponent&quot;,&quot;VCenter URL:&quot;+getvar(&quot;vCenterHost&quot;)+&quot;;OutPut:&quot;+getdid(&quot;returnResult&quot;)+&quot;;exception:&quot;+getdid(&quot;exception&quot;));
+}
+// End    : your Define functions
+//=========================================================</script>
+  <type>RHINO</type>
+</scriptlet>

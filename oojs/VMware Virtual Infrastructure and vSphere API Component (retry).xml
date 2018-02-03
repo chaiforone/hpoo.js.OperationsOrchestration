@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scriptlet id="e41e6d11-2143-473a-9acc-f206f701fc68">
+  <descriptionCdata><![CDATA[e41e6d11-2143-473a-9acc-f206f701fc68.description=/* Combine with below location of opeartion to use this VMware Virtual Infrastructure and vSphere (retr) API , this script include errorCode and retry function for Nucleus project 2016@Daway */\n/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/ (retry)
+]]></descriptionCdata>
+  <annotation>e41e6d11-2143-473a-9acc-f206f701fc68.description</annotation>
+  <name>VMware Virtual Infrastructure and vSphere API Component (retry)</name>
+  <script>///
+eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); /* #include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/
+///
+/*
+(Nucleus_automation_design_specification_v41: 3.18.4.16) JavaScript Name: Get DataStore Free Space 2016@Daway
+*/
+/*
+VMware Virtual Infrastructure and vSphere API Component (retry) script used on below component list
+
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Guest/Shutdown Guest (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Power/Get Power State (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Power/Set Power State (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Snapshots/Create Snapshot (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Snapshots/Delete Snapshot (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Snapshots/Revert To Snapshot (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Utilities/Advanced Search (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Utilities/Destroy Object (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Utilities/Get OS Descriptors (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Utilities/Simple Search (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Configuration/Add New Disk To VM (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Configuration/Add NIC To VM (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Configuration/Get Details of NIC on VM (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Configuration/Get Device Numbers For Type (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Configuration/Remove Disk From VM (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Configuration/Remove Floppy Drive From VM (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Configuration/Remove NIC From VM (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Configuration/Set VM Cores per Socket (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Configuration/Set VM CPU Count (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Configuration/Set VM Memory Size (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Clone Virtual Machine (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Create Virtual Machine (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Create VM Folder (retry)
+/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Virtualization/Integrations/VMware/VMware Virtual Infrastructure and vSphere/Virtual Machines/Get Virtual Machine (retry)
+
+*/
+//=========================================================
+// Begin  : your Define functions
+
+// Show PowerCLI Info
+how.showInfo = function ()
+{
+// Begin function showInfo()
+    printline(&quot;-&quot;,80);
+    //println(&quot;vCenterHost : &quot;	+ how.host);
+    isnull(&quot;how.host&quot;)?&quot;&quot;:println(&quot;vCenterHost : &quot; 					+ how.host);
+    isnull(&quot;how.user&quot;)?&quot;&quot;:println(&quot;vCenterUsername : &quot; 				+ how.user);
+    //println(&quot;vCenterUsername : &quot;+ how.user);
+    printline(&quot;-&quot;,80);
+    isnull(&quot;how.checkPointString&quot;)?&quot;&quot;:println(&quot;checkCmdString : &quot; 	+ how.checkCmdString);
+    isnull(&quot;how.propsType&quot;)?&quot;&quot;:println(&quot;propsType : &quot; 				+ how.propsType);
+    isnull(&quot;how.nameToMatch&quot;)?&quot;&quot;:println(&quot;nameToMatch : &quot; 			+ how.nameToMatch);
+	isnull(&quot;how.exception&quot;)?&quot;&quot;:println(&quot;exception : &quot; 				+ how.exception);
+	isnull(&quot;how.objectsCount&quot;)?&quot;&quot;:println(&quot;objectsCount : &quot; 		+ how.objectsCount);
+	isnull(&quot;how.propsPathset&quot;)?&quot;&quot;:println(&quot;propsPathset : &quot; 		+ how.propsPathset);
+	isnull(&quot;how.propsRootObj&quot;)?&quot;&quot;:println(&quot;propsRootObj : &quot; 		+ how.propsRootObj);
+	isnull(&quot;how.propsRootObjType&quot;)?&quot;&quot;:println(&quot;propsRootObjType : &quot; + how.propsRootObjType);
+	isnull(&quot;how.propsType&quot;)?&quot;&quot;:println(&quot;propsType : &quot; 				+ how.propsType);
+	printline(&quot;-&quot;,80);
+	println(&quot;returnCode : &quot;											+ how.returnCode );
+	println(&quot;returnResult : &quot;										+ how.returnResult);
+	printline(&quot;=&quot;,80);
+	
+// End: function showInfo()
+}
+
+// Put Runtime Info
+how.putRuntimeInfo = function ()
+{
+// Begin function putRuntimeInfo()
+
+	put(&quot;outReturnCode&quot;,	how.returnCode);
+	put(&quot;outException&quot;,		how.exception);
+	put(&quot;outObjectsCount&quot;,	how.objectsCount);
+	put(&quot;outReturnResult&quot;,	how.returnResult);
+	
+// End: function putRuntimeInfo()
+}
+function sethow(me,you){how.me = you}
+
+
+// Get PowerShell Runtime Info
+how.getRuntimeInfo = function ()
+{
+// Begin function getRuntimeInfo()
+
+	//how.host 			= getvar(&quot;host&quot;);
+    //how.user 			= getvar(&quot;user&quot;);
+	//how.returnCode 		= getdid(&quot;returnCode&quot;);
+	//how.exception  		= getdid(&quot;exception&quot;);
+	//how.objectsCount 	= getdid(&quot;objectsCount&quot;);
+	//how.returnResult 	= getdid(&quot;returnResult&quot;);
+	isnull(&quot;host&quot;)?&quot;&quot;:how.host 								= getvar(&quot;host&quot;);
+	isnull(&quot;user&quot;)?&quot;&quot;:how.user 								= getvar(&quot;user&quot;);
+	isnull(&quot;getdid(&apos;returnCode&apos;)&quot;)?&quot;&quot;:how.returnCode 		= getdid(&quot;returnCode&quot;);
+	isnull(&quot;getdid(&apos;exception&apos;)&quot;)?&quot;&quot;:how.exception 			= getdid(&quot;exception&quot;);
+	isnull(&quot;getdid(&apos;objectsCount&apos;)&quot;)?&quot;&quot;:how.objectsCount 	= getdid(&quot;objectsCount&quot;);
+	isnull(&quot;getdid(&apos;returnResult&apos;)&quot;)?&quot;&quot;:how.returnResult 	= getdid(&quot;returnResult&quot;);
+	//used on VMware Virtual Infrastructure and vSphere system property
+	isnull(&quot;propsType&quot;)?&quot;&quot;:how.propsType 					= getvar(&quot;propsType&quot;);
+	isnull(&quot;nameToMatch&quot;)?&quot;&quot;:how.nameToMatch 				= getvar(&quot;nameToMatch&quot;);
+	isnull(&quot;propsPathset&quot;)?&quot;&quot;:how.propsPathset 				= getvar(&quot;propsPathset&quot;);
+	isnull(&quot;propsRootObj&quot;)?&quot;&quot;:how.propsRootObj 				= getvar(&quot;propsRootObj&quot;);
+	isnull(&quot;propsRootObjType&quot;)?&quot;&quot;:how.propsRootObjType 		= getvar(&quot;propsRootObjType&quot;);
+	isnull(&quot;propsType&quot;)?&quot;&quot;:how.propsType 					= getvar(&quot;propsType&quot;);
+	
+	//custom inspector property used on retry 
+	isnull(&quot;errorCodeList&quot;)?&quot;&quot;:how.errorCodeList 			= getvar(&quot;errorCodeList&quot;);
+	isnull(&quot;errorCodeRetry&quot;)?&quot;&quot;:how.errorCodeRetry 			= getvar(&quot;errorCodeRetry&quot;);
+	isnull(&quot;embedScriptlet&quot;)?&quot;&quot;:how.embedScriptlet 			= getvar(&quot;embedScriptlet&quot;);
+	isnull(&quot;checkPointString&quot;)?&quot;&quot;:how.checkPointString 		= getvar(&quot;checkPointString&quot;);
+	isnull(&quot;interval&quot;)?how.interval = 10:how.interval 		= getvar(&quot;interval&quot;);
+	isnull(&quot;retry&quot;)?how.retry = 3:how.retry 				= getvar(&quot;retry&quot;);
+	isnull(&quot;noMoreActionResponse&quot;)?how.noMoreActionResponse=&quot;no more&quot;:how.noMoreActionResponse = getvar(&quot;noMoreActionResponse&quot;);
+	how.getRetryCode();
+	how.getErrorCode();
+	return how;
+	
+// End: function getRuntimeInfo()
+}
+
+// Get saveInfoString
+how.getSaveInfoString = function()
+{
+//Begin: function getSaveInfoString()
+
+    var infoString  = &quot;vCenterHost:&quot;		+ getvar(&quot;how.host&quot;);
+        infoString += &quot;;user:&quot;				+ getvar(&quot;how.user&quot;);
+        infoString += &quot;;Result:&quot;			+ getvar(&quot;how.returnResult&quot;);
+        infoString += &quot;;exception:&quot;			+ getvar(&quot;how.exception&quot;);
+	how.saveInfo = infoString; 
+	return how.saveInfo ;
+	
+//End: function getSaveInfoString()
+}
+
+// Get saveInfoString
+how.putErrorComponent = function()
+{
+//Begin: function putErrorComponent()
+
+	var errorComponentString = how.getSaveInfoString(); 
+    errorComponentString = errorComponentString.substr(0,200);
+    put(&quot;errorComponent&quot;, errorComponentString );
+    
+//End: function putErrorComponent()
+}
+
+// Get RetryCode () 
+how.getRetryCode = function () 
+{
+//Begin: function getRetryCode()
+
+	var oRetryCodeList = json(getvar(&quot;errorCodeRetry&quot;));
+	for ( one in oRetryCodeList ) {
+	// Begin: for ( one in oRetryCodeList )
+	
+		how.retryErrorCodeName = one;
+		how.retryErrorCode = oRetryCodeList[one];
+		break;		
+	
+	// End: for ( one in oRetryCodeList )
+	}
+
+//End: function getRetryCode()	
+}
+
+// Get Error Code 
+how.getErrorCode = function ()
+{
+//Begin: function getErrorCode()
+
+	// get retry code     
+    //how.getRetryCode();
+    // get errorCode
+	var oErrorCodeList = json(getvar(&quot;errorCodeList&quot;));
+	//
+	for ( one in oErrorCodeList )
+	{
+	// Begin: for ( one in oPcliTypeList )
+		how.errorCodeName = one;
+		how.errorCode = oErrorCodeList[one];
+		break;
+	// End: for ( one in oPcliTypeList )	
+	}
+
+    return how;
+	
+//End: function getErrorCode()
+}
+
+// check error 
+how.checkError = function()
+{
+//Begin: function checkError()
+
+	how.doCheckRetry();
+	//how.checkResult();
+	
+//End: function checkError()
+}
+
+// doRetry() 
+how.doRetry = function ()
+{
+// Begin: doRetry function()
+
+    var myRetry = getvar(get(&quot;myRetry&quot;));
+    if ( &quot;&quot;==myRetry )
+    {
+    //Begin: if ( &quot;&quot;==myRetry )
+    
+    	put(&quot;myRetry&quot;,getvar(&quot;retry&quot;) );
+      	myRetry = num(getvar(&quot;retry&quot;));
+    //End: if ( &quot;&quot;==myRetry )
+    }
+    else
+    {
+    //Else Begin: if ( &quot;&quot;==myRetry )
+    
+      	myRetry = num(get(&quot;myRetry&quot;)) ;
+      	
+    //Else End: if ( &quot;&quot;==myRetry )
+    }
+    
+    // save retry count
+    myRetry -= 1;
+    put(&quot;myRetry&quot;,myRetry);
+    
+    // check retry count
+    if(0 &gt;= myRetry)
+    {
+    //Begin: if(0 &gt;= myRetry)
+         return false;
+    //End: if(0 &gt;= myRetry)
+    }
+    else
+    {
+    //Else Begin: if(0 &gt;= myRetry)
+         sleep(how.interval);
+         return true;
+    //Else Begin: if(0 &gt;= myRetry)     
+    }  
+       
+// End: doRetry function()
+}
+
+// put RetryErrorCode
+how.putRetryErrorCode = function()
+{
+//Begin: function putRetryErrorCode()
+
+	put(&quot;errorCode&quot;,how.retryErrorCode);
+	how.putErrorComponent(); 
+		
+//End: function putRetryErrorCode()
+}
+
+// show RetryErrorCode
+how.showRetryErrorCode = function()
+{
+//Begin: function showRetryErrorCode()
+
+	println(&quot;errorCode : &quot;+ how.retryErrorCode);
+	printline(&quot;-&quot;,80);
+		
+//End: function showRetryErrorCode()
+}
+
+// do Check error exception 
+how.doCheckRetry = function()
+{
+//Begin: function doCheckRetry()
+
+	how.CheckConnect = RegExp(&quot;Couldn&apos;t connect to VIM service&quot;,&quot;g&quot;).test(how.exception);
+
+//End: function doCheckRetry()
+}
+
+// Set PowerCLI Info to context
+how.putResult = function()
+{
+//Begin: function doCheckRetry()
+
+	put(&quot;outReturnCode&quot;, 	getvar(&quot;how.returnCode&quot;));
+	put(&quot;outException&quot;, 	getvar(&quot;how.exception&quot;));
+	put(&quot;outObjectsCount&quot;,	getvar(&quot;how.objectsCount&quot;));
+	put(&quot;outReturnResult&quot;,	getvar(&quot;how.returnResult&quot;));
+
+//End: function doCheckRetry()
+}
+
+// do Check error exception 
+how.checkResult = function()
+{
+//Begin: function doCheckRetry()
+
+    if (isnull(&quot;how.checkPointString&quot;))
+    {
+    	how.checkSuccessCMD = true;
+    }
+    else
+    {
+    	how.checkSuccessCMD = RegExp(str(how.checkCmdString),&quot;g&quot;).test(how.returnResult);
+    }
+	
+//End: function doCheckRetry()
+}
+
+// Put ErrorCode
+how.putErrorCode = function()
+{
+//Begin: function putRetryErrorCode()
+
+	put(&quot;errorCode&quot;,how.errorCode);
+	how.putErrorComponent(); 
+		
+//End: function putRetryErrorCode()
+}
+
+// show errorCode
+how.showErrorCode = function()
+{
+//Begin: function showErrorCode()
+
+	println(&quot;errorCode : &quot;+ how.errorCode);
+	printline(&quot;-&quot;,80);
+		
+//End: function showErrorCode()
+}
+
+// check embedscriptlet
+how.haveScriptlet = function()
+{
+//Begin: function haveScriptlet()
+	return !isnull(&quot;how.embedScriptlet&quot;);
+//End: function haveScriptlet() 
+}
+
+// Put Success
+how.putSuccessErrorCode = function()
+{
+//Begin: function putSuccessErrorCode()
+
+	put(&quot;errorCode&quot;,&quot;000&quot;);
+	how.putErrorComponent(); 
+		
+//End: function putSuccessErrorCode()
+}
+
+// show RetryErrorCode
+how.showSccuessErrorCode = function()
+{
+//Begin: function showErrorCode()
+
+	println(&quot;errorCode : &quot;+ &quot;000&quot;);
+	printline(&quot;-&quot;,80);
+		
+//End: function showErrorCode()
+}
+
+// End    : your Define functions
+//=========================================================
+//
+
+/// Main() Begin: 
+//=========================================================
+/// exectue javascript content @Daway
+try {
+//if(!isnull(&quot;Scriptlet&quot;)){eval(Scriptlet);}else{
+//Begin :  your Scriptlet
+//------------------------------------------------------------------------
+how.getRuntimeInfo();
+how.checkError();
+
+if( 0 == num(how.returnCode) )
+{
+
+//Begin :  if( 0 == num(how.returnCode) )
+
+    println(&quot;VMware Infrastructure API Component Running Success!&quot;);
+    //
+   	how.showInfo();
+	how.putSuccessErrorCode();
+	//
+	if (how.haveScriptlet()){eval(how.embedScriptlet);}
+	//
+	did(true); 
+	
+//End   :  if( 0 == num(how.returnCode) )
+}
+else if( -1 == num(how.returnCode) )
+{
+// Begin:  else if( -1 == num(how.returnCode) )
+
+		//check Connect
+		if ( bool(how.CheckConnect) )
+		{
+		// Begin: if ( bool(how.CheckConnect) )
+
+			if( how.doRetry() )
+			{
+			// Begin: if( how.doRetry() )
+	
+				println(&quot;do Retry...&quot;);
+				println(&quot;Connecting VMware host...&quot;);
+				how.showRetryErrorCode(); 
+    			how.showInfo();
+    			how.putRetryErrorCode();   		
+   				did(&quot;retry&quot;);
+   				
+   			// End: if( how.doRetry() )	
+ 			}
+ 			else
+ 			{  
+ 			// Else Begin: if( how.doRetry() ) 
+			    println(&quot;Connecting VMware host have an error!&quot;);
+ 				how.showRetryErrorCode();    
+    			how.showInfo();
+    			how.putRetryErrorCode();
+ 				did(false);
+ 				
+ 			// Else End: if( how.doRetry() )
+    		}
+     		//put(&quot;connectError&quot;,&quot;true&quot;);
+    	// End: if ( bool(how.CheckConnect) )
+      	}
+      	else
+      	{
+     	// Elese Begin: if ( bool(how.CheckConnect) )
+     	
+		    print(&quot;VMware Infrastructure API Component execute result have an error!&quot;);
+            printline(&quot;=&quot;,80);
+     		how.showErrorCode();
+          	how.showInfo();
+	      	how.putErrorCode();
+	      	did(false);
+	
+       	// Elese Begin: if ( bool(how.CheckConnect) )
+       	}
+	printline(&quot;=&quot;,80);
+       
+// End:  else if( -1 == num(how.returnCode) )
+}
+else if( 1 == num(how.returnCode) ) 
+{
+//Begin : else if( 1 == num(how.returnCode) ) 
+
+    println(&quot;VMware Infrastructure API Component Running have no more result!&quot;);
+	how.showInfo();
+	did(how.noMoreActionResponse);
+
+//End :else if( 1 == num(how.returnCode) ) 
+}
+
+//------------------------------------------------------------------------
+//End   :  Your Scriptlet
+//}
+// finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+    showSyntaxError();
+    did(false);
+} catch (e){
+    var errorMsg = str(e);
+    showErrorInfo(errorMsg);
+    did(false);
+}finally { 
+    how.putResult();
+    how = null;
+}
+/// Main() End:   
+//Define Main() functions 
+//=========================================================
+//in Main catch
+function showSyntaxError(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+    printline(&quot;-&quot;,80);
+    println(getvar(&quot;embedScriptlet&quot;));
+    printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;1) The error message was below:&quot;);
+    printline(&quot;-&quot;,80);
+    println(me);
+    printline(&quot;=&quot;,80);
+    // put context variable errorCode
+    put(&quot;errorCode&quot;,&quot;999&quot;);
+    put(&quot;errorComponent&quot;,me);
+    if(!isnull(&quot;embedScriptlet&quot;)){
+        println(&quot;2) It used relation scriptlet source content was below:&quot;);
+        printline(&quot;-&quot;,80);
+        println(getvar(&quot;embedScriptlet&quot;));
+        printline(&quot;=&quot;,80);
+    }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It was not used Scriptlet on input inspector&quot;);
+    println(&quot;javascriptlet content is empty!&quot;);
+    printline(&quot;=&quot;,80);
+}
+// end of Main() define functions
+//=========================================================
+</script>
+  <type>RHINO</type>
+</scriptlet>

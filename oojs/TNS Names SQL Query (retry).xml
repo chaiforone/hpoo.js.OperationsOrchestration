@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scriptlet id="827ea044-b467-4514-8898-803c21cb3cb5">
+  <descriptionCdata><![CDATA[827ea044-b467-4514-8898-803c21cb3cb5.description=/* Combine with below location of opeartion to use this TNS Names SQL Qeury (retry&errorCode), this script include errorCode and retry function for Nucleus project 2016@Daway */\n/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Databases/Oracle/TNS Names SQL Query (retry)
+]]></descriptionCdata>
+  <annotation>827ea044-b467-4514-8898-803c21cb3cb5.description</annotation>
+  <name>TNS Names SQL Query (retry)</name>
+  <script>///
+eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); /* #include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/
+///
+/*
+(Nucleus_automation_design_specification_v41: 3.18.2.40) JavaScript Name: TNS Names SQL Command (retry) @Daway
+*/
+
+
+//=========================================================
+// Begin  : your Define functions
+
+// Show SQL Command Info
+how.showSqlInfo = function (){
+// Begin: function showSqlInfo()
+
+    //printline(&quot;=&quot;,80);
+    println(&quot;SQL Command runtime state:&quot;);
+    printline(&quot;-&quot;,80);
+    isnull(&quot;how.TNSEntry&quot;)?&quot;&quot;:println(&quot;TNSEntry : &quot; 		+ how.TNSEntry);
+    isnull(&quot;how.TNSPath&quot;)?&quot;&quot;:println(&quot;TNSPath : &quot; 			+ how.TNSPath);
+    isnull(&quot;how.Username&quot;)?&quot;&quot;:println(&quot;Username : &quot; 		+ how.Username);
+    isnull(&quot;how.Delimiter&quot;)?&quot;&quot;:println(&quot;Delimiter : &quot; 		+ how.Delimiter);
+    isnull(&quot;how.Key&quot;)?&quot;&quot;:println(&quot;Key : &quot; 					+ how.Key);
+	println(&quot;SQL Command ..&quot;);
+	printline(&quot;-&quot;,80);
+	isnull(&quot;how.Command&quot;)?&quot;&quot;:println(how.Command);
+    printline(&quot;-&quot;,80);
+    isnull(&quot;how.returnCode&quot;)?&quot;&quot;:println(&quot;returnCode : &quot; 	+ how.returnCode);
+    isnull(&quot;how.TimedOut&quot;)?&quot;&quot;:println(&quot;TimedOut : &quot; 		+ how.TimedOut);
+    isnull(&quot;how.columnNames&quot;)?&quot;&quot;:println(&quot;columnNames : &quot; 	+ how.columnNames);
+    isnull(&quot;how.returnResult&quot;)?&quot;&quot;:println(&quot;returnResult : &quot; + how.returnResult);
+    isnull(&quot;how.exception&quot;)?&quot;&quot;:println(&quot;exception : &quot; 		+ how.exception);
+    printline(&quot;=&quot;,80);
+    
+// End: function showSqlInfo()
+}
+
+// Get SQL Runtime Enviroment
+how.getSqlRuntimeEnv = function (){
+//Begin: function getSqlRuntimeEnv()
+
+	//how.TnsEntry=getvar(&quot;TNSEntry&quot;);
+	isnull(&quot;TNSEntry&quot;)?&quot;&quot;:how.TNSEntry 						= getvar(&quot;TNSEntry&quot;);
+	isnull(&quot;TNSPath&quot;)?&quot;&quot;:how.TNSPath 						= getvar(&quot;TNSPath&quot;);
+	isnull(&quot;Username&quot;)?&quot;&quot;:how.Username 						= getvar(&quot;Username&quot;);
+	isnull(&quot;Command&quot;)?&quot;&quot;:how.Command 						= getvar(&quot;Command&quot;);
+	isnull(&quot;Delimiter&quot;)?&quot;&quot;:how.Delimiter 					= getvar(&quot;Delimiter&quot;);
+	isnull(&quot;Key&quot;)?&quot;&quot;:how.Key 								= getvar(&quot;Key&quot;);
+	isnull(&quot;timeout&quot;)?&quot;&quot;:how.timeout 						= getvar(&quot;timeout&quot;);
+	isnull(&quot;interval&quot;)?how.interval=10:how.interval 		= getvar(&quot;interval&quot;);
+	isnull(&quot;retry&quot;)?how.retry=3:how.interval 				= getvar(&quot;retry&quot;);
+	//
+	isnull(&quot;getdid(&apos;returnCode&apos;)&quot;)?&quot;&quot;:how.returnCode 		= getdid(&quot;returnCode&quot;);
+	isnull(&quot;getdid(&apos;returnResult&apos;)&quot;)?&quot;&quot;:how.returnResult 	= getdid(&quot;returnResult&quot;);	
+	isnull(&quot;getdid(&apos;queryCount&apos;)&quot;)?&quot;&quot;:how.queryCount 		= getdid(&quot;queryCount&quot;);
+	isnull(&quot;getdid(&apos;exception&apos;)&quot;)?&quot;&quot;:how.exception 			= getdid(&quot;exception&quot;);
+	isnull(&quot;getdid(&apos;outputText&apos;)&quot;)?&quot;&quot;:how.outputText 		= getdid(&quot;outputText&quot;);
+	isnull(&quot;getdid(&apos;sessionId&apos;)&quot;)?&quot;&quot;:how.sessionId 			= getdid(&quot;sessionId&quot;);
+	isnull(&quot;getdid(&apos;rowsLeft&apos;)&quot;)?&quot;&quot;:how.rowsLeft 			= getdid(&quot;rowsLeft&quot;);
+	isnull(&quot;getdid(&apos;columnNames&apos;)&quot;)?&quot;&quot;:how.columnNames 		= getdid(&quot;columnNames&quot;);
+	isnull(&quot;getdid(&apos;TimedOut&apos;)&quot;)?&quot;&quot;:how.TimedOut 			= getdid(&quot;TimedOut&quot;);
+	//
+	isnull(&quot;embedScriptlet&quot;)?&quot;&quot;:how.embedScriptlet = getvar(&quot;embedScriptlet&quot;);
+	how.getErrorCode();
+	how.getSqlResult();
+	return how;
+
+//End: function getSqlRuntimeEnv()
+}
+
+// get Sql Result 
+how.getSqlResult = function(){
+//Begin: function getSqlResult()
+
+    isnull(&quot;get(&apos;rows&apos;)&quot;)?how.rows=&quot; &quot;:how.rows=get(&quot;rows&quot;);
+    var sqlResult = str(how.returnResult);
+    var sqlFieldNames = str(how.columnNames);
+	how.sqlResult =  sqlResult.split( how.Delimiter ) ;
+	how.sqlFieldNames = sqlFieldNames.split( how.Delimiter ) ;
+	how.row  =  how.getRowInfo( how.sqlFieldNames, how.sqlResult ) ;;
+	return how.row;
+	
+//End: function getSqlResult()
+}
+
+// Get Error Code 
+how.getErrorCode = function (){
+//Begin: function getErrorCode()
+
+	// get retry code     
+    how.getRetryCode();
+    // get errorCode
+	var oSqlTypeList = json(getvar(&quot;errorCodeList&quot;));
+	
+	for ( one in oSqlTypeList )
+	{
+	// Begin: for ( one in oSqlTypeList )
+	    if (regex(one,&quot;gi&quot;).test(getvar(&quot;Command&quot;)) ) 
+	    {
+	    	 how.sqlType = one;
+	    	 how.errorCode = oSqlTypeList[one];
+	    	 break;
+	    }
+	// End: for ( one in oSqlTypeList )	
+	}
+	
+    return how;
+	
+//End: function getErrorCode()
+}
+
+// get Row Info
+how.getRowInfo = function (me, you){
+//Begin: function getRowInfo()
+
+    var aRow = &quot;&quot;;
+    for ( one in me ){
+        var aField = &apos;&quot;&apos; + me[one] + &apos;&quot;&apos; + &apos;:&apos; + &apos;&quot;&apos; + you[one] + &apos;&quot;&apos; + &apos;,&apos;;       
+        aRow += aField;
+    }
+    aRow = &apos;{&apos; + aRow.replace(/\,$/g,&quot;&quot;) + &apos;}&apos;;    
+    return aRow;
+    
+//Begin: function getRowInfo()
+}
+
+//get Dictionaly String
+how.getDictString = function (me){
+//Begin: function getDictString()
+
+	how.DictString = &apos;{&apos; + me.replace(/\,$/g,&quot;&quot;) + &apos;}&apos;;
+	
+//Begin: function getDictString()
+}
+
+//get Array String
+how.getListString = function (me)
+{ 
+//Begin: function getListString()
+
+	how.ListString =  &apos;[&apos; + me.replace(/\,$/g,&quot;&quot;) + &apos;]&apos;;
+	return how.ListString;
+	
+//End: function getListString()
+}
+
+//get a row JSON string
+how.getArowString = function (me)
+{
+//Begin: function getArowString()
+
+	how.aRowString = json2str(me).replace(/^[|]$]/g,&quot;&quot;);
+	
+//End: function getArowString()
+}
+
+//
+// Display Json format list
+how.showFormatArray = function ()
+{ 
+//Begin: function getFormatArray()
+
+    printline(&quot;-&quot;,80); 
+    println(&quot;Records List..&quot;);
+    printline(&quot;-&quot;,80);
+	how.formatListString = how.getListString(how.rows).replace(/},/g,&quot;},\n&quot;);
+	println(how.formatListString);
+	printline(&quot;-&quot;,80);
+	return how.formatListString;
+
+//End: function getFormatArray()
+}
+
+//is SQL query
+how.checkIsQuery = function ()
+{
+//Begin: function checkIsQuery()
+
+	how.isQuery =  regex(&quot;SELECT&quot;,&quot;gi&quot;).test(how.Command);
+	return how.isQuery;
+
+//End: function checkIsQuery()
+}
+
+//checkNOt SQL query
+how.checkNotQuery = function ()
+{
+//Begin: function checkNotQuery()
+
+	how.notQuery =  (!regex(&quot;SELECT&quot;,&quot;gi&quot;).test(inCommand))?true:false;
+	
+//End: function checkNotQuery()
+}
+ 
+// Display fieldNames
+how.showArecordInfo = function (){
+//Begin: function showArecordInfo()
+
+	printline(&quot;*&quot;,80)
+	println(&quot;Below is a rcord detial list ..&quot;);
+	printline(&quot;*&quot;,80);
+	
+    println(&quot;FieldName = FieldValue&quot;);
+    printline(&quot;-&quot;,80);
+    for (one in how.sqlFieldNames){
+        put(how.sqlFieldNames[one],how.oRow[how.sqlFieldNames[one]]);                        
+        println( how.sqlFieldNames[one] +&quot; = &quot;+ how.oRow[how.sqlFieldNames[one]]);
+    }
+    printline(&quot;=&quot;,80);
+    return how.oRow[how.sqlFieldNames[one]];
+    
+//End: function showArecordInfo()
+}
+
+// Display and Save No found errorCode
+how.showNoFoundRecord = function (){
+//End: function showNoFoundRecord()
+
+    println(&quot;*&quot;,80);
+    println(&quot;No found Record!&quot;);
+    println(&quot;*&quot;,80);
+    put(&quot;errorCode&quot;,oErrorCodeList[&quot;SELECT&quot;]);
+    put(&quot;errorComponent&quot;,&quot;InfraDB: no Found Record!&quot;+errorMSG());
+
+//End: function showNoFoundRecord()
+}
+
+//get Rows message 
+how.getRows = function (){
+//Begin: function getRows()
+
+    how.rows  += how.row + &apos;,&apos;;
+    return how.rows;
+    
+//End: function getRows()
+}
+
+// put Rows
+how.putRows = function (){
+//Begin: function putRows()
+
+    put(&quot;rows&quot;,how.rows);
+    return true;
+    
+//End: function putRows()
+}
+
+// set Rows
+how.setRows = function(){
+//Begin: function setRows()
+
+   how.oRows = json( how.getListString(how.rows));
+   return how.oRows.length;
+   
+//Begin: function setRows()
+}
+
+// save Rows
+how.saveRows = function (){
+//Begin: function saveRows()
+
+	var strRows = how.getListString(how.rows) ;                  
+    put(&quot;sqlRowResult&quot;,strRows);
+    put(&quot;sqlRowCount&quot;,how.oRows.length);
+    
+//Begin: function saveRows()
+}
+
+// set Row
+how.setRow = function(){
+//Begin: function setRow()
+   how.oRow = json(how.row);
+//End: function setRow()
+}
+
+// Get Retry Error Code 
+how.getRetryCode = function () {
+//Begin: function getRetryCode()
+
+	var oRetryCodeList = json(getvar(&quot;errorCodeRetry&quot;));
+	for ( one in oRetryCodeList ) {
+	// Begin: for ( one in oRetryCodeList )
+		how.retryErrorCodeName = one;
+		how.retryErrorCode = oRetryCodeList[one];
+		break;		
+	// End: for ( one in oRetryCodeList )
+	}
+
+//End: function getRetryCode()	
+}
+
+//  Display a Record
+how.showRow = function(){
+//Begin: function showRow()
+
+    printline(&quot;-&quot;,80);
+    println(&quot;Get a Record!&quot;);
+	printline(&quot;-&quot;,80);
+	println(how.row);
+	printline(&quot;-&quot;,80);
+
+//End: function showRow()
+}
+
+// Display Record Count 
+how.showRecordInfo = function (){
+// Begin: function showRecordInfo() 
+
+    if(how.isQuery){
+        printline(&quot;-&quot;,80);
+        print(&quot; one row length:&quot;);
+        //println( how.checkIsQuery (oRows.length) );
+        //println( how.checkIsQuery (how.Rows.length) );
+        printline(&quot;=&quot;,80);
+
+    }else{
+        print(&quot; one row length:&quot;);
+        println( &quot; 0&quot; );
+        printline(&quot;=&quot;,80);
+    }
+    
+// End: function showRecordInfo()     
+}
+
+// Put Error Code
+how.putErrorCode = function (){
+// Begin: function putErrorCode()
+
+	put(&quot;errorCode&quot;,how.errorCode);
+	var returnReslutString = how.returnResult;
+	var errorString  = &quot;$TNSEntry:&quot;+how.TNSEntry;
+	    errorString += &quot;;$TNSPath:&quot;+how.TNSPath;
+	    errorString += &quot;;$Username:&quot;+how.Username;
+		errorString += &quot;;$SELECT statement:&quot;+how.Command;
+	    errorString += &quot;;$returnResult:&quot;+returnReslutString.substr(0,200);
+// *Note query result should be cropped at 200 chars
+//		errorString = errorString.replace(/&lt;/g,&quot;&amp;lt; &quot;).replace(/&gt;/g,&quot;&amp;gt;&quot;);
+		errorString = errorString.replace(/&lt;/g,&quot;&amp;lt;&quot;);
+//	    errorString += &quot;;$exception:&quot;+how.exception;
+//	var cut200String = errorString.substr(0,200);
+	put(&quot;errorComponent&quot;,errorString);
+    
+// End: function putErrorCode()
+}
+
+// Put Connect Error Code
+how.putRetryErrorCode = function (){
+// Begin: function putErrorCode()
+
+	put(&quot;errorCode&quot;,how.retryErrorCode);
+	var errorString  = &quot;$TnsEntry:&quot;+how.TNSEntry;
+	    errorString += &quot;;$TnsPath:&quot;+how.TNSPath;
+	    errorString += &quot;;$Username:&quot;+how.Username;
+	    errorString += &quot;;$returnResult:&quot;+how.returnResult;
+	    errorString += &quot;;$exception:&quot;+how.exception;
+	var cut200String = errorString.substr(0,200);
+	put(&quot;errorComponent&quot;,cut200String);
+    
+// End: function putErrorCode()
+}
+
+// embed Scriptlet use on after sql execute
+how.haveScriptlet = function(){
+// Begin: function haveScriptlet()
+
+	return !isnull(&quot;how.embedScriptlet&quot;); 
+
+// End: function haveScriptlet()
+}
+
+// Put Error Success Code
+how.putSuccessCode = function (){
+// Begin: function putSuccessCode()
+
+	put(&quot;errorCode&quot;,&quot;000&quot;);
+	var errorString  = &quot;$TnsEntry:&quot;+how.TNSEntry;
+	    errorString += &quot;;$TnsPath:&quot;+how.TNSPath;
+	    errorString += &quot;;$Username:&quot;+how.Username;
+	    errorString += &quot;;$returnResult:&quot;+how.returnResult;
+	    errorString += &quot;;$exception:&quot;+how.exception;
+	var cut200String = errorString.substr(0,200);
+	put(&quot;errorComponent&quot;,cut200String);
+    
+// End: function putSuccessCode()
+}
+
+//check SQL result
+how.checkSqlResult = function (){
+//Begin: function checkSqlResult()
+
+    if (/Invalid TNSPath for Oracle/g.test(how.returnResult))
+    {
+    	how.connectError = true;
+    }
+    else if (/invalid username/g.test(how.returnResult))
+    {
+        how.authorError = true;
+        how.connectError = false;
+    }
+    else if (/ORA-/g.test(how.returnResult))
+    {	
+        println(&quot;Oracle Execute Command Error!!&quot;);
+    	how.runtimeError = true;
+    	how.authorError = false;
+    	how.connectError = false;
+    }
+    else if (/no rows selected/g.test(how.returnResult))
+    {	
+        println(&quot;Cannot selected record!!&quot;);
+        how.runtimeError = false;
+        how.authorError = false;
+        how.connectError = false;
+        how.norowsError = true;
+    }
+    else
+    {
+    	println(&quot;SQL runtime Undefined error &quot;);
+       	how.runtimeError = true;
+       	how.authorError = false;
+       	how.connectError = false;
+    }
+    return how;
+
+//End: function checkSqlResult()
+}
+
+//do retry
+how.doRetry = function (){
+// Begin: function doRetry()
+
+    var myRetry = getvar(get(&quot;myRetry&quot;));
+    if ( &quot;&quot;==myRetry ){
+        put(&quot;myRetry&quot;,getvar(&quot;retry&quot;) );
+        myRetry = num(getvar(&quot;retry&quot;));
+    }else{
+        myRetry = num(get(&quot;myRetry&quot;)) ;
+    }
+    myRetry -= 1;
+    put(&quot;myRetry&quot;,myRetry);
+    if(0 &gt;= myRetry){
+        how.retry = false;
+        return false;
+    }else{
+        sleep(interval);
+        how.retry = true;
+        return true;
+    }    
+     
+// End: function doRetry()
+}
+
+// Show SQL Command Info
+how.showErrorCode = function (){
+// Begin: function showErrorCode()
+
+    printline(&quot;-&quot;,80);
+    println(&quot;errorCode        : &quot; + how.errorCode );
+    printline(&quot;-&quot;,80);
+
+// End: function showErrorCode()
+}
+
+// Show SQL Command Info
+how.showRetryErrorCode = function (){
+// Begin: function showRetryErrorCode()
+
+    printline(&quot;-&quot;,80);
+    println(&quot;errorCode        : &quot; + how.retryErrorCode );
+    printline(&quot;-&quot;,80);
+
+// End: function showRetryErrorCode()
+}
+// End    : your Define functions
+//=========================================================
+
+/// Main() Begin: 
+//=========================================================
+/// exectue javascript content @Daway
+try {
+//if(!isnull(&quot;Scriptlet&quot;)){eval(Scriptlet);}else{
+//Begin :  your Scriptlet
+//------------------------------------------------------------------------
+how.getSqlRuntimeEnv();
+how.getErrorCode();
+how.checkSqlResult();
+
+if(0 == num(how.returnCode)){
+// Begin: if(0 == num(getdid(&quot;returnCode&quot;)))
+
+	println(&quot;Success Execute SQL Command!&quot;);
+	printline(&quot;*&quot;,80);
+
+    if ( 0 &lt; int(how.rowsLeft) ) {
+    //Begin: if ( 0 &lt; int(how.rowsLeft) )
+    
+    	println(&quot;-&quot;,80);
+    	println(&quot;have more record..&quot;);
+    	how.getRows();
+    	how.putRows();
+    	how.showFormatArray();
+    	how.showSqlInfo();
+    	println(&quot;continue to get next record.. &quot;); 
+    	
+    //End:  if ( 0 &lt; int(how.rowsLeft) )
+	}
+	else
+	{
+	//Begin Else :  if ( 0 &lt; int(how.rowsLeft) )
+     	
+     	println(&quot;=&quot;,80);    
+     	how.getRows();
+     	var aRowLength = how.setRows()
+     	if ( 1 == aRowLength ){
+		//Begin: if ( 1 == aRowLength )
+          	how.setRow();
+          	how.showRow();
+          	how.showArecordInfo();
+          	how.showSqlInfo(); 	
+          	println(&quot;goto: success resonpse&quot;);
+         //End: if ( 1 == aRowLength )
+     	}
+     	else
+     	{
+     	//Else Begin: if ( 1 == aRowLength )
+        	how.showFormatArray();   	
+          	how.saveRows();
+          	how.showFormatArray(); 
+          	how.showSqlInfo();
+          	println(&quot;Get the last record.&quot;);
+        //Else End: if ( 1 == aRowLength )
+       	}
+       
+   //End Else : if ( 0 &lt; int(how.rowsLeft) )
+   }
+
+//End: if(0 == num(getdid(&quot;returnCode&quot;)))
+}
+else if(-1 == num(how.returnCode))
+{
+//Else Begin: if(-1 == num(getdid(&quot;returnCode&quot;)))
+
+	println(&quot;Failure in Execute SQL Command!&quot;);
+	printline(&quot;*&quot;,80);
+    if ( how.connectError ){
+    //Begin: if ( how.connectError )
+        println(&quot;Connect error!!!!!!&quot;);
+        if ( how.doRetry() )
+        {
+        //Begin: if ( how.doRetry() )
+            println(&quot;do Retry...&quot;);
+            how.showRetryErrorCode();
+            how.showSqlInfo();
+            how.putRetryErrorCode();
+            did(&quot;more items&quot;);
+        //End: //Begin: if ( how.doRetry() )
+        }
+        else
+        {
+        //Else Begin: if ( how.doRetry() )
+            how.showRetryErrorCode();
+        	how.showSqlInfo();
+            how.putRetryErrorCode();
+            did(false);
+        //Else End: if ( how.doRetry() )    
+        }
+    //End: if ( how.connectError )   
+    }
+    else if ( how.authorError )
+    {
+    //Begin: else if ( how.authorError )
+    
+        println(&quot;author error&quot;);
+        how.showRetryErrorCode();
+        how.showSqlInfo();
+        how.putRetryErrorCode();
+        did(false);
+        
+    //END: else if ( how.authorError )
+    }
+    else if ( how.norowsError )
+    {
+    //Else Begin: if ( how.connectError )
+    
+    	how.showErrorCode();
+        how.showSqlInfo();
+        how.putErrorCode();
+        did(false);
+        
+    //Else End: if ( how.connectError )
+    }
+    else if ( how.runtimeError )
+    {
+    //Else Begin: if ( how.connectError )
+    
+    	how.showErrorCode();
+        how.showSqlInfo();
+        how.putErrorCode();
+        did(false);
+        
+    //Else End: if ( how.connectError )
+    }
+    else
+    {
+    //Else Begin: Unkonwn define )
+    	println(&quot;Unknown error&quot;);
+    	how.showErrorCode();
+    	how.showSqlInfo();
+    	how.putErrorCode();
+    	did(false);
+     //Else End: Unkonwn define )
+    }
+    
+// Else End: if(-1 == num(getdid(&quot;returnCode&quot;)))
+}
+else if( 1 == num(how.returnCode))
+{
+//(Begin Else: if( 1 == num(how.returnCode))
+
+	if (how.norowsError) {
+	//Begin: if (how.norowsError
+	
+		println(&quot;Execute SQL Command have No found Record!&quot;);
+    	how.showErrorCode();
+        how.showSqlInfo();
+        how.putErrorCode();
+    	put(&quot;rows&quot;,null)
+    	did(false);
+    	
+    //End: if (how.norowsError
+	}
+	else
+	{
+	//Else Begin: if (how.norowsError
+	
+		println(&quot;Execute SQL Command have No More Rows Available&quot;);
+   	 	how.showSqlInfo();
+    	how.putSuccessCode();
+    	if (how.haveScriptlet()){eval(how.embedScriptlet);}
+    	put(&quot;rows&quot;,null);
+    	
+    //Else End: if (how.norowsError
+	}
+     
+// End Else: if( 1 == num(how.returnCode))
+
+}
+else
+{
+// Begin Else:  if( 0 == num(how.returnCode))
+
+	println(&quot;Failure During Execute SQL Command!&quot;);
+	how.showSqlInfo();
+	how.putErrorCode();
+	did(false);
+
+// End Else: if( 0 == num(how.returnCode))
+}
+
+
+//------------------------------------------------------------------------
+//End   :  Your Scriptlet
+//}
+// finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+    showSyntaxError();
+    did(false);
+} catch (e){
+    var errorMsg = str(e);
+    showErrorInfo(errorMsg);
+    did(false);
+}finally { 
+	how=null;
+}
+/// Main() End:   
+//Define Main() functions 
+//=========================================================
+//in Main catch
+function showSyntaxError(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+    printline(&quot;-&quot;,80);
+    isnull(&quot;how.embedScriptlet&quot;)?&quot;&quot;:println(&quot;embedScriptlet :\n &quot; + how.embedScriptlet);
+    printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;1) The error message was below:&quot;);
+    printline(&quot;-&quot;,80);
+    println(me);
+    printline(&quot;=&quot;,80);
+    // put context variable errorCode
+    put(&quot;errorCode&quot;,&quot;999&quot;);
+    put(&quot;errorComponent&quot;,me);
+    if(!isnull(&quot;how.embedScriptlet&quot;))
+    {
+        println(&quot;2) It used relation scriptlet source content was below:&quot;);
+        printline(&quot;-&quot;,80);
+        println( how.embedScriptlet);
+        printline(&quot;=&quot;,80);
+    }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It was not used Scriptlet on input inspector&quot;);
+    println(&quot;javascriptlet content is empty!&quot;);
+    printline(&quot;=&quot;,80);
+}
+
+// end of Main() define functions
+//=========================================================</script>
+  <type>RHINO</type>
+</scriptlet>

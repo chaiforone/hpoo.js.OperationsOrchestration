@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scriptlet id="c559fb02-f9fd-49cf-938d-41bf922b9770">
+  <descriptionCdata><![CDATA[c559fb02-f9fd-49cf-938d-41bf922b9770.description=Get CSA variables to Set Global variables on Get System Accounts\n/Nucleus Base/Library/TP Cloud/Subflows/Nucleus Base/Get System Accounts
+]]></descriptionCdata>
+  <annotation>c559fb02-f9fd-49cf-938d-41bf922b9770.description</annotation>
+  <name>Set IdPwd to Global vars</name>
+  <script>///
+eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); /* #include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/
+///
+/*
+((Nucleus_Migration design specification v13 ):3.17.4.5	SERV Modify CMD Disk Size) : Scriptlet-link to (Get System Accounts) 
+
+used: 
+/Servers/Library/TP Cloud/Action Flows/Servers/vCenter/SERV_Modify CMO Disk Size
+*/
+
+/// Main() Begin: 
+//=========================================================
+/// exectue javascript content @Daway
+try {
+if(!isnull(&quot;Scriptlet&quot;)){eval(Scriptlet);}else{
+//Begin :  your Scriptlet
+//------------------------------------------------------------------------
+
+(&apos;undefined&apos; == typeof (getdid(&quot;sa.username&quot;))) ? println(&quot;undefined sa.username&quot;) 					: putglobal(&quot;sa.username&quot;,getdid(&quot;sa.username&quot;));
+(&apos;undefined&apos; == typeof (getdid(&quot;sa.password&quot;))) ? println(&quot;undefined sa.password&quot;)  				: putglobal(&quot;sa.password&quot;,getdid(&quot;sa.password&quot;));
+(&apos;undefined&apos; == typeof (getdid(&quot;vcenter.username&quot;))) ? println(&quot;undefined vcenter.username&quot;)  		: putglobal(&quot;vcenter.username&quot;,getdid(&quot;vcenter.username&quot;));
+(&apos;undefined&apos; == typeof (getdid(&quot;vcenter.password&quot;))) ? println(&quot;undefined vcenter.password&quot;)  		: putglobal(&quot;vcenter.password&quot;,getdid(&quot;vcenter.password&quot;));
+
+//------------------------------------------------------------------------
+//End   :  Your Scriptlet
+}
+// finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+    showSyntaxError();
+    did(false);
+} catch (e){
+    var errorMsg = str(e);
+    showErrorInfo(errorMsg);
+    did(false);
+}finally { 
+    how = null;
+}
+/// Main() End:   
+//Define functions 
+//=========================================================
+//in Main catch
+function showSyntaxError(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+    printline(&quot;-&quot;,80);
+    println(getvar(&quot;Scriptlet&quot;));
+    printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;1) The error message was below:&quot;);
+    printline(&quot;-&quot;,80);
+    println(me);
+    printline(&quot;=&quot;,80);
+    // put context variable errorCode
+    put(&quot;errorCode&quot;,&quot;999&quot;);
+    put(&quot;errorComponent&quot;,me);
+    if(!isnull(&quot;Scriptlet&quot;)){
+        println(&quot;2) It used relation scriptlet source content was below:&quot;);
+        printline(&quot;-&quot;,80);
+        println(getvar(&quot;Scriptlet&quot;));
+        printline(&quot;=&quot;,80);
+    }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It was not used Scriptlet on input inspector&quot;);
+    println(&quot;javascriptlet content is empty!&quot;);
+    printline(&quot;=&quot;,80);
+}
+// end of define functions
+//=========================================================
+// Begin  : your Define functions
+
+// End    : your Define functions
+//=========================================================</script>
+  <type>RHINO</type>
+</scriptlet>

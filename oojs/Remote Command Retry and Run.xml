@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="baa381ba-9d6f-491c-826d-8594f5106b92">
+  <descriptionCdata><![CDATA[baa381ba-9d6f-491c-826d-8594f5106b92.description=<pre>\nThis scriptlet combine with Remote Comand Return 1 Responses and Remote Command Retry and Run operation  to retry and result.\n\n-Inputs\:\nerrorMatchList\ttrue\tSingle Value\t<not assigned>\tUse the constant\: {\n    "ConnectBackupServer"\:"authentication failures",\n    "UnReadBackupServer"\:"545",\n    "CreateBackupServer"\:"oodpCreateBckSvc",\n    "RemoveBackupServer"\:"oodpRemoveBckSvc",\n    "RunOnDemandBackupServer"\:"oodpRunOnDemBckSvc",\n    "ResumeBackupServer"\:"oodpResumeBckSvc",\n    "SuspendBackupServer"\:"oodpSuspendBckSvc",\n    "ModifyBackupServer" \: "oodpModifyBckSched",\n    "InstallBackupAgent"\:"oodpPostAgentInstallActions"\n}\n\nlogFilterKey\t LogMsg\nerrorComponentString ${backupServerFQDN},host\:${backupCSIDFQDN}\ncheckLogList\t {\n    "ConnectBackupServer"\:"authentication",\n    "UnReadBackupServer"\:"545",\n    "CreateBackupServer"\:"BackupSvc created\:",\n    "RemoveBackupServer"\:"BackupSvc removed",\n    "RunOnDemandBackupServer"\:"RunOnDemand specification created\:",\n    "ResumeBackupServer"\:"BackupSvc suspended\:",\n    "SuspendBackupServer"\:"BackupSvc suspended\:",\n    "InstallBackupAgent"\:"Install Backup Agenged" \n}\n\nerrorCodeList\t\n{\n    "ConnectBackupServer"            \:  "540",\n    "UnReadBackupServer"             \:  "545",\n    "CreateBackupServer"               \:  "546",\n    "InstallBackupAgent"                  \:  "547",\n    "RemoveBackupServer"             \:   "548",\n    "RunOnDemandBackupServer"  \:   "549",\n    "ResumeBackupServer"              \:   "550",\n    "SuspendBackupServer"             \:   "551",\n    "ModifyBackupServer"                \:   "552"\n}\n\t\ninterval\t\nretry\t\ninCommand\t\ninPrivateKeyFile\t\ninHost\t\t\ninPort\t\ninUsername\t\ninProtocol\t\ninTimeout\t\ninArguments\t\ninEnvironment\t\ninStartDir\t\ninPty\t\ninCharacterSet\t\ninSasHost\t\ninSasHostUsername\t\ninOutputPath\t\ninNasDevice\t\ninNasDeviceConsoleMode\t\ninHPomNode\t\ninHPomProtocol\t\noutSessionId\t\noutResult\t\noutTimedOut\t\noutStdErr\t\noutFailureMessge\t\noutReturnCode\t\noutException\t\noutExitStatus\t\noutReturnResult\t\n\n\nResults\:\n    returnResult - This is the primary output.\n    default this operation return errorCode and errorComponent that donot need add errorCode and errorComponent\n    if you want add errorCode and errorComponent used below scriptlet, please refer Outputs sample\n       errorCode  from returnResult scriptlet\:    scriptletResult \= scriptletContext.get("errorCode"); \n       errorComponent   from returnResult scriptlet\:   scriptletResult \= scriptletContext.get("errorComponent");\nResponses\:\n    success - The operation completed as stated in the description.\n    failure   -  Theoperation failure as stated in the description.\n\nExamples of usage \:\n\n\n\n</pre>
+]]></descriptionCdata>
+  <annotation>baa381ba-9d6f-491c-826d-8594f5106b92.description</annotation>
+  <name>Remote Command Retry and Run</name>
+  <categories/>
+  <inputs>
+    <staticBinding id="3b82a6a9-8801-4092-ab7a-212bab7f1f3e">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorCodeList</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>{
+   &quot;authConnect&quot;:{
+       &quot;errorName&quot;:&quot;authConnect&quot;,
+       &quot;errorCode&quot;:&quot;540&quot;,
+       &quot;errorKey&quot;:&quot;auth&quot;,
+       &quot;errorLogKey&quot;:&quot;auth&quot;,
+       &quot;logFilterKey&quot;:&quot;LogMsg&quot;,
+       &quot;LogKey&quot;:&quot;auth&quot;,
+       &quot;returnCode&quot;:&quot;-1&quot;,
+       &quot;exitState&quot;:&quot;&quot;
+    },
+    &quot;ConnectError&quot;:{
+       &quot;errorName&quot;:&quot;ConnectError&quot;,
+       &quot;errorCode&quot;:&quot;540&quot;,
+       &quot;errorKey&quot;:&quot;Connect failures&quot;,
+       &quot;logFilterKey&quot;:&quot;LogMsg&quot;,
+       &quot;LogKey&quot;:&quot;Connect failures&quot;,
+       &quot;returnCode&quot;:&quot;-1&quot;,
+       &quot;exitState&quot;:&quot;&quot;
+    },
+    &quot;UnReadBackupServer&quot;:{
+       &quot;errorName&quot;:&quot;UnReadBackupServer&quot;,
+       &quot;errorCode&quot;:&quot;545&quot;,
+       &quot;errorKey&quot;:&quot;command not found&quot;,
+       &quot;logFilterKey&quot;:&quot;LogMsg&quot;,
+       &quot;LogKey&quot;:&quot;&quot;,
+       &quot;returnCode&quot;:&quot;-1&quot;,
+       &quot;exitState&quot;:&quot;127&quot;
+    },
+     &quot;InstallBackupAgent&quot;:{
+       &quot;errorName&quot;:&quot;InstallBackupAgent&quot;,
+       &quot;errorCode&quot;:&quot;546&quot;,
+       &quot;errorKey&quot;:&quot;oodpPostAgentInstallActions&quot;,
+       &quot;logFilterKey&quot;:&quot;LogMsg&quot;,
+       &quot;LogKey&quot;:&quot;Install Backup Agenged&quot;,
+       &quot;returnCode&quot;:&quot;-1&quot;,
+       &quot;exitState&quot;:&quot;1&quot;
+    },
+    &quot;CreateBackupServer&quot;:{
+       &quot;errorName&quot;:&quot;CreateBackupServer&quot;,
+       &quot;errorCode&quot;:&quot;547&quot;,
+       &quot;errorKey&quot;:&quot;oodpCreateBckSvc&quot;,
+       &quot;logFilterKey&quot;:&quot;LogMsg&quot;,
+       &quot;LogKey&quot;:&quot;BackupSvc created:&quot;,
+       &quot;returnCode&quot;:&quot;-1&quot;,
+       &quot;exitState&quot;:&quot;1&quot;
+    },
+    &quot;RemoveBackupServer&quot;:{
+       &quot;errorName&quot;:&quot;RemoveBackupServer&quot;,
+       &quot;errorCode&quot;:&quot;548&quot;,
+       &quot;errorKey&quot;:&quot;oodpRemoveBckSvc&quot;,
+       &quot;logFilterKey&quot;:&quot;LogMsg&quot;,
+       &quot;LogKey&quot;:&quot;BackupSvc removed&quot;,
+       &quot;returnCode&quot;:&quot;-1&quot;,
+       &quot;exitState&quot;:&quot;1&quot;
+    },
+    &quot;RunOnDemandBackupServer&quot;:{
+       &quot;errorName&quot;:&quot;RunOnDemandBackupServer&quot;,
+       &quot;errorCode&quot;:&quot;549&quot;,
+       &quot;errorKey&quot;:&quot;oodpRunOnDemBckSvc&quot;,
+       &quot;logFilterKey&quot;:&quot;LogMsg&quot;,
+       &quot;LogKey&quot;:&quot;RunOnDemand specification created:&quot;,
+       &quot;returnCode&quot;:&quot;-1&quot;,
+       &quot;exitState&quot;:&quot;1&quot;
+    },
+    &quot;ResumeBackupServer&quot;:{
+       &quot;errorName&quot;:&quot;ResumeBackupServer&quot;,
+       &quot;errorCode&quot;:&quot;550&quot;,
+       &quot;errorKey&quot;:&quot;oodpResumeBckSvc&quot;,
+       &quot;logFilterKey&quot;:&quot;LogMsg&quot;,
+       &quot;LogKey&quot;:&quot;BackupSvc resumed:&quot;,
+       &quot;returnCode&quot;:&quot;-1&quot;,
+       &quot;exitState&quot;:&quot;1&quot;
+    },
+     &quot;SuspendBackupServer&quot;:{
+       &quot;errorName&quot;:&quot;SuspendBackupServer&quot;,
+       &quot;errorCode&quot;:&quot;551&quot;,
+       &quot;errorKey&quot;:&quot;oodpSuspendBckSvc&quot;,
+       &quot;logFilterKey&quot;:&quot;LogMsg&quot;,
+       &quot;LogKey&quot;:&quot;BackupSvc resumed:&quot;,
+       &quot;returnCode&quot;:&quot;-1&quot;,
+       &quot;exitState&quot;:&quot;1&quot;
+    },
+     &quot;ModifyBackupServer&quot;:{
+       &quot;errorName&quot;:&quot;ModifyBackupServer&quot;,
+       &quot;errorCode&quot;:&quot;552&quot;,
+       &quot;errorKey&quot;:&quot;oodpModifyBckSched&quot;,
+       &quot;logFilterKey&quot;:&quot;LogMsg&quot;,
+       &quot;LogKey&quot;:&quot;BackupSvc:&quot;,
+       &quot;returnCode&quot;:&quot;-1&quot;,
+       &quot;exitState&quot;:&quot;1&quot;
+    }
+}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="fa413eba-53de-4786-85a5-660637fa0dc3">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorComponentString</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>Backup serverr: ${backupServerFQDN},host:${backupCSIDFQDN}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="9e230d32-45e1-4464-96ab-f8fabcd38f66">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>interval</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="ac43c496-0da7-4513-aa5b-8775244f2ff2">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>retry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="74a1e829-b81c-4e58-9a63-34849940208a">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inCommand</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="fb31ef21-a070-4c4f-9b17-27be1b487e7f">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inPrivateKeyFile</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="5c17c971-8090-4262-a761-dab689452e04">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inHost</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="ac6ad257-abc9-440a-a768-bbcf207de7cb">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inPort</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="ed77b07b-8a39-4ac3-a45d-1909f08e84ea">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inUsername</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="ae07a57b-0c6e-4687-a338-5256477631cb">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inProtocol</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="35f92e9e-4a0e-49de-8d11-54952eae034d">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inTimeout</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="26a125ab-ecb7-4e66-9ba8-b0c4995a972b">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inArguments</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="b1b7fa81-9ae7-4ec3-ac79-fdab68580f37">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inEnvironment</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="5e2491b8-1d6e-47a9-b46f-60858a1eb793">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inStartDir</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="d06461ad-450c-4464-8f77-16e04339c6de">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inPty</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="4e5c1acb-c631-4f3a-a3db-692c14da8e44">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inCharacterSet</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="a6c24b3f-9fcb-4283-8158-85072cd60cc5">
+      <annotation></annotation>
+      <fromContextKey>inSasHostUsername</fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inSasHost</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="cae7c27a-7d47-483a-830c-dcf1cd7aeea4">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inSasHostUsername</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="b4a6c0fd-0360-4a4e-8bd0-12a28a34a34e">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inOutputPath</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="a568a634-d286-4163-9c13-64e57d83f311">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inNasDevice</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="b77f35a0-429b-44fd-8a93-76a51fea338d">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inNasDeviceConsoleMode</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="73340acb-146c-4fb9-96ff-f5f4777bdf2e">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inHPomNode</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="7782e359-77b4-49cf-a553-38b901b56697">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>inHPomProtocol</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="6dc50097-dc78-42f2-a75d-9a3a2c3511af">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outSessionId</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="cc21a8fd-a9e0-4368-abd5-b2bd7427ba8d">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outResult</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="48f01cd3-c490-4b6b-92cb-4ecf5d492c61">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outTimedOut</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="215d05e6-e5e7-4e33-8765-308338629243">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outStdErr</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="15e35885-bdfe-4a88-b444-1de9c5e8c328">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outFailureMessge</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="9e8ba33e-2a75-4909-814c-120080bca25a">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outReturnCode</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="6700e217-51b5-46c7-85ae-6428136fc0e7">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outException</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="1d30fec4-31f0-49a5-b0de-aeb11dc50129">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outExitStatus</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="4029a37a-fb00-44f5-ac0f-895a76e45c6d">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>outReturnResult</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="75b36214-f5bf-4aaf-9b29-c4a812f934dc">
+    <annotation></annotation>
+    <name>Operation Remote Command Retry and Run (baa381ba-9d6f-491c-826d-8594f5106b92)</name>
+    <script>// One-liner to define JSON parser and stringifier.  Minified version of http://www.json.org/json2.js
+if(!this.JSON){this.JSON={};}(function(){function f(n){return n&lt;10?&apos;0&apos;+n:n;} if(typeof Date.prototype.toJSON!==&apos;function&apos;){Date.prototype.toJSON=function(key){return isFinite(this.valueOf())?this.getUTCFullYear()+&apos;-&apos;+ f(this.getUTCMonth()+1)+&apos;-&apos;+f(this.getUTCDate())+&apos;T&apos;+f(this.getUTCHours())+&apos;:&apos;+f(this.getUTCMinutes())+&apos;:&apos;+f(this.getUTCSeconds())+&apos;Z&apos;:null;};String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(key){return this.valueOf();};} var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,escapable=/[\\\&quot;\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,gap,indent,meta={&apos;\b&apos;:&apos;\\b&apos;,&apos;\t&apos;:&apos;\\t&apos;,&apos;\n&apos;:&apos;\\n&apos;,&apos;\f&apos;:&apos;\\f&apos;,&apos;\r&apos;:&apos;\\r&apos;,&apos;&quot;&apos;:&apos;\\&quot;&apos;,&apos;\\&apos;:&apos;\\\\&apos;},rep;function quote(string){escapable.lastIndex=0;return escapable.test(string)?&apos;&quot;&apos;+string.replace(escapable,function(a){var c=meta[a];return typeof c===&apos;string&apos;?c:&apos;\\u&apos;+(&apos;0000&apos;+a.charCodeAt(0).toString(16)).slice(-4);})+&apos;&quot;&apos;:&apos;&quot;&apos;+string+&apos;&quot;&apos;;} function str(key,holder){var i,k,v,length,mind=gap,partial,value=holder[key];if(value&amp;&amp;typeof value===&apos;object&apos;&amp;&amp;typeof value.toJSON===&apos;function&apos;){value=value.toJSON(key);}if(typeof rep===&apos;function&apos;){value=rep.call(holder,key,value);} switch(typeof value){case&apos;string&apos;:return quote(value);case&apos;number&apos;:return isFinite(value)?String(value):&apos;null&apos;;case&apos;boolean&apos;:case&apos;null&apos;:return String(value);case&apos;object&apos;:if(!value){return&apos;null&apos;;}gap+=indent;partial=[];if(Object.prototype.toString.apply(value)===&apos;[object Array]&apos;){length=value.length;for(i=0;i&lt;length;i+=1){partial[i]=str(i,value)||&apos;null&apos;;} v=partial.length===0?&apos;[]&apos;:gap?&apos;[\n&apos;+gap+partial.join(&apos;,\n&apos;+gap)+&apos;\n&apos;+mind+&apos;]&apos;:&apos;[&apos;+partial.join(&apos;,&apos;)+&apos;]&apos;;gap=mind;return v;}if(rep&amp;&amp;typeof rep===&apos;object&apos;){length=rep.length;for(i=0;i&lt;length;i+=1){k=rep[i];if(typeof k===&apos;string&apos;){v=str(k,value);if(v){partial.push(quote(k)+(gap?&apos;: &apos;:&apos;:&apos;)+v);}}}}else{for(k in value){if(Object.hasOwnProperty.call(value,k)){v=str(k,value);if(v){partial.push(quote(k)+(gap?&apos;: &apos;:&apos;:&apos;)+v);}}}} v=partial.length===0?&apos;{}&apos;:gap?&apos;{\n&apos;+gap+partial.join(&apos;,\n&apos;+gap)+&apos;\n&apos;+ mind+&apos;}&apos;:&apos;{&apos;+partial.join(&apos;,&apos;)+&apos;}&apos;;gap=mind;return v;}} if(typeof JSON.stringify!==&apos;function&apos;){JSON.stringify=function(value,replacer,space){var i;gap=&apos;&apos;;indent=&apos;&apos;;if(typeof space===&apos;number&apos;){for(i=0;i&lt;space;i+=1){indent+=&apos; &apos;;}}else if(typeof space===&apos;string&apos;){indent=space;} rep=replacer;if(replacer&amp;&amp;typeof replacer!==&apos;function&apos;&amp;&amp;(typeof replacer!==&apos;object&apos;||typeof replacer.length!==&apos;number&apos;)){throw new Error(&apos;JSON.stringify&apos;);} return str(&apos;&apos;,{&apos;&apos;:value});};} if(typeof JSON.parse!==&apos;function&apos;){JSON.parse=function(text,reviver){var j;function walk(holder,key){var k,v,value=holder[key];if(value&amp;&amp;typeof value===&apos;object&apos;){for(k in value){if(Object.hasOwnProperty.call(value,k)){v=walk(value,k);if(v!==undefined){value[k]=v;}else{delete value[k];}}}} return reviver.call(holder,key,value);} text=String(text);cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(a){return&apos;\\u&apos;+ (&apos;0000&apos;+a.charCodeAt(0).toString(16)).slice(-4);});} if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:[&quot;\\\/bfnrt]|u[0-9a-fA-F]{4})/g,&apos;@&apos;).replace(/&quot;[^&quot;\\\n\r]*&quot;|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,&apos;]&apos;).replace(/(?:^|:|,)(?:\s*\[)+/g,&apos;&apos;))){j=eval(&apos;(&apos;+text+&apos;)&apos;);return typeof reviver===&apos;function&apos;?walk({&apos;&apos;:j},&apos;&apos;):j;} throw new SyntaxError(&apos;JSON.parse&apos;);};}}());
+
+// define simplify mode call HP OO javascriptlet @Daway   
+scriptletResult = &quot;&quot;;
+function checknull(me){return (typeof(me) == &quot;undefined&quot; || me == null || me == &quot;&quot; || (/^\$\{.*\}$/g).test(me))?false:true;} // check null variable
+function print(me){scriptletResult += &quot;&quot;+checknull(me)?me:&quot;&quot;;}  // print information on Primary Result
+function println(){(1 == arguments.length)?printlines(arguments[0]):printlines(&quot;&quot;);} // println() or  println(&quot;me&quot;);
+function printlines(me){scriptletResult +=&quot;&quot;+checknull(me)?me+&quot;\n&quot;:&quot;\n&quot;;}    // print lines
+function printline(me,you){for(var i=0;i&lt;you;i++){print(me);};println(&quot;&quot;);}  // print foromat line
+function get(me){return scriptletContext.get(me);}   // get variable from context
+function getlocal(me){return scriptletContext.getLocal(me);}    // get variable from local context
+function getraw(me){return scriptletRawResult[&quot;&apos;&quot;+me+&quot;&apos;&quot;];}       //TBD
+function getoutput(){return scriptletRawResult[&apos;Output String&apos;];} //TBD 
+function getcode(){return parseInt(scriptletRawResult[&apos;Code&apos;]);}  //TBD
+function geterror(){return  scriptletRawResult[&apos;Error String&apos;];}  //TBD
+function putglobal(me,you){scriptletContext.putGlobal(me,you);}  // set variable on enviroment
+function put(me,you){scriptletContext.put(me,you);}  // set variable on context 
+function did(me){scriptletResponse=(&quot;boolean&quot; === (typeof me))?(me?&quot;success&quot;:&quot;failure&quot;):me;} // choice response to go a way
+function error(me){throw(me);}  // go throw a error message
+function bool(me){return (&quot;string&quot; == typeof me)?&quot;true&quot;==me.toLowerCase():me;} //convert boolean
+function int(me){return 1*me;} // convert number
+function str(me){return &quot;&quot;+me;} // convert string
+function json(me){return JSON.parse(me);}  // jso = json(string);
+function json2str(me){return JSON.stringify(me);} //convert JSON object to stirng
+function regex(me){return new RegExp(me);}
+function who(){return new java.lang.Object();} // java object;
+function whose(me){for(you in me){println(you);}} // whose(oo) 
+function runnable(me){return new java.lang.Runnable(me);} //
+function thread(me){return new java.lang.Thread(me);} //
+function system(){return java.lang.System;} //system().getenv(); system().getProperty(&quot;java.runtime.version&quot;);
+function date(){return new java.util.Date();} // get JAVA Date object  
+function dateformat(me){return new java.text.SimpleDateFormat(me);} // getdate = dateformat(&quot;yyyy/MM/dd hh:mm:ss&quot;).format(date());}
+function net(){return java.net;} //
+function xml(){return org.xml.sax;} //
+function file(){return java.io.File;} //
+function sleep(me){thread().sleep(1000*me);} //sleep(5);
+String.prototype.trim = function() {return this.replace(/^\s+|\s+$/g, &apos;&apos;);} // trim string  var atrim=&quot;  abc &quot;.trim();
+
+// exectue javascript content @Daway
+try {
+      //create a new java object
+      var oo = who();
+      //init operation state
+      var how = bool(true);
+      //println(&quot;&lt;pre&gt;&quot;);
+      println();
+      //include scriptlet content from input form
+      if(checknull(Scriptlet)){
+         eval(Scriptlet);
+      }else{
+         showEmptyInfo();
+      }
+      // finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+      showSyntaxError();
+      did(false);
+} catch (e){
+      var errorMsg = str(e);
+      showErrorInfo(errorMsg);
+      did(false);
+}finally { 
+      //print(&quot;&lt;/pre&gt;&quot;);
+      oo = null;
+      println();
+}   
+
+//Define function 
+//in Main catch
+function showSyntaxError(){
+  printline(&quot;*&quot;,80);
+  println(&quot;It have error in your operation!!!&quot;);
+  println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+  printline(&quot;-&quot;,80);
+  println(str(Scriptlet));
+  printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+  printline(&quot;*&quot;,80);
+  println(&quot;It have error in your operation!!!&quot;);
+  println(&quot;1) The error message was below:&quot;);
+  printline(&quot;-&quot;,80);
+  println(me);
+  printline(&quot;=&quot;,80);
+  // put context variable errorCode
+  put(&quot;errorCode&quot;,&quot;911&quot;);
+  put(&quot;errorComponent&quot;,me);
+  if(checknull(Scriptlet)){
+     println(&quot;2) It used relation scriptlet source content was below:&quot;);
+     printline(&quot;-&quot;,80);
+     println(str(Scriptlet));
+     printline(&quot;=&quot;,80);
+  }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+  printline(&quot;*&quot;,80);
+  println(&quot;It was not used Scriptlet on input inspector&quot;);
+  println(&quot;javascriptlet content is empty!&quot;);
+  printline(&quot;=&quot;,80);
+}
+
+</script>
+    <type>RHINO</type>
+    <scriptRef>
+      <refId>0fc52a8b-0419-47a4-87d3-f2263fb9a0a0</refId>
+      <refName>Retry and Run SSH CMD</refName>
+    </scriptRef>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="cda641fb-9bdf-49f9-ac79-d65d46541eca">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>true</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="e6f71023-8d66-4866-84b1-000c19d059b9">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>ERROR</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="eadb32d7-3fb5-4d92-b191-8759b59e703d">
+      <annotation></annotation>
+      <name>retry</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>DIAGNOSED</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions/>
+  <resultExpression id="a40650b6-b605-4428-84b7-c2e45000c485">
+    <annotation></annotation>
+    <name>returnResult</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="51abba8c-985f-4da7-ad65-6d787e24fb1d">
+    <baseIcon>workstation2.png</baseIcon>
+    <basePath>/Clients/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="afbf7800-7a99-49e4-b60b-9011e23b8729">
+        <baseIcon>iterate.png</baseIcon>
+        <basePath>/Annotations/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <opRef>
+    <refId>ddd79f22-8b1e-4605-88d5-d912bb2da2b9</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

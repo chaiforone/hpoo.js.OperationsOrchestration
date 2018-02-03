@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scriptlet id="23957092-67cb-49fe-8f5f-f591cac1da8c">
+  <descriptionCdata><![CDATA[23957092-67cb-49fe-8f5f-f591cac1da8c.description=/* Combine with below location of opeartion to use this VMware PowerCLIl Script (retry), this script include errorCode and retry function for Nucleus project 2016@Daway */\n/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Base/Operations/PowerShell/PowerShell Script (retry)
+]]></descriptionCdata>
+  <annotation>23957092-67cb-49fe-8f5f-f591cac1da8c.description</annotation>
+  <name>PowerShell Script (retry)</name>
+  <script>///
+eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); /* #include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/
+///
+/*
+(Nucleus_automation_design_specification_v41: 3.18.4.14) JavaScript Name: Vmware PowerCLI (retry) @Daway
+*/
+
+//=========================================================
+// Begin  : your Define functions
+
+// Show PowerCLI Info
+how.showInfo = function ()
+{
+// Begin function showInfo()
+
+	printline(&quot;-&quot;,80);
+    println(&quot;vCenterHost : &quot;								+ how.vCenterHost);
+    println(&quot;vCenterUsername : &quot;							+ how.vCenterUsername);
+    printline(&quot;-&quot;,80);
+    println(&quot;PowerCLI execute Result..&quot;);
+    printline(&quot;=&quot;,80);
+    println(how.returnResult);
+    printline(&quot;=&quot;,80);
+    println(&quot;checkCmdString : &quot;  							+ how.checkCmdString);
+    printline(&quot;*&quot;,80);
+    println(&quot;PowerCliScript .. &quot;);
+    printline(&quot;-&quot;,80);
+    println( how.powerCliScript );
+    printline(&quot;-&quot;,80);
+	println(&quot;returnCode : &quot;									+ how.returnCode );
+	isnull(&quot;how.exception&quot;)?&quot;&quot;:println(&quot;exception:&quot; 		+ how.exception);
+	//println(&quot;exception : &quot;		+ how.exception);
+	isnull(&quot;how.objectsCount&quot;)?&quot;&quot;:println(&quot;objectsCount:&quot; 	+ how.objectsCount);
+	//println(&quot;objectsCount : &quot;	+ 					how.objectsCount);
+
+	
+// End: function showInfo()
+}
+
+// Put Runtime Info
+how.putRuntimeInfo = function ()
+{
+// Begin function putRuntimeInfo()
+
+	put(&quot;outReturnCode&quot;,	how.returnCode);
+	put(&quot;outException&quot;,		how.exception);
+	put(&quot;outObjectsCount&quot;,	how.objectsCount);
+	put(&quot;outReturnResult&quot;,	how.returnResult);
+	
+// End: function putRuntimeInfo()
+}
+
+// Get PowerShell Runtime Info
+how.getRuntimeInfo = function () 
+{
+// Begin function getRuntimeInfo()
+
+	how.returnCode 		= getdid(&quot;returnCode&quot;);
+	how.exception  		= getdid(&quot;exception&quot;);
+	how.objectsCount 	= getdid(&quot;objectsCount&quot;);
+	how.returnResult 	= getdid(&quot;returnResult&quot;);
+	how.vCenterHost 	= getvar(&quot;vCenterHost&quot;);
+	how.vCenterUsername = getvar(&quot;vCenterUsername&quot;);
+	how.powerCliScript 	= getvar(&quot;powerCliScript&quot;);
+	how.errorCodeList 	= getvar(&quot;errorCodeList&quot;);
+	how.errorCodeRetry	= getvar(&quot;errorCodeRetry&quot;);
+	how.interval 		= getvar(&quot;interval&quot;);
+	how.retry 			= getvar(&quot;retry&quot;);
+	how.checkCmdString 	= getvar(&quot;checkCmdString&quot;);
+	how.overrideJRAS 	= get(&quot;overrideJRAS&quot;);
+	//
+	isnull(&quot;embedScriptlet&quot;)?&quot;&quot;:how.embedScriptlet = getvar(&quot;embedScriptlet&quot;);
+	how.getRetryCode();
+	how.getErrorCode();
+	//
+	return how;
+	
+// End: function getRuntimeInfo()
+}
+
+// Get saveInfoString
+how.getSaveInfoString = function()
+{
+//Begin: function getSaveInfoString()
+
+    var infoString  = &quot;vCenterHost:&quot;	+ getvar(&quot;how.vCenterHost&quot;);
+        infoString += &quot;;PowerCli:&quot;		+ getvar(&quot;how.PowerCliScript&quot;);
+        infoString += &quot;;Result:&quot;		+ getvar(&quot;how.returnResult&quot;);
+        infoString += &quot;;exception:&quot;		+ getvar(&quot;how.exception&quot;);
+	how.saveInfo = infoString; 
+	return how.saveInfo ;
+	
+//End: function getSaveInfoString()
+}
+
+// Get saveInfoString
+how.putErrorComponent = function()
+{
+//Begin: function putErrorComponent()
+
+	var errorComponentString 	= how.getSaveInfoString(); 
+    	errorComponentString 	= errorComponentString.substr(0,200);
+    put(&quot;errorComponent&quot;, errorComponentString );
+    
+//End: function putErrorComponent()
+}
+
+// Get RetryCode () 
+how.getRetryCode = function () 
+{
+//Begin: function getRetryCode()
+
+	var oRetryCodeList = json(getvar(&quot;errorCodeRetry&quot;));
+	for ( one in oRetryCodeList ) 
+	{
+	// Begin: for ( one in oRetryCodeList )
+		how.retryErrorCodeName 	= one;
+		how.retryErrorCode 		= oRetryCodeList[one];
+		break;		
+	// End: for ( one in oRetryCodeList )
+	}
+
+//End: function getRetryCode()	
+}
+
+// Get Error Code 
+how.getErrorCode = function ()
+{
+//Begin: function getErrorCode()
+
+	// get retry code     
+    //how.getRetryCode();
+    // get errorCode
+	var oErrorCodeList = json(getvar(&quot;errorCodeList&quot;));
+	for ( one in oErrorCodeList )
+	{
+	// Begin: for ( one in oPcliTypeList )
+		how.errorCodeName 	= one;
+		how.errorCode 		= oErrorCodeList[one];
+		break;
+	// End: for ( one in oPcliTypeList )	
+	}
+
+    return how;
+	
+//End: function getErrorCode()
+}
+
+// check error 
+how.checkError = function()
+{
+//Begin: function checkError()
+
+	how.doCheckRetry();
+	how.checkResult();
+	
+//End: function checkError()
+}
+
+// doRetry() 
+how.doRetry = function ()
+{
+// Begin: doRetry
+
+    var myRetry = getvar(get(&quot;myRetry&quot;));
+    if ( &quot;&quot;==myRetry )
+    {
+    //Begin: if ( &quot;&quot;==myRetry )
+    
+    	put(&quot;myRetry&quot;,getvar(&quot;retry&quot;) );
+      	myRetry = num(getvar(&quot;retry&quot;));
+    
+    //End: if ( &quot;&quot;==myRetry )
+    }
+    else
+    {
+    //Else Begin: if ( &quot;&quot;==myRetry )
+      	myRetry = num(get(&quot;myRetry&quot;)) ;
+    //Else End: if ( &quot;&quot;==myRetry )
+    }
+    
+    // save retry count
+    myRetry -= 1;
+    put(&quot;myRetry&quot;,myRetry);
+    
+    // check retry count
+    if(0 &gt;= myRetry)
+    {
+    //Begin: if(0 &gt;= myRetry)
+         return false;
+    //End: if(0 &gt;= myRetry)
+    }
+    else
+    {
+    //Else Begin: if(0 &gt;= myRetry)
+         sleep(how.interval);
+         return true;
+    //End Begin: if(0 &gt;= myRetry)
+    }  
+       
+// End: doRetry
+}
+
+// put RetryErrorCode
+how.putRetryErrorCode = function()
+{
+//Begin: function putRetryErrorCode()
+
+	put(&quot;errorCode&quot;,how.retryErrorCode);
+	how.putErrorComponent(); 
+		
+//End: function putRetryErrorCode()
+}
+
+// embed Scriptlet use on after sql execute
+how.haveScriptlet = function(){
+// Begin: function haveScriptlet()
+
+	return !isnull(&quot;how.embedScriptlet&quot;); 
+
+// End: function haveScriptlet()
+}
+
+// show RetryErrorCode
+how.showRetryErrorCode = function()
+{
+//Begin: function showRetryErrorCode()
+
+	println(&quot;errorCode : &quot;+ how.retryErrorCode);
+	printline(&quot;-&quot;,80);
+		
+//End: function showRetryErrorCode()
+}
+
+// do Check error exception 
+how.doCheckRetry = function()
+{
+//Begin: function doCheckRetry()
+
+	how.CheckConnect = /Connect-VIServer -Server/g.test(how.exception);
+
+//End: function doCheckRetry()
+}
+
+// Set PowerCLI Info to context
+how.putResult = function()
+{
+//Begin: function putResult()
+
+	put(&quot;outReturnCode&quot;, 	getvar(&quot;how.returnCode&quot;));
+	put(&quot;outException&quot;, 	getvar(&quot;how.exception&quot;));
+	put(&quot;outObjectsCount&quot;,	getvar(&quot;how.objectsCount&quot;));
+	put(&quot;outReturnResult&quot;,	getvar(&quot;how.returnResult&quot;));
+
+//End: function putResult()
+}
+
+// do Check error exception 
+how.checkResult = function()
+{
+//Begin: function checkResult()
+
+    if (isnull(&quot;how.checkCmdString&quot;))
+    {
+    	how.checkSuccessCMD = true;
+    }
+    else
+    {
+    	how.checkSuccessCMD = RegExp(str(how.checkCmdString),&quot;g&quot;).test(how.returnResult);
+    }
+	
+//End: function checkResult()
+}
+
+// Put ErrorCode
+how.putErrorCode = function()
+{
+//Begin: function putErrorCode()
+
+	put(&quot;errorCode&quot;,how.errorCode);
+	how.putErrorComponent(); 
+		
+//End: function putErrorCode()
+}
+
+// show errorCode
+how.showErrorCode = function()
+{
+//Begin: function showErrorCode()
+
+	println(&quot;errorCode : &quot;+ how.errorCode);
+	printline(&quot;-&quot;,80);
+		
+//End: function showErrorCode()
+}
+
+// Put Success
+how.putSuccessErrorCode = function()
+{
+//Begin: function putSuccessErrorCode()
+
+	put(&quot;errorCode&quot;,&quot;000&quot;);
+	how.putErrorComponent(); 
+		
+//End: function putSuccessErrorCode()
+}
+
+// show RetryErrorCode
+how.showSccuessErrorCode = function()
+{
+//Begin: function showSccuessErrorCode()
+
+	println(&quot;errorCode : &quot;+ &quot;000&quot;);
+	printline(&quot;-&quot;,80);
+		
+//End: function showSccuessErrorCode()
+}
+
+// End    : your Define functions
+//=========================================================
+
+
+/// Main() Begin: 
+//=========================================================
+/// exectue javascript content @Daway
+try {
+//if(!isnull(&quot;Scriptlet&quot;)){eval(Scriptlet);}else{
+//Begin :  your Scriptlet
+//------------------------------------------------------------------------
+how.getRuntimeInfo();
+how.checkError();
+//putResult();
+
+
+if( 0 == num(how.returnCode) )
+{
+//Begin :  if( 0 == num(how.returnCode) )
+    if(bool(how.checkSuccessCMD))
+    {
+    //Begin: if(bool(how.checkSuccessCMD))
+    
+    	println(&quot;PowerCli Running Success!&quot;);
+   	 	how.showInfo();
+    	how.putSuccessErrorCode();
+    	if (how.haveScriptlet()){eval(how.embedScriptlet);}
+    	did(true);
+    
+    //End: if(bool(how.checkSuccessCMD))
+    }
+    else
+    {
+    //Else Begin: if(bool(how.checkSuccessCMD))
+    
+    	print(&quot;PowerCli executing result have error, &quot;);
+    	println(&quot;please check checkCmdString=&apos;&quot;+how.checkCmdString+&quot;&apos; in result!&quot;);
+    	how.showErrorCode();
+    	how.showInfo();
+    	how.putErrorCode();
+    	did(false); 
+    	
+    //Else End: if(bool(how.checkSuccessCMD))  	
+    }
+	
+//End   :  if( 0 == num(how.returnCode) )
+}
+else
+{
+	// Else Begin:  if( 0 == num(how.returnCode) )
+
+		println(&quot;PowerCli Running Faliure!&quot;);	
+		printline(&quot;=&quot;,80);
+		//check Connect
+		if ( bool(how.CheckConnect) )
+		{
+		// Begin: if ( bool(how.CheckConnect) )
+	
+			if( how.doRetry() )
+			{
+			// Begin: if( how.doRetry() )
+			
+				println(&quot;do Retry...&quot;);
+				how.showRetryErrorCode(); 
+    			how.showInfo();
+    			how.putRetryErrorCode();   		
+   				did(&quot;retry&quot;);
+   				
+   			// End: if( how.doRetry() )	
+ 			}
+ 			else
+ 			{  
+ 			// Else Begin: if( how.doRetry() ) 
+ 				
+ 				how.showRetryErrorCode();    
+    			how.showInfo();
+    			how.putRetryErrorCode();
+ 				did(false);
+ 				
+ 			// Else End: if( how.doRetry() )
+    		}
+     		//put(&quot;connectError&quot;,&quot;true&quot;);
+    	// End: if ( bool(how.CheckConnect) )
+      	}
+      	else
+      	{
+     	// Elese Begin: if ( bool(how.CheckConnect) )
+     		how.showErrorCode();
+          	how.showInfo();
+	      	how.putErrorCode();
+	      	did(false);
+	
+       	// Elese Begin: if ( bool(how.CheckConnect) )
+       	}
+	printline(&quot;=&quot;,80);
+       
+// Else   End:  if( 0 == num(how.returnCode) )
+}
+
+//------------------------------------------------------------------------
+//End   :  Your Scriptlet
+//}
+// finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+    showSyntaxError();
+    did(false);
+} catch (e){
+    var errorMsg = str(e);
+    showErrorInfo(errorMsg);
+    did(false);
+}finally { 
+    how.putResult();
+    how = null;
+}
+/// Main() End:   
+//Define Main() functions 
+//=========================================================
+//in Main catch
+function showSyntaxError(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+    printline(&quot;-&quot;,80);
+    println(getvar(&quot;embedScriptlet&quot;));
+    printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;1) The error message was below:&quot;);
+    printline(&quot;-&quot;,80);
+    println(me);
+    printline(&quot;=&quot;,80);
+    // put context variable errorCode
+    put(&quot;errorCode&quot;,&quot;999&quot;);
+    put(&quot;errorComponent&quot;,me);
+    if(!isnull(&quot;embedScriptlet&quot;)){
+        println(&quot;2) It used relation scriptlet source content was below:&quot;);
+        printline(&quot;-&quot;,80);
+        println(getvar(&quot;embedScriptlet&quot;));
+        printline(&quot;=&quot;,80);
+    }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It was not used Scriptlet on input inspector&quot;);
+    println(&quot;javascriptlet content is empty!&quot;);
+    printline(&quot;=&quot;,80);
+}
+// end of Main() define functions
+//=========================================================
+</script>
+  <type>RHINO</type>
+</scriptlet>

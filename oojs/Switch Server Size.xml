@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="3ac4ccdc-ee2d-49e7-8043-c16ed9da6adf">
+  <descriptionCdata><![CDATA[3ac4ccdc-ee2d-49e7-8043-c16ed9da6adf.description=<pre>\nThis operation does not do anything. It can be used to filter flow variables by defining them as inputs and filtering them in the Results tab.\n\nInputs\:\n    field1 \u2013 An optional input that can be used for filtering flow variables.\n    field2 \u2013 An optional input that can be used for filtering flow variables.\n    field3 \u2013 An optional input that can be used for filtering flow variables.\n    field4 \u2013 An optional input that can be used for filtering flow variables.\n\nResults\:\n    returnResult - This is the primary output. It contains the value of  "field1" as it was specified at input or when filtered. \n\nResponses\:\n    success - The operation completed as stated in the description.\n</pre>
+]]></descriptionCdata>
+  <annotation>3ac4ccdc-ee2d-49e7-8043-c16ed9da6adf.description</annotation>
+  <name>Switch Server Size</name>
+  <categories/>
+  <inputs>
+    <staticBinding id="1b5c61a4-2485-455d-bb58-7be7f9d066e0">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>Field_1</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="41e8959b-28b6-494b-a61f-bef26d12be91">
+    <annotation></annotation>
+    <name>Operation Switch Server Size (3ac4ccdc-ee2d-49e7-8043-c16ed9da6adf)</name>
+    <script>if (typeof field1 != &apos;undefined&apos;) {
+	scriptletResult = field1;
+} else {
+	scriptletResult = &quot;&quot;;
+} 
+</script>
+    <type>RHINO</type>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="2e55a9d7-78fc-4f50-84e9-57e5690aef21">
+      <annotation></annotation>
+      <name>Linux Virtual</name>
+      <isDefault>true</isDefault>
+      <onFailure>false</onFailure>
+      <type>NO_ACTION_TAKEN</type>
+      <matchRules>
+        <expression id="844f8714-d574-46f7-9c97-5b94047c4b30">
+          <annotation></annotation>
+          <name>Field_1</name>
+          <fieldName>Field_1</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="b1021d39-407c-425e-bf8a-5fd1350521b3">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>L</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>ENDS_WITH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+        <expression id="9e8bf374-229f-4e6d-937c-2371bb29aed4">
+          <annotation></annotation>
+          <name>Field_1</name>
+          <fieldName>Field_1</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="db14dd8a-f735-4b9c-af8f-dc9172deaf07">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>V</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>BEGINS_WITH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="6876abaa-2168-4980-b46a-aedb8a9dc0fd">
+      <annotation></annotation>
+      <name>Linux Physical</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>NO_ACTION_TAKEN</type>
+      <matchRules>
+        <expression id="93b0f2dd-8b7b-49b6-8369-86d67338b698">
+          <annotation></annotation>
+          <name>Field_1</name>
+          <fieldName>Field_1</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="0fa3436c-e1f9-4777-a5d6-3521c3451193">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>L</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>ENDS_WITH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+        <expression id="014bd84e-9cf5-4331-b296-e2837ca8b0d5">
+          <annotation></annotation>
+          <name>Field_1</name>
+          <fieldName>Field_1</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="331b837e-95d1-4ad6-a9ff-598384dca978">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>P</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>BEGINS_WITH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="43302fc8-008e-4d14-b5cb-d83344e5e2b0">
+      <annotation></annotation>
+      <name>Windows Virtual</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>NO_ACTION_TAKEN</type>
+      <matchRules>
+        <expression id="68c320a8-1342-436d-a985-d6dad22ef0fa">
+          <annotation></annotation>
+          <name>Field_1</name>
+          <fieldName>Field_1</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="a87643ca-f2a2-411c-bcd3-1fd31da26134">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>W</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>ENDS_WITH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+        <expression id="bc28d102-fe86-4854-b654-d1c1cedbec06">
+          <annotation></annotation>
+          <name>Field_1</name>
+          <fieldName>Field_1</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="226b175e-564e-4611-a9f9-9bc48bde4142">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>V</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>BEGINS_WITH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="2c307251-ce51-4f6a-a9df-983a685135c4">
+      <annotation></annotation>
+      <name>Windows Physical</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>NO_ACTION_TAKEN</type>
+      <matchRules>
+        <expression id="9e693be7-6421-4c04-a8f8-de646c9e0785">
+          <annotation></annotation>
+          <name>Field_1</name>
+          <fieldName>Field_1</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="5b3e61cc-a8ea-4ff2-9ac9-0f0da9b81435">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>P</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>BEGINS_WITH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+        <expression id="ae6faea4-663c-4ef4-ab9d-d67b30ccf1e4">
+          <annotation></annotation>
+          <name>Field_1</name>
+          <fieldName>Field_1</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="97a07712-63aa-480d-8b12-e4f646cfa21c">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>W</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>ENDS_WITH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions/>
+  <resultExpression id="021d0f66-32e6-42b8-af90-a230023079ff">
+    <annotation></annotation>
+    <name>returnResult</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="ec664f06-ee7d-43a3-9e15-6d9a0430ed92">
+    <baseIcon>display_report.png</baseIcon>
+    <basePath>Utilities/</basePath>
+    <readOnly>false</readOnly>
+    <layers/>
+  </iconSpec>
+  <opRef>
+    <refId>ddd79f22-8b1e-4605-88d5-d912bb2da2b9</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

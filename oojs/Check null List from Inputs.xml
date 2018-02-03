@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="ffc5b98d-1ff8-4754-ba4d-26f38e48711c">
+  <descriptionCdata><![CDATA[ffc5b98d-1ff8-4754-ba4d-26f38e48711c.description=<pre>\nAccepts an object in the JavaScript Object Notation format (JSON) and and\ncreates and populates a flow variable for each member in the object.\nand check variable null from list for object inputs\n\nThe JSON format encodes objects as a set of unordered key/value pairs, which is\nsimilar to a structure or map in other programming languages.  For example,\n   { "city" \: "Palo Alto", \n     "state" \: "CA" }\nis an object with two elements one with the name "city" having the value "Palo\nAlto", and the other being the name "state" with the value "CA".  This operation\nwould create the flow variables city and state with the values "Palo Alto" and\n"CA".\n\nA optional prefix string can be specified that will be prepended to each flow\nvariable that is created.  For example, if the prefix is set to "my.", then\nthen the above object would result in the variables my.city (with value "Palo\nAlto") and my.state (with value "CA").  This can be useful if flow variables\nalready exist with the given names to avoid overwriting their values.\n\nJavaScript objects are useful for representing structured data, and are\nespecially when used within an array.  For example, an operation that retrieves\na set of incidents from an external system may return the entire list in one\narray of incident objects.  The description of the enclosing folder,\n/Library/Utility Operations/Container/JavaScript Objects has more examples, and\nthe JSON format is described completely at http\://www.json.org.\n\nInputs\n\n   object\n      The JavaScript object that will be converted into flow variables.  The\n      operation will return a failure if the it is not a JavaScript object.\n     i.e. \= { "city" \: "Palo Alto", "state" \: "CA","empty"\:"","noValue"\:"${noValue}" }\n \n  replaceEnterKeyInObject \n       The JavaScript object include hidden enter key replace other key\n      true is replace enterKey\n      false or null is not replace enterKey  \n\n  list\n     Check Variables list.  \n    The operation will return a failure if the variable value is null in variable list.\n     i.e. \=  city,empty,noValue\n\n  delimiter\n    The delimiter use on list. default is comma.\n    i.e. \= ,\n\n   prefix\n      The prefix to prepend to each flow variable name that will be created.\n      This is useful for creating unique variable names.\n    \nResponses\n\n   success\n      The flow variables were successfully created from the object.\n\n   failure\n      There was some error in processing the object, most likely because the\n      object is not in valid JavaScript Object Notation.  You may wish to use a\n      tool such as http\://www.jsonlint.com/ to help diagnose problems with\n      JavaScript Object Notation.\n\nOutputs\n    returnResult - This is the primary output.\n    default this operation return errorCode and errorComponent that donot need add errorCode and errorComponent\n    if you want add errorCode and errorComponent used below scriptlet, please refer Outputs sample\n       errorCode  from returnResult scriptlet\:    scriptletResult \= scriptletContext.get("errorCode"); \n       errorComponent   from returnResult scriptlet\:   scriptletResult \= scriptletContext.get("errorComponent");\n\n</pre>
+]]></descriptionCdata>
+  <annotation>ffc5b98d-1ff8-4754-ba4d-26f38e48711c.description</annotation>
+  <name>Check null List from Inputs</name>
+  <categories/>
+  <inputs>
+    <staticBinding id="c36083f1-65f1-44c8-a4d1-c7ca497b069b">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>object</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>{}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="5877c423-d095-402b-9744-3a6f26219592">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>list</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="b3e09759-e540-4bbd-a53e-9e6f24025004">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>delimiter</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>,</value>
+      <record>false</record>
+    </staticBinding>
+    <userInputBinding id="d3eaf5b5-4433-4e26-ae98-5c26510d6502">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>prefix</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt></prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="b04f7310-0705-4253-b83d-738018448e92">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>replaceEnterKeyInObject</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>true</value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="f8d09df2-92ee-4c1d-8ee1-18177b863364">
+    <annotation></annotation>
+    <name>Operation Check Null List from Inputs (ffc5b98d-1ff8-4754-ba4d-26f38e48711c)</name>
+    <script>// One-liner to define JSON parser and stringifier.  Minified version of http://www.json.org/json2.js
+if(!this.JSON){this.JSON={};}(function(){function f(n){return n&lt;10?&apos;0&apos;+n:n;} if(typeof Date.prototype.toJSON!==&apos;function&apos;){Date.prototype.toJSON=function(key){return isFinite(this.valueOf())?this.getUTCFullYear()+&apos;-&apos;+ f(this.getUTCMonth()+1)+&apos;-&apos;+f(this.getUTCDate())+&apos;T&apos;+f(this.getUTCHours())+&apos;:&apos;+f(this.getUTCMinutes())+&apos;:&apos;+f(this.getUTCSeconds())+&apos;Z&apos;:null;};String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(key){return this.valueOf();};} var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,escapable=/[\\\&quot;\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,gap,indent,meta={&apos;\b&apos;:&apos;\\b&apos;,&apos;\t&apos;:&apos;\\t&apos;,&apos;\n&apos;:&apos;\\n&apos;,&apos;\f&apos;:&apos;\\f&apos;,&apos;\r&apos;:&apos;\\r&apos;,&apos;&quot;&apos;:&apos;\\&quot;&apos;,&apos;\\&apos;:&apos;\\\\&apos;},rep;function quote(string){escapable.lastIndex=0;return escapable.test(string)?&apos;&quot;&apos;+string.replace(escapable,function(a){var c=meta[a];return typeof c===&apos;string&apos;?c:&apos;\\u&apos;+(&apos;0000&apos;+a.charCodeAt(0).toString(16)).slice(-4);})+&apos;&quot;&apos;:&apos;&quot;&apos;+string+&apos;&quot;&apos;;} function str(key,holder){var i,k,v,length,mind=gap,partial,value=holder[key];if(value&amp;&amp;typeof value===&apos;object&apos;&amp;&amp;typeof value.toJSON===&apos;function&apos;){value=value.toJSON(key);}if(typeof rep===&apos;function&apos;){value=rep.call(holder,key,value);} switch(typeof value){case&apos;string&apos;:return quote(value);case&apos;number&apos;:return isFinite(value)?String(value):&apos;null&apos;;case&apos;boolean&apos;:case&apos;null&apos;:return String(value);case&apos;object&apos;:if(!value){return&apos;null&apos;;}gap+=indent;partial=[];if(Object.prototype.toString.apply(value)===&apos;[object Array]&apos;){length=value.length;for(i=0;i&lt;length;i+=1){partial[i]=str(i,value)||&apos;null&apos;;} v=partial.length===0?&apos;[]&apos;:gap?&apos;[\n&apos;+gap+partial.join(&apos;,\n&apos;+gap)+&apos;\n&apos;+mind+&apos;]&apos;:&apos;[&apos;+partial.join(&apos;,&apos;)+&apos;]&apos;;gap=mind;return v;}if(rep&amp;&amp;typeof rep===&apos;object&apos;){length=rep.length;for(i=0;i&lt;length;i+=1){k=rep[i];if(typeof k===&apos;string&apos;){v=str(k,value);if(v){partial.push(quote(k)+(gap?&apos;: &apos;:&apos;:&apos;)+v);}}}}else{for(k in value){if(Object.hasOwnProperty.call(value,k)){v=str(k,value);if(v){partial.push(quote(k)+(gap?&apos;: &apos;:&apos;:&apos;)+v);}}}} v=partial.length===0?&apos;{}&apos;:gap?&apos;{\n&apos;+gap+partial.join(&apos;,\n&apos;+gap)+&apos;\n&apos;+ mind+&apos;}&apos;:&apos;{&apos;+partial.join(&apos;,&apos;)+&apos;}&apos;;gap=mind;return v;}} if(typeof JSON.stringify!==&apos;function&apos;){JSON.stringify=function(value,replacer,space){var i;gap=&apos;&apos;;indent=&apos;&apos;;if(typeof space===&apos;number&apos;){for(i=0;i&lt;space;i+=1){indent+=&apos; &apos;;}}else if(typeof space===&apos;string&apos;){indent=space;} rep=replacer;if(replacer&amp;&amp;typeof replacer!==&apos;function&apos;&amp;&amp;(typeof replacer!==&apos;object&apos;||typeof replacer.length!==&apos;number&apos;)){throw new Error(&apos;JSON.stringify&apos;);} return str(&apos;&apos;,{&apos;&apos;:value});};} if(typeof JSON.parse!==&apos;function&apos;){JSON.parse=function(text,reviver){var j;function walk(holder,key){var k,v,value=holder[key];if(value&amp;&amp;typeof value===&apos;object&apos;){for(k in value){if(Object.hasOwnProperty.call(value,k)){v=walk(value,k);if(v!==undefined){value[k]=v;}else{delete value[k];}}}} return reviver.call(holder,key,value);} text=String(text);cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(a){return&apos;\\u&apos;+ (&apos;0000&apos;+a.charCodeAt(0).toString(16)).slice(-4);});} if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:[&quot;\\\/bfnrt]|u[0-9a-fA-F]{4})/g,&apos;@&apos;).replace(/&quot;[^&quot;\\\n\r]*&quot;|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,&apos;]&apos;).replace(/(?:^|:|,)(?:\s*\[)+/g,&apos;&apos;))){j=eval(&apos;(&apos;+text+&apos;)&apos;);return typeof reviver===&apos;function&apos;?walk({&apos;&apos;:j},&apos;&apos;):j;} throw new SyntaxError(&apos;JSON.parse&apos;);};}}());
+
+// define simplify mode call HP OO javascriptlet @Daway   
+scriptletResult = &quot;&quot;;
+function checknull(me){return (typeof(me) == &quot;undefined&quot; || me == null || me == &quot;&quot; || (/^\$\{.*\}$/g).test(me))?false:true;} // check null variable
+function print(me){scriptletResult += &quot;&quot;+checknull(me)?me:&quot;&quot;;}  // print information on Primary Result
+function println(){(1 == arguments.length)?printlines(arguments[0]):printlines(&quot;&quot;);} // println() or  println(&quot;me&quot;);
+function printlines(me){scriptletResult +=&quot;&quot;+checknull(me)?me+&quot;\n&quot;:&quot;\n&quot;;}    // print lines
+function printline(me,you){for(var i=0;i&lt;you;i++){print(me);};println(&quot;&quot;);}  // print foromat line
+function get(me){return scriptletContext.get(me);}   // get variable from context
+function getlocal(me){return scriptletContext.getLocal(me);}    // get variable from local context
+function getraw(me){return scriptletRawResult[&quot;&apos;&quot;+me+&quot;&apos;&quot;];}       //TBD
+function getoutput(){return scriptletRawResult[&apos;Output String&apos;];} //TBD 
+function getcode(){return parseInt(scriptletRawResult[&apos;Code&apos;]);}  //TBD
+function geterror(){return  scriptletRawResult[&apos;Error String&apos;];}  //TBD
+function putglobal(me,you){scriptletContext.putGlobal(me,you);}  // set variable on enviroment
+function put(me,you){scriptletContext.put(me,you);}  // set variable on context 
+function did(me){scriptletResponse=(&quot;boolean&quot; === (typeof me))?(me?&quot;success&quot;:&quot;failure&quot;):me;} // choice response to go a way
+function error(me){throw(me);}  // go throw a error message
+function bool(me){return (&quot;string&quot; == typeof me)?&quot;true&quot;==me.toLowerCase():me;} //convert boolean
+function int(me){return 1*me;} // convert number
+function str(me){return &quot;&quot;+me;} // convert string
+function json(me){return JSON.parse(me);}  // jso = json(string);
+function json2str(me){return JSON.stringify(me);} //convert JSON object to stirng
+function regex(me){return new RegExp(me);}
+function who(){return new java.lang.Object();} // java object;
+function whose(me){for(you in me){println(you);}} // whose(oo) 
+function runnable(me){return new java.lang.Runnable(me);} //
+function thread(me){return new java.lang.Thread(me);} //
+function system(){return java.lang.System;} //system().getenv(); system().getProperty(&quot;java.runtime.version&quot;);
+function date(){return new java.util.Date();} // get JAVA Date object  
+function dateformat(me){return new java.text.SimpleDateFormat(me);} // getdate = dateformat(&quot;yyyy/MM/dd hh:mm:ss&quot;).format(date());}
+function net(){return java.net;} //
+function xml(){return org.xml.sax;} //
+function file(){return java.io.File;} //
+function sleep(me){thread().sleep(1000*me);} //sleep(5);
+String.prototype.trim = function() {return this.replace(/^\s+|\s+$/g, &apos;&apos;);} // trim string  var atrim=&quot;  abc &quot;.trim();
+
+
+// default response
+//println(&quot;&lt;pre&gt;&quot;);
+
+try {
+    println();
+    var how = true;
+    var replaceEnterKey = bool(replaceEnterKeyInObject);
+    //add replace enter hidden key @Daway
+    replaceEnterKeys(replaceEnterKey);
+   
+    // Interpret object as javascript
+    jsObject = json(object);
+    
+    if (isObject(jsObject)) {
+    
+       // var str = &quot;&quot;;
+        for(var property in jsObject) {
+            item = jsObject[property];
+            var prefix;
+            if (prefix != undefined &amp;&amp; prefix != &quot;&quot;)
+            	var name = prefix + property.toString();
+            else
+            	var name = property;
+            
+            // If the item in the list is itself another list or an object, then 
+            // convert to a string representation of a javascript object
+            if (typeof(item) == &quot;object&quot;)
+                  put(name, json2str(item)); 
+            else
+                // simple item, so just return its value
+                put(name, item); 
+        }
+        // add check list @Daway
+        checkVariableList(jsObject, list);
+        // display Variables list
+        if(how){
+          printline(&quot;*&quot;,80);
+          println(&quot;Object successfully split to put context variables&quot;);
+          printline(&quot;*&quot;,80);
+        }
+        showInputList(object,list);
+    
+        if(how){
+          did(true);
+        }else{
+          did(false);
+        }
+        
+    } else {
+        println(&quot;Not an object&quot;);
+    }
+
+} catch(e if e instanceof SyntaxError){
+    showSysntaxErrorInfo(object);
+} catch (e){
+    var errorMsg = str(e);
+    showErrorMsgInfo(object,errorMsg);
+}finally { 
+    //print(&quot;&lt;/pre&gt;&quot;);
+    println();
+}   
+
+// check list function to test whether object have null value @Daway
+function checkVariableList(obj, inputlist) {
+    if (delimiter == &quot;&quot;) {delimiter = &quot;,&quot;;}
+    //if (inputlist.replace(/^\s*|\s*$/g, &quot;&quot;) == &quot;&quot;) {return 0;}
+    if (inputlist.trim() == &quot;&quot;) {return true;}
+	var items = inputlist.split(delimiter);
+	var myValue = &quot;&quot;;
+	var myItem = 0;
+	var myVariable = &quot;&quot;;
+	var errorVariablesList = &quot;&quot;;
+	var errorComponent = &quot;&quot;;
+	var varIsNull = false;
+
+	for (myItem in items){
+//	    myValue = &quot;&quot;+obj[items[myItem].replace(/^\s*|\s*$/g, &quot;&quot;)];
+       myValue = &quot;&quot;+obj[items[myItem].trim()];
+       if (!checknull(myValue)){
+//	       myVariable = items[myItem].replace(/^\s*|\s*$/g, &quot;&quot;)
+          myVariable = items[myItem].trim();
+	       errorVariablesList += myVariable +&quot;,&quot;;
+	       varIsNull = true;
+	    }
+	}
+
+     if (varIsNull){
+        varIsNullInfo(errorVariablesList);
+        how = false; 
+     }
+}
+
+// Replace Enterkeys in Object
+function replaceEnterKeys(me){
+   if(me){
+     object = object.replace(/\n/g, &quot;&quot;);
+     printline(&quot;*&quot;,80);
+     println(&quot;Replaced Enterkeys in Object, replaceEnterKeyInObject: true&quot;);
+   }else{
+     printline(&quot;*&quot;,80);
+     println(&quot;No-Replace Enterkeys in Object, replaceEnterKeyInObject: false&quot;);
+   }
+}
+   
+// General function to test whether object is an object
+function isObject(obj) {
+  if (obj.constructor.toString().indexOf(&quot;Object&quot;) == -1)
+	return false;
+  else
+	return true;
+}
+
+//
+function varIsNullInfo(errorVariablesList){
+  printline(&quot;*&quot;,80);
+  println(&quot;Error!!! check value is NULL on input list&quot;);
+  printline(&quot;*&quot;,80);
+  errorTitle = &quot;please check below empty variable in input list:&quot;;
+  println(errorTitle);
+  printline(&quot;-&quot;,80);
+  errorComponent = &quot;( &quot; + errorVariablesList + &quot; )&quot;;
+  println(errorComponent);
+  printline(&quot;=&quot;,80);
+  errorComponent = errorTitle +&quot;\n&quot;+errorComponent;
+  //return errorCode
+  put(&quot;errorCode&quot;, &quot;911&quot;); 
+  put(&quot;errorComponent&quot;, errorComponent);
+}
+//
+function showSysntaxErrorInfo(me){
+  printline(&quot;*&quot;,80);
+  println( &quot;input value is not a valid JavaScript object!!!&quot;);
+  println( &quot;pelase check below inputed JSON format: &quot;);
+  printline(&quot;-&quot;,80);
+  println(str(me));
+  printline(&quot;=&quot;,80);
+}
+//
+function   showErrorMsgInfo(object,me){
+  printline(&quot;*&quot;,80);
+  println(&quot;The Opeartion have error!!!&quot;);
+  println(&quot;1) The error message was below:&quot;);
+  printline(&quot;-&quot;,80);
+  println(me);
+  printline(&quot;=&quot;,80);
+  println(&quot;2) pelase check below inputed JSON format: &quot;);
+  printline(&quot;-&quot;,80);
+  println(str(object));
+  printline(&quot;=&quot;,80);
+}
+//
+function showInputList(you,me){
+  println(&quot;Check input variables list: &quot;);
+  printline(&quot;-&quot;,80);
+  println( str(me));
+  printline(&quot;=&quot;,80);
+  println(&quot;Inputed JSON Object: &quot;);
+  printline(&quot;-&quot;,80);
+  println( str(you).replace(/\&quot;\s*,/g,&quot;\&quot;\,\n&quot;));
+  printline(&quot;=&quot;,80);
+} </script>
+    <type>RHINO</type>
+    <scriptRef>
+      <refId>72f26926-74b6-427c-869a-d9b8f117503b</refId>
+      <refName>Check null List from Inputs</refName>
+    </scriptRef>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="fe707171-6516-4846-bfaa-56c673066c14">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="85823524-cc45-4012-aa68-82e96c8c986a">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>true</isDefault>
+      <onFailure>true</onFailure>
+      <type>ERROR</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions>
+    <expression id="76080b4c-dffb-4560-89f6-d62f6c95fc7a">
+      <annotation></annotation>
+      <name>errorCode</name>
+      <fieldName>returnResult</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters>
+        <scriptletFilter id="6ffb80d4-06eb-43e7-bea4-0cf494898e70">
+          <annotation></annotation>
+          <name>Scriptlet</name>
+          <scriptlet id="ae5e83b9-beff-41d6-ae21-d9be114918d1">
+            <annotation></annotation>
+            <name>default</name>
+            <script>scriptletResult =  scriptletContext.get(&quot;errorCode&quot;); </script>
+            <type>RHINO</type>
+          </scriptlet>
+        </scriptletFilter>
+      </filters>
+    </expression>
+    <expression id="8dde5632-3663-41ce-8795-3dc4d3e72819">
+      <annotation></annotation>
+      <name>errorComponent</name>
+      <fieldName>returnResult</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters>
+        <scriptletFilter id="6b3b7ea8-9cfb-4baf-b9a4-f0edd7ec4cba">
+          <annotation></annotation>
+          <name>Scriptlet</name>
+          <scriptlet id="f8e47bc6-4b55-455b-b53c-f8e37bd21c0b">
+            <annotation></annotation>
+            <name>default</name>
+            <script>scriptletResult =  scriptletContext.get(&quot;errorComponent&quot;); </script>
+            <type>RHINO</type>
+          </scriptlet>
+        </scriptletFilter>
+      </filters>
+    </expression>
+  </availableResultExpressions>
+  <resultExpression id="66684232-66d3-469f-b812-c3cb8a237656">
+    <annotation></annotation>
+    <name>returnResult</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="66612c0e-6c6c-412b-a353-efd9ba4e8a60">
+    <baseIcon>jar_bean.png</baseIcon>
+    <basePath>/Others/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="db8da841-c985-47cd-9992-ad91fe555554">
+        <baseIcon>check2.png</baseIcon>
+        <basePath>/Annotations/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <opRef>
+    <refId>ddd79f22-8b1e-4605-88d5-d912bb2da2b9</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="f054bc4d-97ec-4a08-b3c1-c67e3d0a05e7">
+  <descriptionCdata><![CDATA[f054bc4d-97ec-4a08-b3c1-c67e3d0a05e7.description=<pre>\nThis operation running scriptlet from Inputs, It can be used to script flow.\nattention that do'not used Scriptlet tab, it need empty can be running script from Inputs script. \nThis operation does not do anything. It can be used to filter flow variables by defining them as inputs and filtering them in the Results tab.\n\nInputs\:\n    Scriptlet - write on javascript.\n\nResults\:\n    returnResult - This is the primary output.\n    default this operation return errorCode and errorComponent that donot need add errorCode and errorComponent\n    if you want add errorCode and errorComponent used below scriptlet, please refer Outputs sample\n       errorCode  from returnResult scriptlet\:    scriptletResult \= scriptletContext.get("errorCode"); \n       errorComponent   from returnResult scriptlet\:   scriptletResult \= scriptletContext.get("errorComponent");\nResponses\:\n    success - The operation completed as stated in the description.\n    failure   -  Theoperation failure as stated in the description.\n\nExamples of usage \:\n\n// This template shows how to access operation return data, inputs and context data \n// and how to set context data, responses and results. \n\n//convert to JSON object\njsObject \= JSON.parse({"var1"\:"value1"}); \nmyValue \= jsonOBJ["var1"];\n\n// To access an input simply refer to the input name from the Inputs panel.  For example\: \nmyData \= inputName; \n \n// To get value associated with the context key myContextKey\: \nmyContextData \= get("myContextKey"); \n \n// To get value associated with the context key myContextKey from the local context\: \nmyContextData \= let("myContextKey"); \n \n// To access the return code from a command line or script (note it is a string and must \n// be converted into an integer for numeric processing)\: \ncode \=getcode();\n \n// To access the output from the operation (for example stdout)\: \ndata \= getoutput() \n \n// To access the error string from the operation (for example stderr)\: \nerror \=geterror();\n \n// Other operations may have different result variables available.  To see the list for \n// a particular operation open the "Result from Field" dropdown on the Outputs tab \n \n// To set the response of the operation (must match one of the responses from the Responses tab)\: \ndid(true); // did("success")\ndid(false); // did("failure")\n \n// To set the result of the operation \nprint( "Your Result Here"); \nprintln( "Your Result Here"); \n// Use the context to hold data for use by other steps.  It is also helpful to place information \n// into the context to examine variables when developing and debugging scriptlets. \n// For example to place the OutputString information into a context key called 'Output'\: \nputglobal("Output", data); \n \n// Note that the Key and Value are both strings.  For example to place 'code' into the context\: \nputglobal("Code", code.toString()); \n \n// You can also place data into the local context, which means it will only be available to \n// the current flow, but not to its parent flow or other subflows.  To do this\: \nput("LocalVariable","LocalValue"); \n\n// You can use error function to throw eror message.\nerror("throw error message");\n \n// sleep flow\nsleep(interval)\n\n</pre>
+]]></descriptionCdata>
+  <annotation>f054bc4d-97ec-4a08-b3c1-c67e3d0a05e7.description</annotation>
+  <name>ScriptLet (Return 2 Responses)</name>
+  <categories/>
+  <inputs>
+    <staticBinding id="86f76735-98c6-41ac-91d6-07a30c19cd74">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>Scriptlet</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); /* #include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/
+/*   Nucleus_automation_design_specification : OOJS templte @Daway*/
+//Title: 3.18.8.1 Register Server for Backup :  
+// Get and init variables from check input here
+//=====================================
+var inVar = getvar(&quot;InputVar&quot;); //get from inputs
+var coVar1 = get(&quot;ContentVar&quot;); // get form context
+var coVar2 = getdid(&quot;ContentedVar&quot;); //got from context
+var myJSON = json(&apos;{&quot;one&quot;:&quot;1&quot;}&apos;); //get JSON object
+var whichOne = myJSON[&quot;one&quot;]; //get JSON item to a vairable
+//Your business logic implement here
+//=====================================
+if( isnull(&quot;inVar&quot;) ){     println(&quot; inVar is null&quot;);   myFunction();  }
+else{       println(&quot; inVar is not null&quot;);    myFunction();    }
+//Define Functions here
+//=====================================
+function myFunction(){
+    println(&quot;JSON src:&quot;+json2str(myJSON)); printline(&quot;-&quot;,80);println(&quot;myJson[One] is:&quot;+str(whichOne));
+}
+//=====================================</value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="8fcf4a24-b055-4ee5-9ac2-7b9c31a543fa">
+    <annotation></annotation>
+    <name>Operation ScriptLet Return 2 Responses (f054bc4d-97ec-4a08-b3c1-c67e3d0a05e7)</name>
+    <script>///
+eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); /* #include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/
+///
+/*
+(Nucleus_automation_design_specification_v40: 3.18.8.1) JavaScript Name: Run Scriptlets from Inputs @Daway
+*/
+/// Main() Begin: 
+//=========================================================
+/// exectue javascript content @Daway
+try {
+if(!isnull(&quot;Scriptlet&quot;)){eval(Scriptlet);}else{
+//Begin :  your Scriptlet
+//------------------------------------------------------------------------
+
+
+
+
+
+//------------------------------------------------------------------------
+//End   :  Your Scriptlet
+}
+// finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+    showSyntaxError();
+    did(false);
+} catch (e){
+    var errorMsg = str(e);
+    showErrorInfo(errorMsg);
+    did(false);
+}finally { 
+    println();
+}
+/// Main() End:   
+//Define functions 
+//=========================================================
+//in Main catch
+function showSyntaxError(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+    printline(&quot;-&quot;,80);
+    println(getvar(&quot;Scriptlet&quot;));
+    printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;1) The error message was below:&quot;);
+    printline(&quot;-&quot;,80);
+    println(me);
+    printline(&quot;=&quot;,80);
+    // put context variable errorCode
+    put(&quot;errorCode&quot;,&quot;999&quot;);
+    put(&quot;errorComponent&quot;,me);
+    if(!isnull(&quot;Scriptlet&quot;)){
+        println(&quot;2) It used relation scriptlet source content was below:&quot;);
+        printline(&quot;-&quot;,80);
+        println(getvar(&quot;Scriptlet&quot;));
+        printline(&quot;=&quot;,80);
+  }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It was not used Scriptlet on input inspector&quot;);
+    println(&quot;javascriptlet content is empty!&quot;);
+    printline(&quot;=&quot;,80);
+}
+// end of define functions
+//=========================================================
+// Begin  : your Define functions
+
+
+// End    : your Define functions
+//=========================================================</script>
+    <type>RHINO</type>
+    <scriptRef>
+      <refId>7dddd6a1-4bb2-4c29-aaba-f2ba8e9df6ed</refId>
+      <refName>Run Scriptlets from Inputs</refName>
+    </scriptRef>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="8d6efa45-e5d8-416e-a75a-53dbf1d3732c">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>true</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules/>
+    </opResponse>
+    <opResponse id="b6e9c289-f46d-4233-ab60-36e929a190de">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>ERROR</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions>
+    <expression id="008b6a52-7c99-4259-8aca-ac62e0664aae">
+      <annotation></annotation>
+      <name>errorCode</name>
+      <fieldName>returnResult</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters>
+        <scriptletFilter id="96bb58dd-55c5-4d66-b84b-9387062330b8">
+          <annotation></annotation>
+          <name>Scriptlet</name>
+          <scriptlet id="d2f41438-9114-4d2f-9981-880c0040650b">
+            <annotation></annotation>
+            <name>default</name>
+            <script>scriptletResult = scriptletContext.get(&quot;errorCode&quot;);</script>
+            <type>RHINO</type>
+          </scriptlet>
+        </scriptletFilter>
+      </filters>
+    </expression>
+    <expression id="b99ab877-42a0-4684-ad2b-9bb8fbece744">
+      <annotation></annotation>
+      <name>errorComponent</name>
+      <fieldName>returnResult</fieldName>
+      <sourceType>RAWRESULT</sourceType>
+      <filters>
+        <scriptletFilter id="8f423cf4-7bd0-42c6-88ec-7f6ab0326d45">
+          <annotation></annotation>
+          <name>Scriptlet</name>
+          <scriptlet id="c1d17403-1db0-4fba-ba30-dfeebe2bd7af">
+            <annotation></annotation>
+            <name>default</name>
+            <script>scriptletResult = scriptletContext.get(&quot;errorComponent&quot;);</script>
+            <type>RHINO</type>
+          </scriptlet>
+        </scriptletFilter>
+      </filters>
+    </expression>
+  </availableResultExpressions>
+  <resultExpression id="cc8e8e0f-fc7b-4d6c-a741-5f7653c94157">
+    <annotation></annotation>
+    <name>returnResult</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="ec34eaa5-3677-469c-a7fc-d1f3e6709e32">
+    <baseIcon>text_code_javascript.png</baseIcon>
+    <basePath>/Others/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="f9750b0d-e2da-484c-815d-6f3d4f955ae2">
+        <baseIcon>write2.png</baseIcon>
+        <basePath>/Annotations/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <opRef>
+    <refId>ddd79f22-8b1e-4605-88d5-d912bb2da2b9</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

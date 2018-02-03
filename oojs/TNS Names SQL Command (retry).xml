@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scriptlet id="f0dab98d-93b3-4ae8-be8f-054c5b4d4264">
+  <descriptionCdata><![CDATA[f0dab98d-93b3-4ae8-be8f-054c5b4d4264.description=/* Combine with below location of opeartion to use this TNS Names SQL Command, this script include errorCode and retry function for Nucleus project 2016@Daway */\n/Nucleus Base/Library/TP Cloud/Operations/Common Content Packs/Databases/Oracle/TNS Names SQL Command (retry) 
+]]></descriptionCdata>
+  <annotation>f0dab98d-93b3-4ae8-be8f-054c5b4d4264.description</annotation>
+  <name>TNS Names SQL Command (retry)</name>
+  <script>///
+eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); /* #include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/
+///
+/*
+(Nucleus_automation_design_specification_v41: 3.18.2.40) JavaScript Name: TNS Names SQL Command (retry) @Daway
+*/
+
+
+//=========================================================
+// Begin  : your Define functions
+
+// Show SQL Command Info
+how.showCmdInfo = function ()
+{
+// Begin: function showCmdInfo()
+	
+    printline(&quot;=&quot;,80);
+    println(&quot;SQL CMD runtime state:&quot;);
+    isnull(&quot;how.TNSEntry&quot;)?&quot;&quot;:println(&quot;TNSEntry : &quot; 		+ how.TNSEntry);
+    isnull(&quot;how.TNSPath&quot;)?&quot;&quot;:println(&quot;TNSPath : &quot; 			+ how.TNSPath);
+    isnull(&quot;how.Username&quot;)?&quot;&quot;:println(&quot;Username : &quot; 		+ how.Username);
+	println(&quot;SQL Command..&quot;);
+	printline(&quot;-&quot;,80);
+	println( how.Command );
+    printline(&quot;-&quot;,80);
+    isnull(&quot;how.outputText&quot;)?&quot;&quot;:println(&quot;outputText : &quot; 	+ how.outputText);
+    isnull(&quot;how.returnCode&quot;)?&quot;&quot;:println(&quot;returnCode : &quot; 	+ how.returnCode);
+    isnull(&quot;how.returnResult&quot;)?&quot;&quot;:println(&quot;returnResult : &quot; + how.returnResult);
+    isnull(&quot;how.updateCount&quot;)?&quot;&quot;:println(&quot;updateCount : &quot; 	+ how.updateCount);
+    isnull(&quot;how.exception&quot;)?&quot;&quot;:println(&quot;exception : &quot; 		+ how.exception);
+    printline(&quot;=&quot;,80);
+    
+// End: function showCmdInfo()
+}
+
+// Get SQL Enviroment
+how.getSqlRuntimeEnv = function ()
+{
+//Begin: function getSqlRuntimeEnv()
+
+	// get from default input
+	isnull(&quot;TNSEntry&quot;)?&quot;&quot;:how.TNSEntry 						= getvar(&quot;TNSEntry&quot;);
+	isnull(&quot;TNSPath&quot;)?&quot;&quot;:how.TNSPath 						= getvar(&quot;TNSPath&quot;);
+	isnull(&quot;Username&quot;)?&quot;&quot;:how.Username 						= getvar(&quot;Username&quot;);
+	isnull(&quot;Command&quot;)?&quot;&quot;:how.Command 						= getvar(&quot;Command&quot;);
+	
+	// get from result
+	isnull(&quot;getdid(&apos;returnCode&apos;)&quot;)?&quot;&quot;:how.returnCode 		= getdid(&quot;returnCode&quot;);
+	isnull(&quot;getdid(&apos;returnResult&apos;)&quot;)?&quot;&quot;:how.returnResult 	= getdid(&quot;returnResult&quot;);
+	isnull(&quot;getdid(&apos;updateCount&apos;)&quot;)?&quot;&quot;:how.updateCount 		= getdid(&quot;updateCount&quot;);
+	isnull(&quot;getdid(&apos;exception&apos;)&quot;)?&quot;&quot;:how.exception 			= getdid(&quot;exception&quot;);
+	isnull(&quot;getdid(&apos;outputText&apos;)&quot;)?&quot;&quot;:how.outputText 		= getdid(&quot;outputText&quot;);
+	
+	// get from define input
+	isnull(&quot;embedScriptlet&quot;)?&quot;&quot;:how.embedScriptlet 			= getvar(&quot;embedScriptlet&quot;);
+	isnull(&quot;errorCodeList&quot;)?&quot;&quot;:how.errorCodeList 			= getvar(&quot;errorCodeList&quot;);
+	isnull(&quot;errorCodeRetry&quot;)?&quot;&quot;:how.errorCodeRetry 			= getvar(&quot;errorCodeRetry&quot;);
+	isnull(&quot;interval&quot;)?&quot;&quot;:how.interval 						= getvar(&quot;interval&quot;);
+	isnull(&quot;retry&quot;)?&quot;&quot;:how.retry 							= getvar(&quot;retry&quot;);
+	// check Query
+	how.checkIsQuery();
+	
+	return how;
+	
+//End: function getSqlRuntimeEnv()
+}
+// Get Error Code 
+how.getErrorCode = function ()
+{
+//Begin: function getErrorCode()
+
+	// get retry code     
+    how.getRetryCode();
+    // get errorCode
+	var oSqlTypeList = json(how.errorCodeList);
+	
+	for ( one in oSqlTypeList )
+	{	
+	// Begin: for ( one in oSqlTypeList )
+	    if (regex(&quot;.*&quot;+one+&quot;.*&quot;,&quot;gi&quot;).test(how.Command) ) 
+	    {
+	    	 how.sqlType = one;
+	    	 how.errorCode = oSqlTypeList[one];
+	    	 break;
+	    }
+	// End: for ( one in oSqlTypeList )	
+	}
+    return how;
+	
+//End: function getErrorCode()
+}
+
+// Get Retry Error Code 
+how.getRetryCode = function ()
+{
+//Begin: function getRetryCode()
+     
+	// get retry code
+	var oSqlConnect = json(how.errorCodeRetry);
+	for ( one in oSqlConnect )
+	{
+	// Begin: for ( one in oSqlTypeList )
+
+	    	how.retryErrorCodeName = one;
+			how.retryErrorCode  = oSqlConnect[one];
+	    	break;
+
+	// End: for ( one in oSqlTypeList )	
+	}
+    return how;
+	
+//End: function getRetryCode()
+}
+
+// Put Error Code
+how.putErrorCode = function ()
+{
+// Begin: function putErrorCode()
+	put(&quot;errorCode&quot;,how.errorCode);
+	var errorString  = &quot;$TnsEntry:&quot;			+how.TNSEntry;
+	    errorString += &quot;;$TnsPath:&quot;			+how.TNSPath;
+	    errorString += &quot;;$Username:&quot;		+how.Username;
+	    errorString += &quot;;$returnResult:&quot;	+how.returnResult;
+	    errorString += &quot;;$exception:&quot;		+how.exception;
+	var cut200string = errorString.substr(0,200);
+	put(&quot;errorComponent&quot;,cut200string);
+    
+// End: function putErrorCode()
+}
+
+// Put Connect Error Code
+how.putRetryErrorCode = function ()
+{
+// Begin: function putRetryErrorCode()
+ 
+	put(&quot;errorCode&quot;,how.retryErrorCode);
+	var errorString  = &quot;$TnsEntry:&quot;			+how.TnsEntry;
+	    errorString += &quot;;$TnsPath:&quot;			+how.TnsPath;
+	    errorString += &quot;;$Username:&quot;		+how.Username;
+	    errorString += &quot;;$returnResult:&quot;	+how.returnResult;
+	    errorString += &quot;;$returnResult:&quot;	+how.returnResult;
+	    errorString += &quot;;$exception:&quot;		+how.exception;
+	var cut200string = errorString.substr(0,200);
+	put(&quot;errorComponent&quot;,cut200string);
+	
+    
+// End: function putRetryErrorCode()
+}
+
+// Put Query Error Code
+how.putQueryErrorCode = function ()
+{
+// Begin: function putQueryErrorCode()
+	if(isnull(&quot;how.errorCode&quot;))
+	{
+		put(&quot;errorCode&quot;,&quot;999&quot;);
+	}
+	else
+	{
+		put(&quot;errorCode&quot;,how.errorCode);
+	}	
+	var errorString  = &quot;$TnsEntry:&quot;			+how.TNSEntry;
+	    errorString += &quot;;$TnsPath:&quot;			+how.TNSPath;
+	    errorString += &quot;;$Username:&quot;		+how.Username;
+	    errorString += &quot;;$outputText:&quot;		+how.outputText;
+	    errorString += &quot;;$returnResult:&quot;	+how.returnResult;    
+	    errorString += &quot;;$exception:&quot;		+how.exception;
+	var cut200string = errorString.substr(0,200);
+	put(&quot;errorComponent&quot;,cut200string);
+    
+// End: function putQueryErrorCode()
+}
+
+// embed Scriptlet use on after sql execute
+how.haveScriptlet = function()
+{
+// Begin: function haveScriptlet()
+
+	return !isnull(&quot;how.embedScriptlet&quot;); 
+
+// End: function haveScriptlet()
+}
+
+// Put Error Success Code
+how.putSuccessCode = function (){
+// Begin: function putSuccessCode()
+
+	put(&quot;errorCode&quot;,&quot;000&quot;);
+	var errorString  = &quot;$TNSEntry:&quot;			+how.TNSEntry;
+	    errorString += &quot;;$TNSPath:&quot;			+how.TNSPath;
+	    errorString += &quot;;$Username:&quot;		+how.Username;
+	    errorString += &quot;;$returnResult:&quot;	+how.returnResult;
+	var cut200String = errorString.substr(0,200);
+	put(&quot;errorComponent&quot;,cut200String);
+    
+// End: function putSuccessCode()
+}
+
+//is SQL query
+how.checkIsQuery = function ()
+{
+//Begin: function checkIsQuery()
+
+	how.isQuery =  regex(&quot;SELECT&quot;,&quot;gi&quot;).test(how.Command);
+	how.checkQueryResult();
+	return how.isQuery;
+
+//End: function checkIsQuery()
+}
+
+//show SQL query result
+how.showSqlQuery = function()
+{
+//Begin: function showSqlQuery 
+	how.didQuery = !isnull(&quot;how.outputText&quot;) &amp;&amp;  how.isQuery ;
+	if( how.didQuery ) 
+	{
+	//Begin: if( !isnull(&quot;how.outputText&quot;) &amp;&amp;  how.isQuery )
+	
+		printline(&quot;-&quot;,80);
+		println(&quot;SQL Query Result..&quot;);
+		printline(&quot;-&quot;,80);
+		println(how.outputText);
+		printline(&quot;-&quot;,80);
+		put(&quot;sqlResult&quot;,how.outputText);
+	
+	//End: if( !isnull(&quot;how.outputText&quot;) &amp;&amp;  how.isQuery )	
+	}
+//End: function showSqlQuery  
+}
+//check SQL result
+how.checkSqlResult = function ()
+{
+//Begin: function checkSqlResult()
+
+    if (/.*Invalid TNSPath for Oracle.*/g.test(how.returnResult))
+    { 
+    //Begin:  Invalid TNSPath 
+    	how.connectError = true;
+    //End:  Invalid TNSPath 
+    }
+    else if (/.*invalid username.*/g.test(how.returnResult))
+    { 
+    //Begin: invalid username
+        how.authorError = true;
+        how.connectError = false;
+    //End: invalid username    
+    }
+    else if (/.*ORA-.*/g.test(how.returnResult))
+    {
+    //Begin: ORA-XXX error	
+    	how.runtimeError = true;
+    	how.authorError = false;
+    	how.connectError = false;
+    //End: ORA-XXX error
+    }
+    else
+    {
+    //Begin: Unkonwn Error    
+       	how.runtimeError = true;
+       	how.authorError = false;
+       	how.connectError = false;
+    //End: Unkonwn Error      	
+    }
+    return how;
+
+//End: function checkSqlResult()
+}
+
+// Check Query Result
+how.checkQueryResult = function ()
+{
+// Begin: function checkQueryResult()
+
+    how.checkQueryResult =  isnull(&quot;how.outputText&quot;) &amp;&amp;  how.isQuery ;
+
+// End: function checkQueryResult()
+}
+
+// Check Query Result
+how.putQueryResult = function ()
+{
+// Begin: function checkQueryResult()
+
+    if ( how.checkQueryResult )
+    {
+    	how.putQueryErrorCode();
+    	println(&quot;No found Record!&quot;);
+    	did(false);
+    }
+
+// End: function checkQueryResult()
+}
+
+//do retry
+how.doRetry = function ()
+{
+// Begin: function doRetry()
+    var myRetry = getvar(get(&quot;myRetry&quot;));
+    if ( &quot;&quot;==myRetry )
+    {
+    //Begin: if ( &quot;&quot;==myRetry )
+    
+        put(&quot;myRetry&quot;,how.retry );
+        myRetry = num(how.retry);
+    
+    ////End: if ( &quot;&quot;==myRetry )
+    }
+    else
+    {
+    //Else Begin: if ( &quot;&quot;==myRetry )
+    
+        myRetry = num(get(&quot;myRetry&quot;)) ;
+        
+    //Else Begin: if ( &quot;&quot;==myRetry )
+    }
+    //
+    myRetry -= 1;
+    put(&quot;myRetry&quot;,myRetry);
+    //
+    if(0 &gt;= myRetry)
+    {
+    //Begin: if(0 &gt;= myRetry)
+    
+        how.retry = false;
+        return false;
+        
+    //End: if(0 &gt;= myRetry)    
+    }
+    else
+    {
+    //Else Begin: if(0 &gt;= myRetry)
+    
+        sleep(how.interval);
+        how.retry = true;
+        return true;
+        
+    //Else Begin: if(0 &gt;= myRetry)
+    }     
+// End: function doRetry()
+}
+
+
+// Show SQL Command Info
+how.showErrorCode = function ()
+{
+// Begin: function showErrorCode()
+
+    printline(&quot;-&quot;,80);
+    println(&quot;errorCode        : &quot; + how.errorCode );
+    printline(&quot;-&quot;,80);
+
+// End: function showErrorCode()
+}
+
+
+// Show SQL Command Info
+how.showRetryErrorCode = function ()
+{
+// Begin: function showRetryErrorCode()
+
+    printline(&quot;-&quot;,80);
+    println(&quot;errorCode        : &quot; + how.retryErrorCode );
+    printline(&quot;-&quot;,80);
+
+// End: function showRetryErrorCode()
+}
+
+// End    : your Define functions
+//=========================================================
+
+/// Main() Begin: 
+//=========================================================
+/// exectue javascript content @Daway
+try {
+//if(!isnull(&quot;Scriptlet&quot;)){eval(Scriptlet);}else{
+//Begin :  your Scriptlet
+//------------------------------------------------------------------------
+how.getSqlRuntimeEnv();
+how.getErrorCode();
+how.checkSqlResult();
+
+if(0 == num(getdid(&quot;returnCode&quot;)))
+{
+// (0)Begin: SQL Command Success
+
+	println(&quot;Success Execute SQL Command!&quot;);
+	printline(&quot;*&quot;,80);	
+	how.showSqlQuery();
+	
+	//
+	how.showCmdInfo();
+	how.putSuccessCode();
+	//
+	if (how.haveScriptlet()){eval(how.embedScriptlet);}
+	//
+	(how.checkQueryResult)?how.putQueryResult():did(true);
+
+// (0)End: SQL Command Success
+}else if(-1 == num(getdid(&quot;returnCode&quot;))){
+// (-1)Else If Begin: SQL Command Success
+
+	println(&quot;Failure in Execute SQL Command!&quot;);
+	printline(&quot;*&quot;,80);
+    if ( how.connectError ){
+    //Begin: if ( how.connectError )
+        println(&quot;Oracle SQL Connect error!!!!!!&quot;);
+        if ( how.doRetry() )
+        {
+            println(&quot;do Retry...&quot;);
+            how.showRetryErrorCode();
+            how.showCmdInfo();
+            how.putRetryErrorCode();
+            did(&quot;retry&quot;);
+        }
+        else
+        {
+            how.showRetryErrorCode();
+        	how.showCmdInfo();
+            how.putRetryErrorCode();
+            did(false);
+        }
+    //End: if ( how.connectError )   
+    }
+    else if ( how.authorError )
+    {
+    //Begin: else if ( how.authorError )
+        println(&quot;Oracle SQL Author error&quot;);
+        how.showRetryErrorCode();
+        how.showCmdInfo();
+        how.putRetryErrorCode();
+        did(false);
+    //END: else if ( how.authorError )
+    }
+    else if ( how.runtimeError )
+    {
+    //Else Begin: if ( how.connectError )
+    	println(&quot;Oracle SQL runtime error&quot;);
+        how.showErrorCode();
+        how.showCmdInfo();
+        how.putErrorCode();
+        did(false);
+    //Else End: if ( how.connectError )
+    }
+    else
+    {
+    	println(&quot;Unknown error&quot;);
+    	how.showErrorCode();
+    	how.showCmdInfo();
+    	how.putErrorCode();
+    	did(false)
+    }
+    
+// (-1)Else If End: SQL Command Success
+}else{
+// (?)Else Begin: SQL Command Success
+
+	println(&quot;Failure During Execute Oracle SQL Command!&quot;);
+	how.showCmdInfo();
+	how.putErrorCode();
+	did(false);
+
+// (?)End: SQL Command Success
+}
+
+
+//------------------------------------------------------------------------
+//End   :  Your Scriptlet
+//}
+// finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+    showSyntaxError();
+    did(false);
+} catch (e){
+    var errorMsg = str(e);
+    showErrorInfo(errorMsg);
+    did(false);
+}finally { 
+	how=null;
+}
+/// Main() End:   
+//Define Main() functions 
+//=========================================================
+//in Main catch
+function showSyntaxError(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+    printline(&quot;-&quot;,80);
+    println(how.embedScriptlet);
+    printline(&quot;=&quot;,80);
+}
+//in Main catch
+function showErrorInfo(me){
+    printline(&quot;*&quot;,80);
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;1) The error message was below:&quot;);
+    printline(&quot;-&quot;,80);
+    println(me);
+    printline(&quot;=&quot;,80);
+    // put context variable errorCode
+    put(&quot;errorCode&quot;,&quot;999&quot;);
+    put(&quot;errorComponent&quot;,me);
+    if(!isnull(&quot;embedScriptlet&quot;))
+    {
+        println(&quot;2) It used relation scriptlet source content was below:&quot;);
+        printline(&quot;-&quot;,80);
+        println(how.embedScriptlet);
+        printline(&quot;=&quot;,80);
+    }
+}
+//in Main emptyInfo
+function showEmptyInfo(){
+    printline(&quot;*&quot;,80);
+    println(&quot;It was not used Scriptlet on input inspector&quot;);
+    println(&quot;javascriptlet content is empty!&quot;);
+    printline(&quot;=&quot;,80);
+}
+
+// end of Main() define functions
+//=========================================================
+</script>
+  <type>RHINO</type>
+</scriptlet>

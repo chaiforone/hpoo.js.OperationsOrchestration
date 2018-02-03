@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="341acaeb-c7e0-41bf-85cf-0b1dcf5ed597">
+  <descriptionCdata><![CDATA[341acaeb-c7e0-41bf-85cf-0b1dcf5ed597.31212f96-72ec-450b-ab2d-a341baa1eee4.prompt=Enter the SAS version used\:
+341acaeb-c7e0-41bf-85cf-0b1dcf5ed597.description=Waits for the job to reach a specific state. If no state is specified, then this will wait for the job to reach an end state.\n\nInputs\:\ncoreHost - The DNS name or IP Address of your SAS core.\ncorePort - The port to Connect to your SAS core on.\ncoreProtocol - The protocol to connect to your SAS core with. Either HTTP or HTTPS.\ncoreUsername - The username for host.\ncorePassword - The password for host.\ncoreVersion - The version of SAS to use.\njobID - The id of the job.\nstatus - The status to wait for the job to reach. If none is specified this will wait until the job is no longer running.\ntimeout - The maximum number of milliseconds to wait for the job. If not specified, 1 hour is used.\nfrequency - The frequency, in milliseconds, with which the operation will check if the job has reached the specified state (or an end state). The default value is 5000 ms.\n\nResponses\:\nfailure - Something went wrong.\nsuccess - The operation completed successfully.
+]]></descriptionCdata>
+  <annotation>341acaeb-c7e0-41bf-85cf-0b1dcf5ed597.description</annotation>
+  <name>Wait for Job(Retry)</name>
+  <categories/>
+  <inputs>
+    <userInputBinding id="fec6a961-7f5e-4406-bdae-29b972ef3257">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>coreHost</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt></prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="5df76d04-60a4-44da-a24f-7864cca88403">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>overrideJRAS</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="f5235a8b-a567-47d6-8c6f-174f34801898">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorCode</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="d47069ba-63af-412e-8a1c-c457f5648491">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorComponent</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="0e2d1502-ae26-441d-be47-bf64c17c8e29">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>RETRY</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="119b9edd-3a4f-4471-b4d3-fb56b5a8d1fc">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>INTERVAL</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <userInputBinding id="49fe2c5d-1c14-45f0-97af-806c316f8a50">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>coreUsername</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt></prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="1b4a98ef-c0eb-47d8-bd7d-5b84a8de3b3c">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>ENCRYPTED</inputType>
+      <recordKey></recordKey>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>false</isPersisted>
+      <inputSymbol>corePassword</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt></prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="a0e4ca0b-8a34-45d1-9c3c-7d6a5453924e">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>corePort</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>443</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="81f18392-c9d2-4010-9473-5077cb3f4407">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>coreProtocol</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>https</value>
+      <record>false</record>
+    </staticBinding>
+    <userInputBinding id="31212f96-72ec-450b-ab2d-a341baa1eee4">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>coreVersion</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>341acaeb-c7e0-41bf-85cf-0b1dcf5ed597.31212f96-72ec-450b-ab2d-a341baa1eee4.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <link>
+        <refId>16a2326d-3eb1-414f-b5d6-1e82f801ea87</refId>
+        <refName>SAS Version</refName>
+      </link>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="aff6c635-3c2f-4d51-a1d3-7ad070bc00ca">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>status</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <userInputBinding id="80ba8431-0ba4-46a2-82d1-97a71d81ffe5">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>jobID</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt></prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="fb9ae80e-fb96-4993-8de7-eca97397c5f2">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>timeout</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt></prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="88012db0-8e80-42ba-8202-8da757784001">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>frequency</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt></prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+  </inputs>
+  <scriptlet id="7a2acb2f-dd62-4b27-ae2c-9ab5070a0de4">
+    <annotation></annotation>
+    <name>Operation Wait for Job(Retry) (341acaeb-c7e0-41bf-85cf-0b1dcf5ed597)</name>
+    <script>eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); 
+//The following function referenced from &quot;nucl.base.oojs&quot;
+//println(); sleep()
+/////////////////////////////////////////////////////
+
+var myCount = scriptletContext.get(&quot;count&quot;);
+
+var myCode = parseInt(scriptletRawResult[&apos;returnCode&apos;]); 
+//var myOutput = scriptletRawResult[&apos;returnResult&apos;];
+var myException = scriptletRawResult[&apos;exception&apos;]; 
+
+//println(&quot;returnResult is: &quot; + myOutput);
+//println(&quot;errorCode is: &quot; + myCode);
+println(&quot;exception is: &quot; + myException);
+
+//Successfully completed
+if (myCode == 0) 
+	{
+		scriptletContext.put(&quot;errorCode&quot;,&quot;000&quot;);
+		scriptletContext.put(&quot;errorComponent&quot;,errorComponent);	
+		scriptletResponse = &quot;success&quot;;		
+	}
+
+// Connection issue
+else if (myException.match(/Connection refused|Connection timed out|Timeout exceeded|Failed to connect|connection abort|(401)Unauthorized/i))
+	{
+		println(&quot;exception matched&quot;);
+		if (typeof myCount == &apos;undefined&apos;){myCount = 0};
+		if (myCount &lt; RETRY)
+			{
+				sleep(INTERVAL);
+				myCount++;
+				println(&quot;Retry count is: &quot; + myCount);
+				scriptletContext.put(&quot;count&quot;,myCount);
+				scriptletResponse = &quot;retry&quot;; 
+			}
+		else
+			{
+				scriptletContext.put(&quot;errorCode&quot;,&quot;300&quot;);
+				scriptletContext.put(&quot;errorComponent&quot;,errorComponent);	
+				scriptletResponse = &quot;failure&quot;;						
+			} 
+	}
+
+//Other error
+else
+	{
+		scriptletContext.put(&quot;errorCode&quot;,errorCode);
+		scriptletContext.put(&quot;errorComponent&quot;,errorComponent);	
+		scriptletResponse = &quot;failure&quot;;
+	}</script>
+    <type>RHINO</type>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="d1460e6c-d662-4d0e-897e-e066e80f1baa">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules>
+        <expression id="d064026c-5209-410d-ad74-052ea6f5146a">
+          <annotation></annotation>
+          <name>returnCode</name>
+          <fieldName>returnCode</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="25b6bf94-49a4-484f-bc18-d2a02e78955b">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>0</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>EXACT_MATCH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="1a0bb5e0-b2cd-4bc4-9e13-76d175f4ef18">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>true</isDefault>
+      <onFailure>true</onFailure>
+      <type>ERROR</type>
+      <matchRules>
+        <expression id="e2b91a2c-091d-4e91-a5e0-ed1b178fef4c">
+          <annotation></annotation>
+          <name>returnCode</name>
+          <fieldName>returnCode</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="edc87479-6634-43c8-8be5-370a3564465b">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>-1</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>EXACT_MATCH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="6d8b6700-e7c0-412d-8913-41fc0aa13f32">
+      <annotation></annotation>
+      <name>retry</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>DIAGNOSED</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions/>
+  <resultExpression id="6e875362-ebc7-4b5a-a7d9-2a8a1bf61fed">
+    <annotation></annotation>
+    <name>returnCode</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="084264d7-1a49-4d51-94f2-28acdbf13b56">
+    <baseIcon>change.png</baseIcon>
+    <basePath>/Integrations/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="b2815362-06aa-453a-8af0-1524fe3d3e8f">
+        <baseIcon>hourglass.png</baseIcon>
+        <basePath>/Utilities/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <opRef>
+    <refId>4a5a9b9b-c259-40fb-9797-217a3b13491c</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>

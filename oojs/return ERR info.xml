@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scriptlet id="88079668-9147-405b-8491-20517ecefe65">
+  <descriptionCdata><![CDATA[88079668-9147-405b-8491-20517ecefe65.description=return Global ERR Info
+]]></descriptionCdata>
+  <annotation>88079668-9147-405b-8491-20517ecefe65.description</annotation>
+  <name>return ERR info</name>
+  <script>eval(String(scriptletContext.get(&quot;nucl.base.oojs&quot;))); /* #include this line in scriptlet to use OO ScriptLet Common Define functions for OOJS V1.0 @Daway*/
+///
+/*
+(Nucleus_automation_design_specification_v40: 3.18.8.1) JavaScript Name: Run Scriptlets from Inputs @Daway
+*/
+/// Main() Begin: 
+//=========================================================
+/// execute javascript content @Daway
+try {
+//Begin :  your Scriptlet
+//------------------------------------------------------------------------
+
+isnull(&quot;errorCode&quot;)?how.errorCode = &quot;-1&quot; : how.errorCode = getvar(&quot;errorCode&quot;);
+isnull(&quot;errorComponent&quot;)?how.errorCode = &quot;no got errorCode&quot;:how.errorComponent = getvar(&quot;errorComponent&quot;);
+
+if ( -1 == how.errorCode ) 
+{
+	putglobal(&quot;ERR.errorCode&quot;,&quot;&quot;);
+	putglobal(&quot;ERR.errorComponent&quot;,&quot;no got errorCode from prev-Step&quot;);
+}
+else
+{
+    putglobal(&quot;ERR.errorCode&quot;, how.errorCode);
+	putglobal(&quot;ERR.errorComponent&quot;, how.errorComponent);
+}
+
+//------------------------------------------------------------------------
+//End   :  Your Scriptlet
+
+// finalize oo javascirpt flow
+} catch(e if e instanceof SyntaxError){
+    showSyntaxError();
+} catch (e){
+    println(str(e));
+}finally { 
+    how = null;
+}
+/// Main() End:   
+//Define functions 
+//=========================================================
+//in Main catch
+function showSyntaxError(){
+    println(&quot;It have error in your operation!!!&quot;);
+    println(&quot;SyntaxError in the javascriptlet content is:&quot;);
+}
+//in Main catch
+
+// end of define functions
+//=========================================================
+</script>
+  <type>RHINO</type>
+</scriptlet>

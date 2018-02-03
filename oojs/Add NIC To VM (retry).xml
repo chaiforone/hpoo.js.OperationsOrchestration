@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operation id="a1bc6998-943f-49e2-8fcd-487ceeb4ca21">
+  <descriptionCdata><![CDATA[a1bc6998-943f-49e2-8fcd-487ceeb4ca21.02330494-710e-4d15-ab56-ca80b56c735f.prompt=VMWare Host\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.02e3f360-061b-4620-978d-fe216c0ab30e.prompt=Close session?\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.4458848f-2ec5-42f3-8eea-233ad6acd245.prompt=Virtual Machine\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.445cb619-fde8-4f82-bc3a-6a0b937e9941.prompt=MAC Address Type\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.57680dff-f590-4eae-bb54-071c9746e020.prompt=MAC Address\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.59ccb6a5-7123-4a1b-83bd-841437cecd3c.prompt=Password\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.6896e043-0d8f-4321-be20-1dc17cefd0c5.prompt=Network Name / Port Group\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.84e2675e-c1bb-468a-8ddd-1a611b99e55e.prompt=Identify VM by\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.89a268b7-ea20-4781-b170-231699620655.prompt=VMWare User\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.9ce58470-87bd-44b2-8c0b-2957fcc7b9d5.prompt=Datacenter to look for VM\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.b1ee3cd5-a67b-48aa-a67b-285686115456.prompt=NIC type\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.ccf5808b-fadc-44b7-92d6-7782dca2f642.prompt=Enable Wake On LAN?\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.dce49d49-a084-49fe-92e0-29986f78f517.prompt=Asynchronously Perform Task?\:
+a1bc6998-943f-49e2-8fcd-487ceeb4ca21.description=<pre>Add a Network Interface Card to a virtual machine assigned to a port group / network name.\n\nInputs\:\nhost - VMWare host hostname or IP.\nuser - VMWare username.\npassword - VMWare user's password.\nport - Port to connect on.\nprotocol - Connection protocol (http or https).\ncloseSession - Close the internally kept VMWare Infrastructure API session at completion of operation (true, false).\nasync - Asynchronously perform the task (true, false).\ntaskTimeOut - Time to wait before the operation is considered to have failed (seconds)\nvirtualMachine - Primary Virtual Machine identifier. Inventorypath (Datacenter/vm/Folder/MyVM), Name of VM, IP (IPv4 or IPv6 depending upon ESX version), hostname (full), UUID, or the VM id (vm-123,123).\nvmIdentifierType - Virtual machine identifier type (inventorypath, name, ip, hostname, uuid, vmid).\nvmDatacenter - Virtual machine's datacenter.\nnetPortGroup - Name of port group to connect this new NIC to. This port group can be a legacy port group or a distributed virtual port group.\nnetNicType - Virtual network interface card type. Valid inputs\: PCNet32, E1000, VmxNet, VmxNet2, VmxNet3. NIC type VmxNet2 is only supported for virtual machine hardware version 4 and later.  NIC type VmxNet3 is only supported for vitual machine hardware version 7 and later.\nnetMacAddr - MAC address to assign if netMacGeneration is set to Manual.\nnetMacGeneration - MAC address assignment. Valid inputs\: Manual, Generated, Assigned (Assigned value is only valid when host is a vCenter server. Will assign MAC from vCenter).\nnetWakeOnLan - Enable Wake On LAN for the NIC (true, false).\n\nResponses\:\nsuccess - The operation completed successfully.\nfailure - Something went wrong.\n\nReturns\:\nreturnResult - Task result or operation result.\n\nNotes\:\nInventory Path Formatting\: If host is an ESX server inventory path will be\: ha-datacenter/vm/<name of vm> .  If host is a vCenter the inventory path will be\: <name of datacenter>/vm/<folders>/<name of vm> . The <folders>/<name of vm> part of the path is based on the "Virtual Machines & Templates" view in the vCenter client. The inventory path is case sensitive.\n</pre>
+]]></descriptionCdata>
+  <annotation>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.description</annotation>
+  <name>Add NIC To VM (retry)</name>
+  <categories/>
+  <inputs>
+    <userInputBinding id="02330494-710e-4d15-ab56-ca80b56c735f">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>host</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.02330494-710e-4d15-ab56-ca80b56c735f.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="89a268b7-ea20-4781-b170-231699620655">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>user</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.89a268b7-ea20-4781-b170-231699620655.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="59ccb6a5-7123-4a1b-83bd-841437cecd3c">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>ENCRYPTED</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>password</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.59ccb6a5-7123-4a1b-83bd-841437cecd3c.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="46cd4664-2de8-4583-9754-8ffdcf5914be">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>port</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>443</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="cec033d3-32b3-4451-83a8-a1cff0bbb744">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>protocol</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>https</value>
+      <record>false</record>
+    </staticBinding>
+    <userInputBinding id="02e3f360-061b-4620-978d-fe216c0ab30e">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>closeSession</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.02e3f360-061b-4620-978d-fe216c0ab30e.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <link>
+        <refId>96a1ed25-cdc9-4ff6-8fba-e9c044c5ca53</refId>
+        <refName>Boolean - False Default</refName>
+      </link>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="dce49d49-a084-49fe-92e0-29986f78f517">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>async</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.dce49d49-a084-49fe-92e0-29986f78f517.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <link>
+        <refId>362bc113-e130-45d5-be90-832d5de87730</refId>
+        <refName>Boolean</refName>
+      </link>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="434a243f-c57b-4dff-ac1d-614ff4c961d9">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>taskTimeOut</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>800</value>
+      <record>false</record>
+    </staticBinding>
+    <userInputBinding id="84e2675e-c1bb-468a-8ddd-1a611b99e55e">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>vmIdentifierType</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.84e2675e-c1bb-468a-8ddd-1a611b99e55e.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <link>
+        <refId>30d93841-3dba-4f85-a25d-425d36161504</refId>
+        <refName>VMReferenceType</refName>
+      </link>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="4458848f-2ec5-42f3-8eea-233ad6acd245">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>virtualMachine</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.4458848f-2ec5-42f3-8eea-233ad6acd245.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="9ce58470-87bd-44b2-8c0b-2957fcc7b9d5">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>vmDatacenter</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.9ce58470-87bd-44b2-8c0b-2957fcc7b9d5.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="6896e043-0d8f-4321-be20-1dc17cefd0c5">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>netPortGroup</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.6896e043-0d8f-4321-be20-1dc17cefd0c5.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="b1ee3cd5-a67b-48aa-a67b-285686115456">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>netNicType</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.b1ee3cd5-a67b-48aa-a67b-285686115456.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <link>
+        <refId>71285cd0-c7c8-462a-8a30-4ec58a164593</refId>
+        <refName>VMware NIC Type</refName>
+      </link>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="445cb619-fde8-4f82-bc3a-6a0b937e9941">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>netMacGeneration</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.445cb619-fde8-4f82-bc3a-6a0b937e9941.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <link>
+        <refId>335ca670-b368-4519-847f-a27a3b64ca62</refId>
+        <refName>VMware netMacGeneration</refName>
+      </link>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="57680dff-f590-4eae-bb54-071c9746e020">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>netMacAddr</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.57680dff-f590-4eae-bb54-071c9746e020.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <userInputBinding id="ccf5808b-fadc-44b7-92d6-7782dca2f642">
+      <annotation></annotation>
+      <toContextKey></toContextKey>
+      <fromContextKey></fromContextKey>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>true</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>netWakeOnLan</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <record>false</record>
+      <prompt>a1bc6998-943f-49e2-8fcd-487ceeb4ca21.ccf5808b-fadc-44b7-92d6-7782dca2f642.prompt</prompt>
+      <isMultiSelect>false</isMultiSelect>
+      <link>
+        <refId>96a1ed25-cdc9-4ff6-8fba-e9c044c5ca53</refId>
+        <refName>Boolean - False Default</refName>
+      </link>
+      <sourceDelimiter>|</sourceDelimiter>
+    </userInputBinding>
+    <staticBinding id="f04f49ef-e892-44c1-90b4-2852a47c5d40">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>false</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>embedScriptlet</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>/*  Embed JavaScriptlet OOJS@Daway */ 
+// Begin: Embed JavaScriptlet
+//------------------------------------------
+
+
+//------------------------------------------
+// End: Embed JavaScriptlet</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="52084166-1a5c-404d-a7bc-537c5d4b09d1">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorCodeList</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>{
+&quot;ModifyVM&quot;:&quot;221&quot;
+}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="952baceb-88a9-4183-befe-611560030d88">
+      <annotation></annotation>
+      <assignFromContext>false</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>errorCodeRetry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value>{
+&quot;Failed to connect/authenticate to vCenter&quot;:&quot;200&quot;
+}</value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="77720469-6846-46bc-8c02-5756043a907a">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>interval</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+    <staticBinding id="599ec4ef-da60-4737-937b-4f329e334a5a">
+      <annotation></annotation>
+      <assignFromContext>true</assignFromContext>
+      <assignToContext>false</assignToContext>
+      <inputType>STRING</inputType>
+      <isList>false</isList>
+      <required>true</required>
+      <isPersisted>true</isPersisted>
+      <inputSymbol>retry</inputSymbol>
+      <listDelimiter>,</listDelimiter>
+      <value></value>
+      <record>false</record>
+    </staticBinding>
+  </inputs>
+  <scriptlet id="9b3357b2-6167-4ca6-95ea-05f845518bc3">
+    <annotation></annotation>
+    <name>Operation Add NIC To VM (retry) (a1bc6998-943f-49e2-8fcd-487ceeb4ca21)</name>
+    <type>RHINO</type>
+    <scriptRef>
+      <refId>e41e6d11-2143-473a-9acc-f206f701fc68</refId>
+      <refName>VMware Virtual Infrastructure and vSphere API Component (retry)</refName>
+    </scriptRef>
+  </scriptlet>
+  <possibleResponses>
+    <opResponse id="c20b2ad6-9c43-4935-9fd5-945642dd4f90">
+      <annotation></annotation>
+      <name>success</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>RESOLVED</type>
+      <matchRules>
+        <expression id="223073d0-9621-4880-a9f9-1ae523429d4d">
+          <annotation></annotation>
+          <name>returnCode</name>
+          <fieldName>returnCode</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="5c46d4af-b615-42d2-baaa-60f0df027511">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>0</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>EXACT_MATCH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="dae76aaa-fdea-46d5-a603-119cffbf621f">
+      <annotation></annotation>
+      <name>failure</name>
+      <isDefault>true</isDefault>
+      <onFailure>false</onFailure>
+      <type>ERROR</type>
+      <matchRules>
+        <expression id="44f4ed27-1a90-4f26-b7a3-870f63ed4fd0">
+          <annotation></annotation>
+          <name>returnCode</name>
+          <fieldName>returnCode</fieldName>
+          <sourceType>RAWRESULT</sourceType>
+          <containsEvaluator id="8232a54f-d674-4daf-8967-f86692082fc1">
+            <annotation></annotation>
+            <name>Config Item</name>
+            <text>-1</text>
+            <ignoreCase>true</ignoreCase>
+            <matchType>EXACT_MATCH</matchType>
+          </containsEvaluator>
+          <filters/>
+        </expression>
+      </matchRules>
+    </opResponse>
+    <opResponse id="fa3ce7b0-0cea-4351-a0a8-f2b16bc4cef3">
+      <annotation></annotation>
+      <name>retry</name>
+      <isDefault>false</isDefault>
+      <onFailure>false</onFailure>
+      <type>DIAGNOSED</type>
+      <matchRules/>
+    </opResponse>
+  </possibleResponses>
+  <availableResultExpressions/>
+  <resultExpression id="1180498b-81c8-4a1a-8512-72d115d42889">
+    <annotation></annotation>
+    <name>returnCode</name>
+    <fieldName>returnResult</fieldName>
+    <sourceType>RAWRESULT</sourceType>
+    <filters/>
+  </resultExpression>
+  <iconSpec id="328fef96-7647-44ea-ac9f-820a6e5aa4d1">
+    <baseIcon>network_port.png</baseIcon>
+    <basePath>/Networking/</basePath>
+    <readOnly>false</readOnly>
+    <layers>
+      <iconSpec id="288fbb53-6102-4872-90e3-c3bc1ba0542e">
+        <baseIcon>add.png</baseIcon>
+        <basePath>/Annotations/</basePath>
+        <readOnly>false</readOnly>
+        <layers/>
+      </iconSpec>
+    </layers>
+  </iconSpec>
+  <opRef>
+    <refId>b9a49cc0-461b-4835-b9b2-10db13759e24</refId>
+  </opRef>
+  <fieldValues/>
+  <groupAliasRef>
+    <refId>5233030c-af46-432b-a682-b326ca6bf2ae</refId>
+    <refName>RAS_Operator_Path</refName>
+  </groupAliasRef>
+  <overrideGroupAlias>${overrideJRAS}</overrideGroupAlias>
+</operation>
